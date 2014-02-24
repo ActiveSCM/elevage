@@ -3,13 +3,13 @@ elevage
 
 ## Description
 
-Framework for managing the provisioning of a multi-environment web app platform
+Rails template that builds app/generator framework for managing multi-environment virtrualized application platforms
 
-## Installation
+## Usage
 
 For the latest stable version:
 
-`gem install elevage`
+$ rails new <appname> -m https://raw.github.com/Cheneweth/elevage/master/elevage.rb
 
 # License
 Ruby License, http://www.ruby-lang.org/en/LICENSE.txt
