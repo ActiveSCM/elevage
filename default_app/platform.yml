@@ -1,0 +1,9 @@
+---
+platform:
+    name: default_app
+    artifacts: artifacts_path
+
+    environments:
+      - dev
+      - qa
+      - stage

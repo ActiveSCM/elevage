@@ -1,5 +1,0 @@
-= elevage
-
-Generate this with
-    elevage rdoc
-After you have described your command line interface

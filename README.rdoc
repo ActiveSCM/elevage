@@ -1,6 +1,0 @@
-= elevage
-
-Describe your project here
-
-:include:elevage.rdoc
-
