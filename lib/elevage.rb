@@ -14,7 +14,7 @@ module Elevage
     desc 'health', 'Health check on all PLATFORM definition files'
     def health
       if File.file?(PLATFORM_YML)
-        platform = Platform.new(YAML.load_file(PLATFORM_YML).fetch('platform'))
+        platform = Elevage::Platform.new(YAML.load_file(PLATFORM_YML).fetch('platform'))
         platform.health
       else
         say ERROR_MSG[:no_platform_file]

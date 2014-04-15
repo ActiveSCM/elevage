@@ -25,16 +25,16 @@ module Elevage
       end
     end
 
+    def create_infrastructure_file
+      template('templates/infrastructure.yml.tt',"#{platform}/infrastructure.yml")
+    end
+
     def create_platform_file
       template('templates/platform.yml.tt',"#{platform}/platform.yml")
     end
 
     def create_environment_files
-      template('templates/development.yml.tt',"#{platform}/#{Elevage::ENVIRONMENTS_DIR}/#{options[:development_environment]}.yml")
-    end
-
-    def create_infrastructure_files
-      puts "creating infrastructure folder and files"
+      template('templates/environment.yml.tt',"#{platform}/#{Elevage::ENVIRONMENTS_DIR}/#{options[:development_environment]}.yml")
     end
 
   end

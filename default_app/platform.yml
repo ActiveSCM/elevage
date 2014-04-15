@@ -1,9 +1,33 @@
 ---
 platform:
-    name: default_app
-    artifacts: artifacts_path
+  name: default_app
 
-    environments:
-      - dev
-      - qa
-      - stage
+  environments:
+    - dev
+
+  tiers:
+    - <tiername>
+
+  nodenameconvention:
+    - environment
+    - '-'
+    - component
+    - '-'
+    - instance
+    - geo1
+
+
+  pool:
+
+    vmdefaults: &vmdefaults
+      count: <nodes>
+      tier: <tiernamae>
+      image: <image>
+      compute: default
+
+
+  components:
+
+    component:
+      <<: *vmdefaults
+      port: 80

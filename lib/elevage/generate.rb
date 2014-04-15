@@ -1,5 +1,5 @@
 require 'thor'
-require_relative('environment')
+require_relative('env')
 
 module Elevage
 
@@ -11,7 +11,7 @@ module Elevage
       puts "You requested a health status check of the #{env} definition"
     end
 
-    register(Elevage::Environment,"environment","environment ENVIRONMENT","Prepare new environment description file")
+    register(Elevage::Env,"env","env ENVIRONMENT","Prepare new environment description file")
   end
 
 end

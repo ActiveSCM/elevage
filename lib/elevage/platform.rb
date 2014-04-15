@@ -1,16 +1,23 @@
-class Platform
-  attr_accessor :name
-  attr_accessor :artifacts_path
-  attr_accessor :environments
+module Elevage
 
-  def initialize(yml)
-    @name =  yml.fetch("name")
-    @artifacts_path = yml.fetch("artifacts")
-    @environments = yml.fetch("environments")
+  class Platform
+    attr_accessor :name
+    attr_accessor :environments
+    attr_accessor :tiers
+    attr_accessor :nodenameconvention
+
+    def initialize(yml)
+      @name =  yml.fetch("name")
+      @environments = yml.fetch("environments")
+      @tiers = yml.fetch("tiers")
+      @nodenameconvention = yml.fetch("nodenameconvention")
+    end
+
+    def health
+      puts "\t\n#{@name}:\n\n"
+      puts "\t#{@environments.size} environments defined"
+      puts "\t#{@tiers.size} tiers defined"
+    end
+
   end
-
-  def health
-    puts @name
-  end
-
 end

@@ -8,6 +8,7 @@ Feature: Generating platform definition files
     When I run `elevage new default_app`
     Then the following files should exist:
       | default_app/platform.yml |
+      | default_app/infrastructure.yml |
       | default_app/environments/dev.yml |
     Then the file "default_app/platform.yml" should contain:
     """

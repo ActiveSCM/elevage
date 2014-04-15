@@ -3,7 +3,7 @@
 #
 module Elevage
   ARTIFACTS_PATH = 'artifacts_path'
-  PLATFORM_YML = ' platform.yml'
+  PLATFORM_YML = 'platform.yml'
   DEV_ENVIRONMENT = 'dev'
   ENVIRONMENTS_DIR = 'environments'
 

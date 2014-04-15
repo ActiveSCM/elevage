@@ -1,4 +1,0 @@
-%YAML 1.2
----
-environment:
-    name: <%= options[:development_environment] %>
