@@ -2,21 +2,16 @@ require 'thor/group'
 require_relative 'config'
 
 module Elevage
-
+  # Create new provision file structure
   class New < Thor::Group
-  include Thor::Actions
+    include Thor::Actions
 
     argument :platform
-    class_option :development_environment, :default => Elevage::DEV_ENVIRONMENT
+    class_option :dev_env, default: Elevage::DEV_ENV
 
     def self.source_root
       File.dirname(__FILE__)
     end
-
-    #def debug1
-    #  invoke :generate
-    #  exit(2)
-    #end
 
     def already_exists?
       if File.directory?("#{platform}")
@@ -26,17 +21,18 @@ module Elevage
     end
 
     def create_infrastructure_file
-      template('templates/infrastructure.yml.tt',"#{platform}/infrastructure.yml")
+      infra_loc = "#{platform}/infrastructure.yml"
+      template(TEMPLATE_INFRA, infra_loc)
     end
 
     def create_platform_file
-      template('templates/platform.yml.tt',"#{platform}/platform.yml")
+      platform_loc = "#{platform}/platform.yml"
+      template(TEMPLATE_PLATFORM, platform_loc)
     end
 
     def create_environment_files
-      template('templates/environment.yml.tt',"#{platform}/#{Elevage::ENVIRONMENTS_DIR}/#{options[:development_environment]}.yml")
+      env_loc = "#{platform}/#{Elevage::ENV_DIR}/#{options[:dev_env]}.yml"
+      template(TEMPLATE_ENV, env_loc)
     end
-
   end
-
 end

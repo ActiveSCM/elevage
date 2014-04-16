@@ -1,7 +1,7 @@
 require 'thor/group'
 
 module Elevage
-
+  # subcommand to build environment file
   class Env < Thor::Group
     include Thor::Actions
 
@@ -12,8 +12,7 @@ module Elevage
     end
 
     def create_environment_file
-      puts "creating environment file"
+      puts 'creating environment file'
     end
-
   end
 end
