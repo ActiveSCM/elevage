@@ -19,11 +19,12 @@ module Elevage
   CMD_NEW = 'Prepare new platform folder structure at current location'
   CMD_GENERATE = 'Generate specified platform COMPONENT definition files'
   CMD_ENV = 'Prepare new environment description file'
+  CMD_HEALTH = 'Health check on all PLATFORM definition files'
 
   # error messages
   ERROR_MSG = {
     platform_already_exists: 'elevage: platform directory exists!',
-    no_platform_file: 'elevage: platform.yml file not found!',
+    no_platform_fil: 'elevage: platform.yml file not found!',
     last_entry: 'last entry'
   }
 

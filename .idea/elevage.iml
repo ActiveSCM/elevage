@@ -78,6 +78,24 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="RVM: ruby-2.1.1" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="elevage (v0.1.0, /Users/ncheneweth/Documents/dev/elevage) [path][gem]">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/bin" />
+          <root url="file://$MODULE_DIR$/lib" />
+          <root url="file://$MODULE_DIR$/tmp" />
+          <root url="file://$MODULE_DIR$/.idea" />
+          <root url="file://$MODULE_DIR$/default_app" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/bin" />
+          <root url="file://$MODULE_DIR$/lib" />
+          <root url="file://$MODULE_DIR$/tmp" />
+          <root url="file://$MODULE_DIR$/.idea" />
+          <root url="file://$MODULE_DIR$/default_app" />
+        </SOURCES>
+      </library>
+    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="aruba (v0.5.4, RVM: ruby-2.1.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.2, RVM: ruby-2.1.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v1.6.1, RVM: ruby-2.1.1) [gem]" level="application" />

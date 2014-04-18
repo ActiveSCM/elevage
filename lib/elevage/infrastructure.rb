@@ -1,5 +1,5 @@
 module Elevage
-  class Infrastructure
+  class Vcenter
     attr_accessor :geo
     attr_accessor :timezone
     attr_accessor :host
@@ -29,18 +29,23 @@ module Elevage
     end
 
     def to_s
-      puts "\t\t#{@geo}\n"
-      puts "\t\t#{@timezone}\n"
-      puts "\t\t#{@host}\n"
-      puts "\t\t#{@datacenter}\n"
-      puts "\t\t#{@imagefolder}\n"
-      puts "\t\t#{@destfolder}\n"
-      puts "\t\t#{@resourcepool}\n"
-      puts "\t\t#{@appendenv}\n"
-      puts "\t\t#{@appendtier}\n"
-      puts "\t\t#{@datastore}\n"
-      puts "\t\t#{@domain}\n"
-      puts "\t\t#{@dnsips}\n"
+      s = "\t\tgeo: #{@geo}\n"
+      s += "\t\ttimezone: #{@timezone}\n"
+      s += "\t\thost: #{@host}\n"
+      s += "\t\tdatacenter: #{@datacenter}\n"
+      s += "\t\timagefolder: #{@imagefolder}\n"
+      s += "\t\tdestfolder: #{@destfolder}\n"
+      s += "\t\tresourcepool: #{@resourcepool}\n"
+      s += "\t\tappendenv: #{@appendenv}\n"
+      s += "\t\tappendtier: #{@appendtier}\n"
+      @datastore.each do |store|
+        s += "\t\t\t- #{store}\n"
+      end
+      s += "\t\tdomain: #{@domain}\n"
+      @dnsips.each do |ip|
+        s += "\t\t\t- #{ip}\n"
+      end
+      s
     end
   end
 
@@ -50,16 +55,16 @@ module Elevage
     attr_accessor :netmask
 
     def initialize(networkdata)
-      @vlandid = networkdata.fetch('vlanid')
+      @vlanid = networkdata.fetch('vlanid')
       @gateway = networkdata.fetch('gateway')
       @netmask = networkdata.fetch('netmask')
     end
 
     def to_s
-      "\t\t#{@vlanid}\n" + "\t\t#{@gateway}\n" + "\t\t#{@netmask}\n"
-      # puts "\t\t#{@vlanid}\n"
-      # puts "\t\t#{@gateway}\n"
-      # puts "\t\t#{@netmask}\n"
+      s = "\t\tvlanid: #{@vlanid}\n"
+      s += "\t\tgateway: #{@gateway}\n"
+      s += "\t\tnetmask: #{@netmask}\n"
+      s
     end
   end
 end

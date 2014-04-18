@@ -1,6 +1,7 @@
 ---
 platform:
   name: AW
+  description: 'ActiveWorks platform - includes markets'
 
   environments:
     - int

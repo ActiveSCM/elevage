@@ -15,8 +15,8 @@ module Elevage
 
     def already_exists?
       if File.directory?("#{platform}")
-        say ERROR_MSG[:platform_already_exists]
-        exit(ERROR_NO[:platform_already_exists])
+        raise ERROR_MSG[:platform_already_exists]
+        #exit(ERROR_NO[:platform_already_exists])
       end
     end
 
