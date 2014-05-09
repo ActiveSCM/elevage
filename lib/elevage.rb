@@ -16,18 +16,17 @@ module Elevage
     def health
       if File.file?(PLATFORM_YML)
         platformdata = YAML.load_file(PLATFORM_YML).fetch('platform')
-        infrastructurefile = YAML.load_file(INFRA_YML)
+        infrastructuredata = YAML.load_file(INFRA_YML).fetch('infrastructure')
 
-        platform = Elevage::Platform.new(platformdata, infrastructurefile)
+        platform = Elevage::Platform.new(platformdata, infrastructuredata)
         puts platform if options.verbose?
         puts 'run health check'
       else
-        say ERROR_MSG[:no_platform_file]
-        exit(ERROR_NO[:no_platform_file])
+        fail IOError, ERROR_MSG[:no_platform_file]
       end
     end
 
-    register(Elevage::New, 'new', 'new PLATFORM', CMD_NEW)
+    register(Elevage::New, 'news', 'news PLATFORM', CMD_NEW)
     register(Elevage::Generate, 'generate', 'generate COMPONENT', CMD_GENERATE)
   end
 end
