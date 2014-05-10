@@ -9,7 +9,7 @@ require_relative 'elevage/new'
 require_relative 'elevage/generate'
 
 module Elevage
-  # Initial Commandline instance of Thor class
+  # First class object called at command line
   class CmdLine < Thor
     desc 'health', CMD_HEALTH
     method_option :verbose, type: :boolean, aliases: '-v'

@@ -22,4 +22,4 @@ Feature: Generating platform definition files
   Scenario: new platform called when platform already exists
     Given a directory named "default_app"
     When I run `elevage new default_app`
-    Then the exit status should be 2
+    Then the exit status should be 1
