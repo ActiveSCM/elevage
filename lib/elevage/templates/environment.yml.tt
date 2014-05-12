@@ -1,3 +1,0 @@
----
-environment:
-    name: <%= options[:dev_env] %>
