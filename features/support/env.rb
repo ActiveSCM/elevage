@@ -1,8 +1,9 @@
 require 'aruba/cucumber'
-require 'methadone/cucumber'
 
+# rubocop:disable LineLength, StringLiterals
 ENV['PATH'] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
-LIB_DIR = File.join(File.expand_path(File.dirname(__FILE__)),'..','..','lib')
+LIB_DIR = File.join(File.expand_path(File.dirname(__FILE__)), '..', '..', 'lib')
+# rubocop:enable LineLength, StringLiterals
 
 Before do
   # Using "announce" causes massive warnings on 1.9.2

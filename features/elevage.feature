@@ -1,13 +1,19 @@
-Feature: My bootstrapped app kinda works
-  In order to get going on coding my awesome app
-  I want to have aruba and cucumber setup
-  So I don't have to do it myself
+Feature: Behavior of CLI with general features and commands
 
-  Scenario: App just runs
-    When I get help for "elevage"
+  As an Infracoder developing a command line tool
+  I want to have the basic structure of the tool setup
+  In order to engage in the BDD of the tool
+
+  Scenario: General help banner works
+
+    When I get general help for "elevage"
     Then the exit status should be 0
     And the banner should be present
-    And the banner should document that this app takes options
-    And the following options should be documented:
-      |--version|
-    And the banner should document that this app takes no arguments
+    And the following commands should be documented:
+      |help|
+      |version|
+
+  Scenario: Can display gem version
+
+    When I run `elevage -v`
+    Then the output should display the version
