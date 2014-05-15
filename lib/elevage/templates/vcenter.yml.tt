@@ -1,0 +1,24 @@
+---
+vcenter:
+  name: <%= platform.downcase %>
+
+  nonprod: &default
+    geo:
+    timezone:
+
+    host:
+    datacenter:
+    imagefolder:
+    destfolder:
+    resourcepool:
+    appendenv: false
+    appendtier: false
+    datastores:
+      -
+
+    domain:
+    dnsips:
+      -
+
+  prod:
+    <<: *default

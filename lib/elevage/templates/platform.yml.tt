@@ -1,13 +1,16 @@
+%YAML 1.2
 ---
 platform:
   name: <%= platform.downcase %>
+  description:
 
   environments:
-    - <%= options[:development_environment] %>
+    -
 
   tiers:
-    - <tiername>
+    -
 
+  #comments about available convention indicators
   nodenameconvention:
     - environment
     - '-'
@@ -20,10 +23,10 @@ platform:
   pool:
 
     vmdefaults: &vmdefaults
-      count: <nodes>
-      tier: <tiernamae>
-      image: <image>
-      compute: default
+      count:
+      tier:
+      image:
+      compute:
 
 
   components:

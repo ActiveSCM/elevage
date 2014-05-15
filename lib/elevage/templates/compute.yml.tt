@@ -1,0 +1,7 @@
+---
+compute:
+  name: <%= platform.downcase %>
+
+  default: &default
+    cpu:
+    ram:

@@ -1,0 +1,8 @@
+---
+network:
+  name: <%= platform.downcase %>
+
+  networkname:
+    vlanid:
+    gateway:
+    netmask:

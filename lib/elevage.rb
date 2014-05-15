@@ -1,5 +1,8 @@
 require 'thor'
-require_relative 'elevage/version'
+require 'elevage/version'
+require 'elevage/constants'
+require 'elevage/new'
+require 'elevage/guard'
 
 module Elevage
   # Start of application commandline parsing
@@ -7,10 +10,12 @@ module Elevage
     map '--version' => :version
     map '-v' => :version
 
-    desc 'version', 'Display installed elevage gem version (Can also use -v)'
+    desc 'version', DESC_VERSION
     def version
       say VERSION
     end
 
+    register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
+    register(Elevage::Guard, 'guard', 'guard', DESC_GUARD)
   end
 end
