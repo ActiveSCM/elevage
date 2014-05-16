@@ -1,6 +1,6 @@
-? "%YAML 1.2"
+---
 vcenter:
-  name: <%= platform.downcase %>
+  name: default_app
 
   nonprod: &default
     geo:

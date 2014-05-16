@@ -1,4 +1,4 @@
----
+? "%YAML 1.2"
 compute:
   name: <%= platform.downcase %>
 

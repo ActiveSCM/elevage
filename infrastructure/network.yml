@@ -1,6 +1,6 @@
-? "%YAML 1.2"
+---
 network:
-  name: <%= platform.downcase %>
+  name: default_app
 
   networkname:
     vlanid:

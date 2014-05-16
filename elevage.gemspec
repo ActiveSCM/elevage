@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.version       = Elevage::VERSION
   spec.authors       = ['Nic Cheneweth']
   spec.email         = ['Nic.Cheneweth@activenetwork.com']
-  spec.summary       = %q{(TODO: Write a short summary. Required.)}
-  spec.description   = %q{(TODO: Write a longer description. Optional.)}
+  spec.summary       = 'Summary decsription'
+  spec.description   = 'Longer description'
   spec.homepage      = ''
   spec.license       = 'MIT'
 

@@ -1,10 +1,11 @@
 ? "%YAML 1.2"
 platform:
-  name: <%= platform.downcase %>
-  description:
+  name: default_app
+  description: description of the default_app
 
   environments:
-    -
+    - INT
+    - QA
 
   tiers:
     -

@@ -1,0 +1,51 @@
+? "%YAML 1.2"
+compute:
+  name: default_app
+
+  default: &default
+    cpu: 2
+    ram: 2
+
+  nonprodweb:
+    <<: *default
+
+  nonprodapp:
+    <<: *default
+    ram: 6
+
+  nonprodtc:
+    <<: *default
+    ram: 8
+
+  nonprodmq:
+    <<: *default
+    ram: 12
+
+  nonprodpassporttc:
+    <<: *default
+    ram: 4
+
+  prodweb:
+    <<: *default
+    ram: 6
+
+  prodapp:
+    <<: *default
+    ram: 6
+
+  prodtc:
+    <<: *default
+    ram: 32
+
+  prodmq:
+    <<: *default
+    cpu: 8
+    ram: 32
+
+  prodpassporttc:
+    <<: *default
+    ram: 32
+
+  prodsports:
+    <<: *default
+    ram: 31

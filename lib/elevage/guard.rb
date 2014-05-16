@@ -1,27 +1,16 @@
 require 'thor/group'
 require_relative 'constants'
+require_relative 'platform'
 
 module Elevage
-  # load Platform clas object and perform health check
-  class Guard < Thor::Group
-    include Thor::Actions
+  # load Platform class object and perform health checks
+  class Guard < Thor
+    map '-s' => :simple
 
-    def self.source_root
-      File.dirname(__FILE__)
-    end
-
-    def platform_exists?
-      unless File.file?(YML_PLATFORM)
-        fail IOError, ERROR_MSG[:no_platform_file]
-      end
-    end
-
-    # def load_platform_files
-    #
-    # end
-
-    def inspect_defintion_health
-      puts 'Guard status:'
+    desc 'simple', DESC_GUARD_SIMPLE
+    def simple
+      platform = Elevage::Platform.new
+      say MSG_GUARD_SIMPLE_SUCCESS unless platform.missing_environment_file?
     end
   end
 end

@@ -16,6 +16,6 @@ module Elevage
     end
 
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
-    register(Elevage::Guard, 'guard', 'guard', DESC_GUARD)
+    register(Elevage::Guard, 'guard', 'guard CHECK', DESC_GUARD)
   end
 end
