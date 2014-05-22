@@ -1,24 +1,48 @@
 ? "%YAML 1.2"
 platform:
   name: <%= platform.downcase %>
-  description:
-
+  # Environments are listed as individual yml array elements such as
+  #
+  # - INT
+  # - QA
+  # - STAGE
+  # - PROD
+  #
   environments:
     -
-
+  # Components are grouped into tiers. You must define at least one tier in which
+  # you will specify the vlan on which to connect the vm. A typical platform may
+  # be tiered as follows:
+  #
+  # - web
+  # - app
+  # - db
+  #
   tiers:
     -
-
-  #comments about available convention indicators
+  # Individual node name are constructed at provision time based on the pattern
+  # you define here. Available options from the platform or environment yml keys are:
+  #
+  # environment
+  # component
+  # instance    single leading zero 0..9, up to count of component pool
+  # geo         first letter of geo key value
+  # 'string'    any single quoted string, escape char not evaluated
+  #
   nodenameconvention:
-    - environment
-    - '-'
-    - component
-    - '-'
+    - 'node'
     - instance
-    - geo1
-
-
+  # Components are defined as part of a pool. The pool is where you assign a component
+  # the following required items:
+  #
+  # count     The number of components in the load balance pool
+  # tier      Which platform tier the component is built on
+  # image     The vmware image to clone for the nodes in this pool
+  # compute   Size of compute resource to assign, defined in the compute.yml file
+  #
+  # you may define any number of pools which may inherit based on yml default indicators.
+  # Each component may share a pool definition or have a unique one.
+  #
   pool:
 
     vmdefaults: &vmdefaults
@@ -26,10 +50,11 @@ platform:
       tier:
       image:
       compute:
-
-
+  # Components inherit all the key values from the assigned pool, which may be overridden
+  # in addition you can define a service port number for individual service pools
+  #
   components:
 
     component:
       <<: *vmdefaults
-      port: 80
+      port: 

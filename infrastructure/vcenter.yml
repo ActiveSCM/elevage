@@ -1,7 +1,23 @@
----
+? "%YAML 1.2"
 vcenter:
-  name: default_app
-
+  name: aw
+  # you can add as many vcenter definitions as required. The default file configuratioon
+  # includes two in the form of a production and non production datacenter.
+  # Key elements are as follows:
+  #
+  # geo           geographic location of a physical data center. Primarily for use in DR defintions
+  # timezone      node timezone setting
+  # host          hostname of vcenter management server
+  # datacenter    vcenter 'datacenter' folder
+  # imagefolder   vcenter resource folder where the clone image is located
+  # destfolder    vcenter resource folder destination for provisioned vms
+  # resourcepool  vcenter resource pool for the provisioned vms
+  # appendenv     if true the destfolder path will be appended with the environment name
+  # appenddomain  if true the domain will be pre-pended with environment name
+  # datastores    array list of available datastores. Elevage will attempt to evenly distribute
+  # domain        domain for fqdn of host
+  # dnsips        ips of dns servers
+  #
   nonprod: &default
     geo:
     timezone:
@@ -12,7 +28,7 @@ vcenter:
     destfolder:
     resourcepool:
     appendenv: false
-    appendtier: false
+    appenddomain: false
     datastores:
       -
 

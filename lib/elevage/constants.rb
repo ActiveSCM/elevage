@@ -5,6 +5,8 @@ module Elevage
   DESC_NEW = 'Prepare new platform files and folder structure at current location'
   DESC_GUARD = 'Guard yml files health check'
   DESC_GUARD_SIMPLE = 'Confirms existence of all platform state files'
+  DESC_GUARD_FULL = 'Confirm health of all platform files'
+  DESC_GENERATE = 'Generate new environment files based on platform template'
 
   MSG_GUARD_SIMPLE_SUCCESS = 'All platform desired state files present'
 
@@ -28,7 +30,8 @@ module Elevage
     no_network_file: 'elevage: infastructure/network.yml file not found!',
     no_compute_file: 'elevage: infastructure/compute.yml file not found!',
     compute_platform_name_mismatch: 'elevage: compute.yml platform name does not match platform.yml',
-    missing_environment_file: 'elevage: environment defined in platform.yml but not found in environments folder'
+    missing_environment_file: 'elevage: environment defined in platform.yml but not found in environments folder',
+    environment_already_exists: 'elevage: environment file already exists!'
   }
 end
 # rubocop:enable LineLength, StringLiterals

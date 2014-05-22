@@ -1,7 +1,9 @@
----
+? "%YAML 1.2"
 network:
-  name: default_app
-
+  name: aw
+  # Any number of networks may be specified. Networks are assigned to Tiers as part
+  # of the component definition. The vcetner vlan id is used to specify the network.
+  #
   networkname:
     vlanid:
     gateway:

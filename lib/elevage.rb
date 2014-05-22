@@ -17,5 +17,6 @@ module Elevage
 
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
     register(Elevage::Guard, 'guard', 'guard CHECK', DESC_GUARD)
+    # register(Elevage::Generate, 'generate', 'guard ENV', DESC_GENERATE)
   end
 end

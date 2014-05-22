@@ -12,5 +12,11 @@ module Elevage
       platform = Elevage::Platform.new
       say MSG_GUARD_SIMPLE_SUCCESS unless platform.missing_environment_file?
     end
+
+    desc 'platform', DESC_GUARD_FULL
+    def platform
+      platform = Elevage::Platform.new
+      say platform
+    end
   end
 end
