@@ -4,7 +4,7 @@ Author::  YOUR NAME (YOUR EMAIL)
 Copyright:: Copyright (c) 2014 YOUR NAME
 
 
-License:: apache, see LICENSE.txt
+License:: apache 2.0, see LICENSE.txt
 
 
 
