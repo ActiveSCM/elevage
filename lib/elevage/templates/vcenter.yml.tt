@@ -18,23 +18,24 @@ vcenter:
   # domain        domain for fqdn of host
   # dnsips        ips of dns servers
   #
-  nonprod: &default
-    geo:
-    timezone:
+  locations:
+    nonprod: &default
+      geo:
+      timezone:
 
-    host:
-    datacenter:
-    imagefolder:
-    destfolder:
-    resourcepool:
-    appendenv: false
-    appenddomain: false
-    datastores:
-      -
+      host:
+      datacenter:
+      imagefolder:
+      destfolder:
+      resourcepool:
+      appendenv: false
+      appenddomain: false
+      datastores:
+        -
 
-    domain:
-    dnsips:
-      -
+      domain:
+      dnsips:
+        -
 
-  prod:
-    <<: *default
+    prod:
+      <<: *default

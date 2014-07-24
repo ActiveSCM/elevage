@@ -1,4 +1,7 @@
 #ignore the following
+platform.yml
+infrastructure/
+environments/
 tmp/
 .idea/
 .rvmrc

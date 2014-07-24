@@ -1,4 +1,4 @@
-# rubocop:disable all
+#rubocop:disable all
 def dump_load_path
   puts $LOAD_PATH.join("\n")
   found = nil
@@ -28,10 +28,10 @@ require 'bundler'
 require 'rake/clean'
 
 begin
-require 'rspec/core/rake_task'
+  require 'rspec/core/rake_task'
 rescue LoadError
-dump_load_path
-raise
+  dump_load_path
+  raise
 end
 
 require 'cucumber'
@@ -44,9 +44,7 @@ include Rake::DSL
 Bundler::GemHelper.install_tasks
 
 
-RSpec::Core::RakeTask.new do |t|
-  # Put spec opts in a file named .rspec in root
-end
+RSpec::Core::RakeTask.new(:spec)
 
 
 CUKE_RESULTS = 'results.html'
@@ -57,9 +55,7 @@ Cucumber::Rake::Task.new(:features) do |t|
 end
 
 Rake::RDocTask.new do |rd|
-  
   rd.main = 'README.rdoc'
-  
   rd.rdoc_files.include('README.rdoc',"lib/**/*.rb","bin/**/*")
 end
 

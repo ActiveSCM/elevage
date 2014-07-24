@@ -19,18 +19,50 @@ module Elevage
 
     def missing_environment_file?
       environments = @platform.fetch('environments')
-      environments.each do |env|
-        envfile = 'environments/' + env + '.yml'
-        missing_file_fail(envfile, ERROR_MSG[:missing_environment_file] + env)
+      if environments.any?
+        environments.each do |env|
+          envfile = 'environments/' + env + '.yml'
+          missing_file_fail(envfile, ERROR_MSG[:missing_environment_file] + env)
+        end
+        false
+      else
+        fail(IOError, ERROR_MSG[:no_environments_defined])
       end
-      false
+    end
+
+    def yml_files_consistent?
+      environments = @platform.fetch('environments')
+      name = @platform.fetch('name')
+      if vm_resources_defined?
+        if Dir[ENVIRONMENTS_FOLDER + '*'].length == environments.size
+
+        else
+          fail(IOError, ERROR_MSG[:too_many_environment_files])
+        end
+      end
+      true
     end
 
     def to_s
-      "\n#{@platform.fetch('name')}: #{@platform.fetch('description')}\n\n"
+      puts "\n#{@platform.fetch('name')}: #{@platform.fetch('description')}\n\n"
     end
 
     private
+
+    def vm_resources_defined?
+      name = @platform.fetch('name')
+      fail(IOError, ERROR_MSG[:compute_platform_name_mismatch]) if name != @compute.fetch('name')
+      check_keys_for_nil(@compute, 'options')
+      fail(IOError, ERROR_MSG[:vcenter_platform_name_mismatch]) if name != @vcenter.fetch('name')
+      check_keys_for_nil(@vcenter, 'locations')
+      true
+    end
+
+    def check_keys_for_nil(hash_to_check, option_key)
+      hash_to_check.fetch(option_key).each_value do |values|
+        values.each_value {|config| fail(IOError, ERROR_MSG[:nil_compute_values]) if config.nil?}
+      end
+    end
 
     def platform_files_exists?
       missing_file_fail(YML_PLATFORM, ERROR_MSG[:no_platform_file]) &&
@@ -40,15 +72,8 @@ module Elevage
     end
 
     def missing_file_fail(file, msg)
-      File.file?(file) ? true : fail(IOError, msg)
+      fail(IOError, msg) unless File.file?(file)
+      true
     end
   end
 end
-
-#
-# @description = platformdata.fetch('description')
-# @environments = platformdata.fetch('environments')
-# @tiers = platformdata.fetch('tiers')
-# @nodenameconvention = platformdata.fetch('nodenameconvention')
-# @pools = platform.fetch('pool')
-# @components = platform.fetch('components')

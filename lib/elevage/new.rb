@@ -13,9 +13,7 @@ module Elevage
     end
 
     def already_exists?
-      if File.file?(YML_PLATFORM)
-        fail IOError, ERROR_MSG[:platform_already_exists]
-      end
+      File.file?(YML_PLATFORM) && fail(IOError, ERROR_MSG[:platform_already_exists])
     end
 
     def create_platform_file

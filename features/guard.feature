@@ -2,7 +2,7 @@ Feature: GUARD platform yml file health status
 
   As an Infracoder developing a command line tool
   I want to test the semantic accuracy of the platform definition files
-  In order to maintain the health of the elevage platform desired state files
+  In order to maintain the health of the platform desired state files for use with elevage
 
 
   Scenario: Guard simple command called where platform definition file is missing
@@ -111,7 +111,7 @@ Feature: GUARD platform yml file health status
     Then the output should display simple health success in the results from the guard health check
 
 
-  Scenario: Guard full called will configured files in healthy state
+  Scenario: Guard platform called with configured files in healthy state
 
     Given a file named "platform.yml" with:
     """
@@ -186,53 +186,54 @@ Feature: GUARD platform yml file health status
     vcenter:
       name: AW
 
-      nonprod: &vcenter
-        geo: west
-        timezone: 085
+      locations:
+        nonprod: &vcenter
+          geo: west
+          timezone: 085
 
-        host: 'vcwest.active.tan'
-        datacenter: 'WCDC NonProd'
-        imagefolder: 'Corporate - o4/Platform Services - o4.m7/Templates'
-        destfolder: 'Corporate - o4/Platform Services - o4.m7/AW Platform - o4.m7.p159'
-        resourcepool: 'App-Web Linux/Corporate - o4'
-        appendenv: true
-        appenddomain: true
-        datastores:
-          - NonProd_Cor_PlaSer_25_111
-          - NonProd_Cor_PlaSer_26_111
-          - NonProd_Cor_PlaSer_38_111
-          - NonProd_Cor_PlaSer_39_111
-          - NonProd_Cor_PlaSer_40_111
-          - NonProd_Cor_PlaSer_41_111
+          host: 'vcwest.active.tan'
+          datacenter: 'WCDC NonProd'
+          imagefolder: 'Corporate - o4/Platform Services - o4.m7/Templates'
+          destfolder: 'Corporate - o4/Platform Services - o4.m7/AW Platform - o4.m7.p159'
+          resourcepool: 'App-Web Linux/Corporate - o4'
+          appendenv: true
+          appenddomain: true
+          datastores:
+            - NonProd_Cor_PlaSer_25_111
+            - NonProd_Cor_PlaSer_26_111
+            - NonProd_Cor_PlaSer_38_111
+            - NonProd_Cor_PlaSer_39_111
+            - NonProd_Cor_PlaSer_40_111
+            - NonProd_Cor_PlaSer_41_111
 
-        domain: dev.activenetwork.com
-        dnsips:
-          - 10.119.32.5
-          - 10.119.32.6
+          domain: dev.activenetwork.com
+          dnsips:
+            - 10.119.32.5
+            - 10.119.32.6
 
-      prod:
-        <<: *vcenter
+        prod:
+          <<: *vcenter
 
-        datacenter: 'WCDC Prod'
-        datastores:
-          - Prod_Cor_PlaSer_03_237
-          - Prod_Cor_PlaSer_04_237
-          - Prod_Cor_PlaSer_06F9_473
-          - Prod_Cor_PlaSer_06F9_473
-          - Prod_Cor_PlaSer_080D_473
-          - Prod_Cor_PlaSer_0812_473
-          - Prod_Cor_PlaSer_08E0_473
-          - Prod_Cor_PlaSer_08EA_473
-          - Prod_Cor_PlaSer_08F4_473
-          - Prod_Cor_PlaSer_0B89_473
-          - Prod_Cor_PlaSer_0B93_473
-          - Prod_Cor_PlaSer_847_473
-          - Prod_Cor_PlaSer_851_473
+          datacenter: 'WCDC Prod'
+          datastores:
+            - Prod_Cor_PlaSer_03_237
+            - Prod_Cor_PlaSer_04_237
+            - Prod_Cor_PlaSer_06F9_473
+            - Prod_Cor_PlaSer_06F9_473
+            - Prod_Cor_PlaSer_080D_473
+            - Prod_Cor_PlaSer_0812_473
+            - Prod_Cor_PlaSer_08E0_473
+            - Prod_Cor_PlaSer_08EA_473
+            - Prod_Cor_PlaSer_08F4_473
+            - Prod_Cor_PlaSer_0B89_473
+            - Prod_Cor_PlaSer_0B93_473
+            - Prod_Cor_PlaSer_847_473
+            - Prod_Cor_PlaSer_851_473
 
-        domain: active.tan
-        dnsips:
-          - 10.119.10.201
-          - 10.73.100.21
+          domain: active.tan
+          dnsips:
+            - 10.119.10.201
+            - 10.73.100.21
     """
     Given a file named "infrastructure/network.yml" with:
     """
@@ -266,53 +267,54 @@ Feature: GUARD platform yml file health status
     compute:
       name: AW
 
-      default: &default
-        cpu: 2
-        ram: 2
+      options:
+        default: &default
+          cpu: 2
+          ram: 2
 
-      nonprodweb:
-        <<: *default
+        nonprodweb:
+          <<: *default
 
-      nonprodapp:
-        <<: *default
-        ram: 6
+        nonprodapp:
+          <<: *default
+          ram: 6
 
-      nonprodtc:
-        <<: *default
-        ram: 8
+        nonprodtc:
+          <<: *default
+          ram: 8
 
-      nonprodmq:
-        <<: *default
-        ram: 12
+        nonprodmq:
+          <<: *default
+          ram: 12
 
-      nonprodpassporttc:
-        <<: *default
-        ram: 4
+        nonprodpassporttc:
+          <<: *default
+          ram: 4
 
-      prodweb:
-        <<: *default
-        ram: 6
+        prodweb:
+          <<: *default
+          ram: 6
 
-      prodapp:
-        <<: *default
-        ram: 6
+        prodapp:
+          <<: *default
+          ram: 6
 
-      prodtc:
-        <<: *default
-        ram: 32
+        prodtc:
+          <<: *default
+          ram: 32
 
-      prodmq:
-        <<: *default
-        cpu: 8
-        ram: 32
+        prodmq:
+          <<: *default
+          cpu: 8
+          ram: 32
 
-      prodpassporttc:
-        <<: *default
-        ram: 32
+        prodpassporttc:
+          <<: *default
+          ram: 32
 
-      prodsports:
-        <<: *default
-        ram: 3
+        prodsports:
+          <<: *default
+          ram: 3
     """
     Given a file named "environments/prod.yml" with:
     """
@@ -423,5 +425,5 @@ Feature: GUARD platform yml file health status
                 - 10.219.161.77
                 - 10.219.161.78
     """
-    When I run `elevage guard full`
+    When I run `elevage guard platform`
     Then the exit status should be 0

@@ -1,6 +1,7 @@
 ? "%YAML 1.2"
 platform:
   name: <%= platform.downcase %>
+  description: unedited platform template file
   # Environments are listed as individual yml array elements such as
   #
   # - INT
@@ -57,4 +58,4 @@ platform:
 
     component:
       <<: *vmdefaults
-      port: 
+      port:

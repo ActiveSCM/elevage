@@ -1,8 +1,0 @@
-? "%YAML 1.2"
-compute:
-  name: aw
-  # The compute name is used to specify the compute resources used in the provsion of the component node
-  #
-  default: &default
-    cpu:
-    ram:
