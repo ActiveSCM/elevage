@@ -5,7 +5,6 @@ require_relative 'platform'
 module Elevage
   # load Platform class object and perform health checks
   class Guard < Thor
-
     desc 'simple', DESC_GUARD_SIMPLE
     def simple
       platform = Elevage::Platform.new

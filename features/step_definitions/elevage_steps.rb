@@ -32,28 +32,38 @@ Then(/^the output should display the version$/) do
   step %(the output should match /\\d+\\.\\d+\\.\\d+/)
 end
 
-Then(/^the output should contain the Platform Already Exists error$/) do
-  step %(the output should match /elevage: platform files already exist!/)
-end
+# Then(/^the output should contain the Platform Already Exists error$/) do
+#   step %(the output should match /elevage: platform files already exist!/)
+# end
+#
+# Then(/^the output should display simple health success in the results from the guard health check$/) do
+#   step %(the output should match /present/)
+# end
+#
+# Then(/^the output should contain the platform Not Found error$/) do
+#   step %(the output should match /platform.yml file not found!/)
+# end
+#
+# Then(/^the output should contain the vcenter Not Found error$/) do
+#   step %(the output should match /vcenter.yml file not found!/)
+# end
+#
+# Then(/^the output should contain the network Not Found error$/) do
+#   step %(the output should match /network.yml file not found!/)
+# end
+#
+# Then(/^the output should contain the compute Not Found error$/) do
+#   step %(the output should match /compute.yml file not found!/)
+# end
+#
+# Then(/^the output should contain dev$/) do
+#   step %(the output should match /dev/)
+# end
 
-Then(/^the output should display simple health success in the results from the guard health check$/) do
-  step %(the output should match /present/)
-end
-
-Then(/^the output should contain the platform Not Found error$/) do
-  step %(the output should match /platform.yml file not found!/)
-end
-
-Then(/^the output should contain the vcenter Not Found error$/) do
-  step %(the output should match /vcenter.yml file not found!/)
-end
-
-Then(/^the output should contain the network Not Found error$/) do
-  step %(the output should match /network.yml file not found!/)
-end
-
-Then(/^the output should contain the compute Not Found error$/) do
-  step %(the output should match /compute.yml file not found!/)
+Then(/^the result should contain "([^"]*)"$/) do |options|
+  options.split(',').map(&:strip).each do |option|
+    step %(the output should match /#{option}/)
+  end
 end
 
 # rubocop:enable LineLength, StringLiterals

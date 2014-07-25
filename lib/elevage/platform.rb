@@ -17,52 +17,36 @@ module Elevage
       end
     end
 
-    def missing_environment_file?
-      environments = @platform.fetch('environments')
-      if environments.any?
-        environments.each do |env|
-          envfile = 'environments/' + env + '.yml'
-          missing_file_fail(envfile, ERROR_MSG[:missing_environment_file] + env)
-        end
-        false
-      else
-        fail(IOError, ERROR_MSG[:no_environments_defined])
-      end
-    end
-
-    def yml_files_consistent?
-      environments = @platform.fetch('environments')
-      name = @platform.fetch('name')
-      if vm_resources_defined?
-        if Dir[ENVIRONMENTS_FOLDER + '*'].length == environments.size
-
-        else
-          fail(IOError, ERROR_MSG[:too_many_environment_files])
-        end
-      end
-      true
-    end
-
     def to_s
       puts "\n#{@platform.fetch('name')}: #{@platform.fetch('description')}\n\n"
     end
 
-    private
+    # rubocop:disable all
+    def list_items(item)
 
-    def vm_resources_defined?
-      name = @platform.fetch('name')
-      fail(IOError, ERROR_MSG[:compute_platform_name_mismatch]) if name != @compute.fetch('name')
-      check_keys_for_nil(@compute, 'options')
-      fail(IOError, ERROR_MSG[:vcenter_platform_name_mismatch]) if name != @vcenter.fetch('name')
-      check_keys_for_nil(@vcenter, 'locations')
-      true
-    end
-
-    def check_keys_for_nil(hash_to_check, option_key)
-      hash_to_check.fetch(option_key).each_value do |values|
-        values.each_value {|config| fail(IOError, ERROR_MSG[:nil_compute_values]) if config.nil?}
+      case item
+      when 'environments'
+        puts @platform.fetch('environments')
+      when 'tiers'
+        puts @platform.fetch('tiers')
+      when 'pools'
+        puts @platform.fetch('pools').to_yaml
+      when 'components'
+        puts @platform.fetch('components').to_yaml
+      when 'vcenter'
+        puts @vcenter.fetch('locations').to_yaml
+      when 'compute'
+        puts @compute.fetch('options').to_yaml
+      when 'networks'
+        puts @network.to_yaml
+      else
+        fail(IOError, ERROR_MSG[:unkown_list_command])
       end
+
     end
+    # rubocop:enable all
+
+    private
 
     def platform_files_exists?
       missing_file_fail(YML_PLATFORM, ERROR_MSG[:no_platform_file]) &&
@@ -77,3 +61,42 @@ module Elevage
     end
   end
 end
+# def missing_environment_file?
+#   environments = @platform.fetch('environments')
+#   if environments.any?
+#     environments.each do |env|
+#       envfile = 'environments/' + env + '.yml'
+#       missing_file_fail(envfile, ERROR_MSG[:missing_environment_file] + env)
+#     end
+#     false
+#   else
+#     fail(IOError, ERROR_MSG[:no_environments_defined])
+#   end
+# end
+#
+# def yml_files_consistent?
+#   environments = @platform.fetch('environments')
+#   if vm_resources_defined?
+#     if Dir[ENVIRONMENTS_FOLDER + '*'].length == environments.size
+#
+#     else
+#       fail(IOError, ERROR_MSG[:too_many_environment_files])
+#     end
+#   end
+#   true
+# end
+#
+# def vm_resources_defined?
+#   name = @platform.fetch('name')
+#   fail(IOError, ERROR_MSG[:compute_platform_name_mismatch]) if name != @compute.fetch('name')
+#   check_keys_for_nil(@compute, 'options')
+#   fail(IOError, ERROR_MSG[:vcenter_platform_name_mismatch]) if name != @vcenter.fetch('name')
+#   check_keys_for_nil(@vcenter, 'locations')
+#   true
+# end
+#
+# def check_keys_for_nil(hash_to_check, option_key)
+#   hash_to_check.fetch(option_key).each_value do |values|
+#     values.each_value { |config| fail(IOError, ERROR_MSG[:nil_compute_values]) if config.nil? }
+#   end
+# end
