@@ -23,7 +23,6 @@ module Elevage
 
     # rubocop:disable all
     def list_items(item)
-
       case item
       when 'environments'
         puts @platform.fetch('environments')
@@ -40,9 +39,41 @@ module Elevage
       when 'networks'
         puts @network.to_yaml
       else
-        fail(IOError, ERROR_MSG[:unkown_list_command])
-      end
+        if File.file?(ENVIRONMENTS_FOLDER + item + '.yml')
+          environment = YAML.load_file(ENVIRONMENTS_FOLDER + item + '.yml').fetch('environment')
+          environment['vcenter'] = @vcenter['locations'][environment['vcenter']]
 
+          @platform['components'].each do |component, config|
+            puts @platform['components'][component].to_yaml
+            puts "\n\n"
+            puts environment['components'][component].to_yaml
+            environment['components'][component].merge!(@platform['components'][component]) { |key, v1, v2| v1 }
+            puts environment['components'][component].to_yaml
+            # config.each do |k,v|
+            #   puts "platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component]['tier']}"
+            #   STDIN.gets
+            #   environment['components'][component].merge!(@platform['components'][component]) { |key, v1, v2| v1 }
+            #   puts ">>platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component][k]}"
+            #   # if environment['components'][component][k] != nil
+            #   #   puts "nil"
+            #   #   puts "env = #{environment['components'][component][k]}"
+            #   #   puts "platform = #{@platform['components'][component][k]}"
+            #   #   @platform['components'][component][k] = environment['components'][component][k]
+            #   #   puts ">>platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component][k]}"
+            #   # end
+            #   # environment['components'][component]=@platform['components'][component]
+            #   # puts "platform:#{component}:#{k} = #{v}"
+            # end
+            STDIN.gets
+          end
+
+          # temphash = {'Db' => { 'network' => "proddb" }}
+          # environment['environment']['tier'].merge! temphash
+
+        else
+          fail(IOError, ERROR_MSG[:unkown_list_command])
+        end
+      end
     end
     # rubocop:enable all
 
