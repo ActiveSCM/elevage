@@ -18,58 +18,30 @@ module Elevage
     end
 
     def to_s
-      puts "\n#{@platform.fetch('name')}: #{@platform.fetch('description')}\n\n"
+      puts "\n#{@platform['name']}: #{@platform['description']}\n\n"
     end
 
     # rubocop:disable all
     def list_items(item)
       case item
       when 'environments'
-        puts @platform.fetch('environments')
+        puts @platform['environments']
       when 'tiers'
-        puts @platform.fetch('tiers')
+        puts @platform['tiers']
       when 'pools'
-        puts @platform.fetch('pools').to_yaml
+        puts @platform['pools'].to_yaml
       when 'components'
-        puts @platform.fetch('components').to_yaml
+        puts @platform['components'].to_yaml
       when 'vcenter'
-        puts @vcenter.fetch('locations').to_yaml
+        puts @vcenter['locations'].to_yaml
       when 'compute'
-        puts @compute.fetch('options').to_yaml
+        puts @compute['options'].to_yaml
       when 'networks'
         puts @network.to_yaml
       else
         if File.file?(ENVIRONMENTS_FOLDER + item + '.yml')
-          environment = YAML.load_file(ENVIRONMENTS_FOLDER + item + '.yml').fetch('environment')
-          environment['vcenter'] = @vcenter['locations'][environment['vcenter']]
-
-          @platform['components'].each do |component, config|
-            puts @platform['components'][component].to_yaml
-            puts "\n\n"
-            puts environment['components'][component].to_yaml
-            environment['components'][component].merge!(@platform['components'][component]) { |key, v1, v2| v1 }
-            puts environment['components'][component].to_yaml
-            # config.each do |k,v|
-            #   puts "platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component]['tier']}"
-            #   STDIN.gets
-            #   environment['components'][component].merge!(@platform['components'][component]) { |key, v1, v2| v1 }
-            #   puts ">>platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component][k]}"
-            #   # if environment['components'][component][k] != nil
-            #   #   puts "nil"
-            #   #   puts "env = #{environment['components'][component][k]}"
-            #   #   puts "platform = #{@platform['components'][component][k]}"
-            #   #   @platform['components'][component][k] = environment['components'][component][k]
-            #   #   puts ">>platform:#{component}:#{k} = #{v}, #{item} = #{environment['components'][component][k]}"
-            #   # end
-            #   # environment['components'][component]=@platform['components'][component]
-            #   # puts "platform:#{component}:#{k} = #{v}"
-            # end
-            STDIN.gets
-          end
-
-          # temphash = {'Db' => { 'network' => "proddb" }}
-          # environment['environment']['tier'].merge! temphash
-
+          environment = build_environment_hash(YAML.load_file(ENVIRONMENTS_FOLDER + item + '.yml').fetch('environment'))
+          puts environment.to_yaml
         else
           fail(IOError, ERROR_MSG[:unkown_list_command])
         end
@@ -78,6 +50,25 @@ module Elevage
     # rubocop:enable all
 
     private
+
+    # rubocop:disable all
+    def build_environment_hash(env_yaml)
+      env_yaml['vcenter'] = @vcenter['locations'][env_yaml['vcenter']]
+      # merge component resources from environment file and platform definition
+      @platform['components'].each do |component, _config|
+        env_yaml['components'][component].merge!(@platform['components'][component]) { |_key, v1, _v2| v1 }
+      end
+      # substitute network name with key values
+      env_yaml['components'].each do |component, _config|
+        env_yaml['components'][component]['network'] = @network[env_yaml['components'][component]['network']]
+      end
+      # substitute compute name with key values
+      env_yaml['components'].each do |component, _config|
+        env_yaml['components'][component]['compute'] = @compute['options'][env_yaml['components'][component]['compute']]
+      end
+      env_yaml
+    end
+    # rubocop:enable all
 
     def platform_files_exists?
       missing_file_fail(YML_PLATFORM, ERROR_MSG[:no_platform_file]) &&
