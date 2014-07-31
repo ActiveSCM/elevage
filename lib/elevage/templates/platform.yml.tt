@@ -44,7 +44,7 @@ platform:
   # you may define any number of pools which may inherit based on yml default indicators.
   # Each component may share a pool definition or have a unique one.
   #
-  pool:
+  pools:
 
     vmdefaults: &vmdefaults
       count:

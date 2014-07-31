@@ -3,13 +3,12 @@ module Elevage
   # messages
   DESC_VERSION = 'Display installed elevage gem version (Can also use -v)'
   DESC_NEW = 'Prepare new platform files and folder structure at current location'
-  DESC_GUARD = 'Guard yml files health check'
-  DESC_GUARD_SIMPLE = 'Confirms existence of all platform state files'
-  DESC_GUARD_FULL = 'Confirm health of all platform files'
+  DESC_LIST = 'List ITEMs from platform desired state yml files'
+  DESC_HEALTH = 'yml files Health check'
+  DESC_HEALTH_PLATFORM = 'All standard platform definition files complete and consistent'
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
-  MSG_GUARD_SIMPLE_SUCCESS = 'All platform desired state files present'
-  MSG_GUARD_PLATFORM_SUCCESS = 'All platform desired state files present and consistently configured'
+  MSG_HEALTH_PLATFORM_SUCCESS = 'All platform desired state files present and consistently configured'
 
   # Templates
   TEMPLATE_PLATFORM = 'templates/platform.yml.tt'
@@ -27,6 +26,7 @@ module Elevage
   # error messages
   ERROR_MSG = {
     platform_already_exists: 'elevage: platform files already exist!',
+    unkown_list_command: 'elevage: used an unknown LIST command',
     no_platform_file: 'elevage: platform.yml file not found!',
     no_vcenter_file: 'elevage: infastructure/vcenter.yml file not found!',
     no_network_file: 'elevage: infastructure/network.yml file not found!',

@@ -42,4 +42,4 @@ Feature: creating NEW platform definition files
     """
     When I run `elevage new default_app`
     Then the exit status should be 1
-    And the output should contain the Platform Already Exists error
+    And the result should contain "elevage: platform files already exist!"
