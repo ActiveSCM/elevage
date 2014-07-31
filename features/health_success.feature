@@ -1,10 +1,10 @@
-Feature: LIST platform definition file items
+Feature: HEALTH check of platform definition file items
 
   As an Infracoder developing a command line tool
-  I want to display vcenters, networks, components, and other desired elements in the platform files
+  I want to be able to diagnose the syntactical health of the standard platform definition and environment definition yml files
   In order to maintain the health of the elevage platform definition files
 
-  Scenario: list desired state items for platform and environment definitions
+  Scenario: check health of standard desired state items
 
     Given a file named "platform.yml" with:
     """
@@ -270,41 +270,6 @@ Feature: LIST platform definition file items
     """
 
 
-    When I run `elevage list environments`
+    When I run `elevage health platform`
     Then the exit status should be 0
-    And the result should contain "int\nprod"
-
-    When I run `elevage list tiers`
-    Then the exit status should be 0
-    And the result should contain "Web\nApp"
-
-    When I run `elevage list pools`
-    Then the exit status should be 0
-    And the result should contain "appvmdefaults:\n  count: 2\n  tier: App\n  image: centos-6.5-x86_64-20140714\n  compute: nonprodapp\n  port: 0"
-
-    When I run `elevage list components`
-    Then the exit status should be 0
-    And the result should contain "terracotta:\n  count: 2\n  tier: Web\n  image: centos32g-6.5-x86_64-20140714\n  compute: nonprodtc\n  port: 0"
-
-    When I run `elevage list vcenter`
-    Then the exit status should be 0
-    And the result should contain "prod:\n  geo: west\n  timezone: 085\n  host: vcwest.corp.local\n  datacenter: WCDC Prod"
-
-    When I run `elevage list compute`
-    Then the exit status should be 0
-    And the result should contain "prodtc:\n  cpu: 2\n  ram: 32"
-
-    When I run `elevage list networks`
-    Then the exit status should be 0
-    And the result should contain "prodweb:\n  vlanid: PRD_WEB_NET"
-
-    When I run `elevage list prod`
-    Then the exit status should be 0
-    And the result should contain "vlanid: PRD_WEB_NET"
-    And the result should contain "cpu: 2"
-    And the result should contain "datacenter: WCDC Prod"
-    And the result should contain "prod-email-01w"
-
-    When I run `elevage list unknown`
-    Then the exit status should be 1
-    And the result should contain "unknown LIST command"
+    And the result should contain "All standard platform definition files complete and consistent"
