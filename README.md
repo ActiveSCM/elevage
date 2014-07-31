@@ -33,7 +33,7 @@ Display parsed items from the desired state files
     list pools        :list all default component pool defintions
     list components   :list all platform components
     list environments :list all defined environments in the platform state file
-    list <env name>   :display substitutes environment hash used to provision nodes
+    list <env name>   :display substituted environment hash used to provision nodes
 
 
 
