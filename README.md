@@ -18,7 +18,24 @@ Or install it yourself as:
 
 ## Usage
 
-Write usage instructions here
+Create new, default platform definition files at current location
+
+    $ elevage new <Platform Name>
+
+Display parsed items from the desired state files
+
+    $ elevage list <item>
+
+    list vcenter      :list all named vcenter definitions and their keys/values
+    list networks     :list all named network definitions  and their keys/values
+    list compute      :list all named compute configurations
+    list tiers        :list all defined tier names
+    list pools        :list all default component pool defintions
+    list components   :list all platform components
+    list environments :list all defined environments in the platform state file
+    list <env name>   :display substitutes environment hash used to provision nodes
+
+
 
 ## Contributing
 
