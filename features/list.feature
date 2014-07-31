@@ -26,7 +26,7 @@ Feature: LIST platform definition file items
         - component
         - '-'
         - instance
-        - geo1
+        - geo
 
       pools:
         webvmdefaults: &webvmdefaults
@@ -122,12 +122,12 @@ Feature: LIST platform definition file items
         netmask: 20
 
       prodweb:
-        vlanid: prd-web-net
+        vlanid: PRD_WEB_NET
         gateway: '10.119.128.1'
         netmask: 19
 
       prodapp:
-        vlanid: prd-app-net
+        vlanid: PRD_APP_NET
         gateway: '10.119.160.1'
         netmask: 20
     """
@@ -296,7 +296,14 @@ Feature: LIST platform definition file items
 
     When I run `elevage list networks`
     Then the exit status should be 0
-    And the result should contain "prodweb:\n  vlanid: prd-web-net"
+    And the result should contain "prodweb:\n  vlanid: PRD_WEB_NET"
+
+    When I run `elevage list prod`
+    Then the exit status should be 0
+    And the result should contain "vlanid: PRD_WEB_NET"
+    And the result should contain "cpu: 2"
+    And the result should contain "datacenter: WCDC Prod"
+    And the result should contain "prod-email-01w"
 
     When I run `elevage list unknown`
     Then the exit status should be 1

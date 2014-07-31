@@ -42,6 +42,11 @@ module Elevage
         if File.file?(ENVIRONMENTS_FOLDER + item + '.yml')
           environment = build_environment_hash(YAML.load_file(ENVIRONMENTS_FOLDER + item + '.yml').fetch('environment'))
           puts environment.to_yaml
+          environment['components'].each do |component, config|
+            (1..environment['components'][component]['count']).each do |i|
+              puts node_name(environment['vcenter']['geo'].to_s,item,component,i)
+            end
+          end
         else
           fail(IOError, ERROR_MSG[:unkown_list_command])
         end
@@ -50,6 +55,27 @@ module Elevage
     # rubocop:enable all
 
     private
+
+    # rubocop:disable all
+    def node_name(geo, env, component, instance)
+      name = ''
+      @platform['nodenameconvention'].each do |i|
+        case i
+        when 'environment'
+          name += env
+        when 'component'
+          name += component
+        when 'instance'
+          name += instance.to_s.rjust(2, '0')
+        when 'geo'
+          name += geo[0]
+        else
+          name += i
+        end
+      end
+      name
+    end
+    # rubocop:enable all
 
     # rubocop:disable all
     def build_environment_hash(env_yaml)
