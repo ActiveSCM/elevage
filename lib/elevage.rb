@@ -6,8 +6,9 @@ require 'elevage/list'
 require 'elevage/health'
 
 module Elevage
-  # Start of application commandline parsing
+  # aruba feature tests for main and subcommands
   class CLI < Thor
+    package_name 'elevage'
     map '--version' => :version
     map '-v' => :version
 
