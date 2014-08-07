@@ -11,8 +11,8 @@ platform:
   #
   environments:
     -
-  # Components are grouped into tiers. You must define at least one tier in which
-  # you will specify the vlan on which to connect the vm. A typical platform may
+  # Components are grouped into tiers. You may define a single tier or multiple.
+  # Tier names may be appended to vcenter resource folders. A typical platform may
   # be tiered as follows:
   #
   # - web
@@ -40,6 +40,7 @@ platform:
   # tier      Which platform tier the component is built on
   # image     The vmware image to clone for the nodes in this pool
   # compute   Size of compute resource to assign, defined in the compute.yml file
+  # port      service comm port
   #
   # you may define any number of pools which may inherit based on yml default indicators.
   # Each component may share a pool definition or have a unique one.
@@ -51,6 +52,7 @@ platform:
       tier:
       image:
       compute:
+      port:
   # Components inherit all the key values from the assigned pool, which may be overridden
   # in addition you can define a service port number for individual service pools
   #
@@ -58,4 +60,4 @@ platform:
 
     component:
       <<: *vmdefaults
-      port:
+

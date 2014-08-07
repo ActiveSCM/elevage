@@ -22,30 +22,33 @@ module Elevage
     end
 
     # rubocop:disable all
-    def list_items(item)
+    def list_items(item, option)
       case item
       when 'environments'
-        puts @platform['environments']
+        puts @platform.fetch('environments', MISSING_KEY)
       when 'tiers'
-        puts @platform['tiers']
+        puts @platform.fetch('tiers', MISSING_KEY)
       when 'pools'
-        puts @platform['pools'].to_yaml
+        puts @platform.fetch('pools', MISSING_KEY).to_yaml
       when 'components'
-        puts @platform['components'].to_yaml
+        puts @platform.fetch('components', MISSING_KEY).to_yaml
       when 'vcenter'
-        puts @vcenter['locations'].to_yaml
+        puts @vcenter.fetch('locations', MISSING_KEY).to_yaml
       when 'compute'
-        puts @compute['options'].to_yaml
+        puts @compute.fetch('options', MISSING_KEY).to_yaml
       when 'networks'
         puts @network.to_yaml
       else
         if File.file?(ENVIRONMENTS_FOLDER + item + '.yml')
           environment = build_environment_hash(YAML.load_file(ENVIRONMENTS_FOLDER + item + '.yml').fetch('environment'))
-          puts environment.to_yaml
-          environment['components'].each do |component, config|
-            (1..environment['components'][component]['count']).each do |i|
-              puts node_name(environment['vcenter']['geo'].to_s,item,component,i)
+          if option
+            environment['components'].each do |component, _config|
+              (1..environment['components'][component]['count']).each do |i|
+                puts environment['components'][component]['addresses'][i-1] + ' ' +node_name(environment['vcenter']['geo'].to_s,item,component,i)
+              end
             end
+          else
+            puts environment.to_yaml
           end
         else
           fail(IOError, ERROR_MSG[:unkown_list_command])
@@ -53,6 +56,17 @@ module Elevage
       end
     end
     # rubocop:enable all
+
+    def healthy?
+      puts @platform.include?('tier')
+
+      # if @platform.value?('')
+      #   puts 'fail' # all the right keys exist in standard files (and not nil)
+      # end
+      # values match
+      # each env file contains the match platform components
+      true
+    end
 
     private
 
@@ -109,18 +123,6 @@ module Elevage
     end
   end
 end
-# def missing_environment_file?
-#   environments = @platform.fetch('environments')
-#   if environments.any?
-#     environments.each do |env|
-#       envfile = 'environments/' + env + '.yml'
-#       missing_file_fail(envfile, ERROR_MSG[:missing_environment_file] + env)
-#     end
-#     false
-#   else
-#     fail(IOError, ERROR_MSG[:no_environments_defined])
-#   end
-# end
 #
 # def yml_files_consistent?
 #   environments = @platform.fetch('environments')
