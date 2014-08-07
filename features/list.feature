@@ -303,6 +303,9 @@ Feature: LIST platform definition file items
     And the result should contain "vlanid: PRD_WEB_NET"
     And the result should contain "cpu: 2"
     And the result should contain "datacenter: WCDC Prod"
+
+    When I run `elevage list prod -n`
+    Then the exit status should be 0
     And the result should contain "prod-email-01w"
 
     When I run `elevage list unknown`

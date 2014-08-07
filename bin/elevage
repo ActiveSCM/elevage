@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
+require 'elevage/runner'
 
-require 'elevage'
-Elevage::CLI.start
+Elevage::Runner.new(ARGV.dup).execute!

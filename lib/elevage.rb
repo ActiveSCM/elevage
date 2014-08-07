@@ -2,11 +2,10 @@ require 'thor'
 require 'elevage/version'
 require 'elevage/constants'
 require 'elevage/new'
-require 'elevage/list'
-require 'elevage/health'
+require 'elevage/platform'
 
 module Elevage
-  # aruba feature tests for main and subcommands
+  # Start of main CLI
   class CLI < Thor
     package_name 'elevage'
     map '--version' => :version
@@ -17,8 +16,20 @@ module Elevage
       say VERSION
     end
 
+    desc 'list ITEM', DESC_LIST
+    method_option :nodes, aliases: '-n', desc: DESC_LSIT_NODES
+    def list(item)
+      # error messages handled in class methods
+      @platform = Elevage::Platform.new.list_items(item, options[:nodes])
+    end
+
+    desc 'health', DESC_HEALTH
+    def health
+      # error messages handled in class methods
+      puts MSG_HEALTH_SUCCESS if (@platform = Elevage::Platform.new.healthy?)
+    end
+
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
-    register(Elevage::List, 'list', 'list ITEM', DESC_LIST)
     # register(Elevage::Health, 'health', 'health CHECK', DESC_HEALTH)
     # register(Elevage::Generate, 'generate', 'generate ENV', DESC_GENERATE)
   end

@@ -270,6 +270,6 @@ Feature: HEALTH check of platform definition file items
     """
 
 
-    When I run `elevage health platform`
+    When I run `elevage health`
     Then the exit status should be 0
-    And the result should contain "All standard platform definition files complete and consistent"
+    And the result should contain "All platform desired state files present and consistently configured"
