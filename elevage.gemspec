@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('cucumber')
   spec.add_development_dependency('psych')
   spec.add_development_dependency('rspec')
+  spec.add_development_dependency('yaml')
   spec.add_development_dependency('guard')
   spec.add_development_dependency('guard-rubocop')
   spec.add_development_dependency('growl')
