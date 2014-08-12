@@ -1,5 +1,6 @@
 #ignore the following
 platform.yml
+results.html
 infrastructure/
 environments/
 tmp/

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version       = Elevage::VERSION
   spec.authors       = ['Nic Cheneweth']
   spec.email         = ['Nic.Cheneweth@activenetwork.com']
-  spec.summary       = 'Summary decsription'
+  spec.summary       = 'Summary description'
   spec.description   = 'Longer description'
   spec.homepage      = ''
   spec.license       = 'MIT'
@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('cucumber')
   spec.add_development_dependency('psych')
   spec.add_development_dependency('rspec')
-  spec.add_development_dependency('yaml')
   spec.add_development_dependency('guard')
   spec.add_development_dependency('guard-rubocop')
   spec.add_development_dependency('growl')
