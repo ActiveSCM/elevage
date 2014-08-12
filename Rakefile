@@ -34,6 +34,9 @@ rescue LoadError
   raise
 end
 
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
+
 require 'cucumber'
 require 'cucumber/rake/task'
 gem 'rdoc' # we need the installed RDoc gem, not the system one
@@ -58,8 +61,6 @@ Rake::RDocTask.new do |rd|
   rd.main = 'README.rdoc'
   rd.rdoc_files.include('README.rdoc',"lib/**/*.rb","bin/**/*")
 end
-require 'coveralls/rake/task'
-Coveralls::RakeTask.new
 
 #task :test_with_coveralls => [:spec, :features, 'coveralls:push']
 task :default => [:spec,:features, 'coveralls:push']
