@@ -4,10 +4,12 @@
 [![Build Status](https://travis-ci.org/Cheneweth/elevage.svg?branch=master)][travis]
 [![Dependency Status](https://gemnasium.com/Cheneweth/elevage.png?travis)][gemnasium]
 [![Coverage Status](https://coveralls.io/repos/Cheneweth/elevage/badge.png?branch=master)][coveralls]
+[![Inline docs](http://inch-ci.org/github/Cheneweth/elevage.png?branch=master)][inch]
 
 [travis]: http://travis-ci.org/Cheneweth/elevage
 [gemnasium]: https://gemnasium.com/Cheneweth/elevage
 [coveralls]: https://coveralls.io/r/Cheneweth/elevage
+[inch]: http://inch-ci.org/github/Cheneweth/elevage
 
 ## Installation
 
