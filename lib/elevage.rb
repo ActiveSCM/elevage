@@ -30,7 +30,6 @@ module Elevage
     end
 
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
-    # register(Elevage::Health, 'health', 'health CHECK', DESC_HEALTH)
     # register(Elevage::Generate, 'generate', 'generate ENV', DESC_GENERATE)
   end
 end
