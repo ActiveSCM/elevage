@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Summary description'
   spec.description   = 'Longer description'
   spec.homepage      = ''
-  spec.license       = 'MIT'
+  spec.license       = 'Apache 2.0'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('guard')
   spec.add_development_dependency('guard-rubocop')
   spec.add_development_dependency('growl')
+  spec.add_development_dependency('coveralls')
   spec.add_dependency('thor')
 end
 # rubocop:enable all

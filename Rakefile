@@ -58,6 +58,9 @@ Rake::RDocTask.new do |rd|
   rd.main = 'README.rdoc'
   rd.rdoc_files.include('README.rdoc',"lib/**/*.rb","bin/**/*")
 end
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
 
+task :test_with_coveralls => [:spec, :features, 'coveralls:push']
 task :default => [:spec,:features]
 # rubocop:enable all

@@ -1,6 +1,11 @@
 # Elevage
 
-TODO: Write a gem description
+
+[![Build Status](https://travis-ci.org/Cheneweth/elevage.svg?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/Cheneweth/elevage.png?travis)][gemnasium]
+
+[travis]: http://travis-ci.org/Cheneweth/elevage
+[gemnasium]: https://gemnasium.com/Cheneweth/elevage
 
 ## Installation
 
