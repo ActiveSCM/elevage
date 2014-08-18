@@ -10,6 +10,8 @@ module Elevage
 
   MSG_HEALTH_SUCCESS = 'All platform desired state files present and consistently configured'
 
+  LIST_CMDS = %w(environments tiers pools components network vcenter compute)
+
   # Templates
   TEMPLATE_PLATFORM = 'templates/platform.yml.tt'
   TEMPLATE_VCENTER = 'templates/vcenter.yml.tt'

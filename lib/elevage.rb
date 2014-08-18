@@ -13,14 +13,25 @@ module Elevage
 
     desc 'version', DESC_VERSION
     def version
-      say VERSION
+      puts VERSION
     end
 
     desc 'list ITEM', DESC_LIST
     method_option :nodes, aliases: '-n', desc: DESC_LSIT_NODES
     def list(item)
       # error messages handled in class methods
-      @platform = Elevage::Platform.new.list_items(item, options[:nodes])
+      @platform = Elevage::Platform.new
+      if LIST_CMDS.include?(item)
+        puts @platform.send(item).to_yaml
+      else
+        fail(IOError, ERROR_MSG[:unkown_list_command]) unless File.file?(ENVIRONMENTS_FOLDER + item + '.yml')
+        environment = Elevage::Environment.new(item, @platform)
+        if options[:nodes]
+          environment.list_nodes
+        else
+          puts environment
+        end
+      end
     end
 
     desc 'health', DESC_HEALTH
