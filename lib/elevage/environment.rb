@@ -11,7 +11,7 @@ module Elevage
     attr_accessor :nodenameconvention
 
     def initialize(env, platform)
-      environment = build_environment(env, YAML.load_file(ENVIRONMENTS_FOLDER +
+      environment = build_environment(env, YAML.load_file(ENV_FOLDER +
                     env + '.yml').fetch('environment'), platform)
       @name = env
       @vcenter = environment['vcenter']
@@ -24,8 +24,8 @@ module Elevage
       @components.each do |component, _config|
         (1..@components[component]['count']).each do |i|
           puts @components[component]['addresses'][i - 1].ljust(18, ' ') +
-          node_name(component, i) + @vcenter['domain'] + '   ' +
-                   @components[component]['runlist'].to_s
+                    node_name(component, i) + @vcenter['domain'] + '   ' +
+                    @components[component]['runlist'].to_s
         end
       end
     end

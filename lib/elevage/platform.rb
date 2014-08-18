@@ -4,6 +4,7 @@ require_relative 'environment'
 module Elevage
   # Platform class
   class Platform
+    # Basic descriptors, implicit string or array of string conversions on assignment
     attr_accessor :name, :description
     attr_accessor :environments
     attr_accessor :tiers

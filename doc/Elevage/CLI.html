@@ -134,9 +134,9 @@
 
           
           <div class="method-source-code" id="health-source">
-            <pre><span class="ruby-comment"># File lib/elevage.rb, line 27</span>
+            <pre><span class="ruby-comment"># File lib/elevage.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">health</span>
-  <span class="ruby-comment"># error messages handled in class methods</span>
+  <span class="ruby-comment"># errors handled in class methods</span>
   <span class="ruby-identifier">puts</span> <span class="ruby-constant">MSG_HEALTH_SUCCESS</span> <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@platform</span> = <span class="ruby-constant">Elevage</span><span class="ruby-operator">::</span><span class="ruby-constant">Platform</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">healthy?</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -168,10 +168,21 @@
 
           
           <div class="method-source-code" id="list-source">
-            <pre><span class="ruby-comment"># File lib/elevage.rb, line 21</span>
+            <pre><span class="ruby-comment"># File lib/elevage.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">list</span>(<span class="ruby-identifier">item</span>)
-  <span class="ruby-comment"># error messages handled in class methods</span>
-  <span class="ruby-ivar">@platform</span> = <span class="ruby-constant">Elevage</span><span class="ruby-operator">::</span><span class="ruby-constant">Platform</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">list_items</span>(<span class="ruby-identifier">item</span>, <span class="ruby-identifier">options</span>[<span class="ruby-value">:nodes</span>])
+  <span class="ruby-comment"># errors handled in class methods</span>
+  <span class="ruby-ivar">@platform</span> = <span class="ruby-constant">Elevage</span><span class="ruby-operator">::</span><span class="ruby-constant">Platform</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">LIST_CMDS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">item</span>)
+    <span class="ruby-identifier">puts</span> <span class="ruby-ivar">@platform</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">item</span>).<span class="ruby-identifier">to_yaml</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">fail</span>(<span class="ruby-constant">IOError</span>, <span class="ruby-constant">ERROR_MSG</span>[<span class="ruby-value">:unkown_list_command</span>]) <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">ENV_FOLDER</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">item</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;.yml&#39;</span>)
+    <span class="ruby-identifier">environment</span> = <span class="ruby-constant">Elevage</span><span class="ruby-operator">::</span><span class="ruby-constant">Environment</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">item</span>, <span class="ruby-ivar">@platform</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:nodes</span>]
+      <span class="ruby-identifier">environment</span>.<span class="ruby-identifier">list_nodes</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-identifier">environment</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -202,9 +213,9 @@
 
           
           <div class="method-source-code" id="version-source">
-            <pre><span class="ruby-comment"># File lib/elevage.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/elevage.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">version</span>
-  <span class="ruby-identifier">say</span> <span class="ruby-constant">VERSION</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-constant">VERSION</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

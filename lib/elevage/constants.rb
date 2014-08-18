@@ -4,7 +4,7 @@ module Elevage
   DESC_VERSION = 'Display installed elevage gem version (Can also use -v)'
   DESC_NEW = 'Prepare new platform files and folder structure at current location'
   DESC_LIST = 'List ITEMs from platform desired state yml files'
-  DESC_LSIT_NODES = 'used with environment name to list node names and ip addresses'
+  DESC_LIST_NODES = 'used with environment name to list node names and ip addresses'
   DESC_HEALTH = 'Complete desired state yml files Health check'
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
@@ -23,7 +23,7 @@ module Elevage
   YML_VCENTER = 'infrastructure/vcenter.yml'
   YML_NETWORK = 'infrastructure/network.yml'
   YML_COMPUTE = 'infrastructure/compute.yml'
-  ENVIRONMENTS_FOLDER = 'environments/'
+  ENV_FOLDER = 'environments/'
 
   # error messages
   ERROR_MSG = {

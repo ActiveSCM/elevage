@@ -182,13 +182,14 @@
 
         <div class="method-description">
           
-          
+          <p>Confirm command is not being run in folder with existing platform
+definition</p>
           
           
 
           
           <div class="method-source-code" id="already_exists-3F-source">
-            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 15</span>
+            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">already_exists?</span>
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">YML_PLATFORM</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">fail</span>(<span class="ruby-constant">IOError</span>, <span class="ruby-constant">ERROR_MSG</span>[<span class="ruby-value">:platform_already_exists</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -221,7 +222,7 @@
 
           
           <div class="method-source-code" id="create_infrastructure_files-source">
-            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 23</span>
+            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_infrastructure_files</span>
   <span class="ruby-identifier">template</span>(<span class="ruby-constant">TEMPLATE_VCENTER</span>, <span class="ruby-constant">YML_VCENTER</span>)
   <span class="ruby-identifier">template</span>(<span class="ruby-constant">TEMPLATE_NETWORK</span>, <span class="ruby-constant">YML_NETWORK</span>)
@@ -250,13 +251,13 @@
 
         <div class="method-description">
           
-          
+          <p>Subtitution copy from template files</p>
           
           
 
           
           <div class="method-source-code" id="create_platform_file-source">
-            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/elevage/new.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_platform_file</span>
   <span class="ruby-identifier">template</span>(<span class="ruby-constant">TEMPLATE_PLATFORM</span>, <span class="ruby-constant">YML_PLATFORM</span>)
 <span class="ruby-keyword">end</span></pre>
