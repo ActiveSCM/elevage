@@ -12,10 +12,10 @@ module Elevage
       File.dirname(__FILE__)
     end
 
-    def already_exists?
-      if File.file?('environments' + env + '.yml')
-        fail IOError, ERROR_MSG[:environment_already_exists]
-      end
-    end
+    # def already_exists?
+    #   if File.file?(ENV_FOLDER + env + '.yml')
+    #     fail IOError, ERROR_MSG[:environment_already_exists]
+    #   end
+    # end
   end
 end

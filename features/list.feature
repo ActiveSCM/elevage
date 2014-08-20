@@ -35,6 +35,10 @@ Feature: LIST platform definition file items
           image: 'centos-6.5-x86_64-20140714'
           compute: nonprodweb
           port: 0
+          runlist:
+            - 'role[loc_uswest]'
+            - 'role[base]'
+          componentrole: 'role[aw-#]'
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
@@ -272,11 +276,11 @@ Feature: LIST platform definition file items
 
     When I run `elevage list environments`
     Then the exit status should be 0
-    And the result should contain "int\nprod"
+    And the result should contain "- int\n- prod"
 
     When I run `elevage list tiers`
     Then the exit status should be 0
-    And the result should contain "Web\nApp"
+    And the result should contain "- Web\n- App"
 
     When I run `elevage list pools`
     Then the exit status should be 0
@@ -288,13 +292,13 @@ Feature: LIST platform definition file items
 
     When I run `elevage list vcenter`
     Then the exit status should be 0
-    And the result should contain "prod:\n  geo: west\n  timezone: 085\n  host: vcwest.corp.local\n  datacenter: WCDC Prod"
+    And the result should contain "prod:\n    geo: west\n    timezone: 085\n    host: vcwest.corp.local\n    datacenter: WCDC Prod"
 
     When I run `elevage list compute`
     Then the exit status should be 0
-    And the result should contain "prodtc:\n  cpu: 2\n  ram: 32"
+    And the result should contain "prodtc:\n    cpu: 2\n    ram: 32"
 
-    When I run `elevage list networks`
+    When I run `elevage list network`
     Then the exit status should be 0
     And the result should contain "prodweb:\n  vlanid: PRD_WEB_NET"
 
