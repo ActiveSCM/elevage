@@ -6,7 +6,7 @@ Feature: creating NEW platform definition files
 
   Scenario: generating new platform
 
-    When I run `elevage new default_app`
+    When I run `elevage new app`
     Then the following files should exist:
       |platform.yml|
       |infrastructure/vcenter.yml|
@@ -15,22 +15,22 @@ Feature: creating NEW platform definition files
     And the file "platform.yml" should contain:
     """
     platform:
-      name: default_app
+      name: app
     """
     And the file "infrastructure/vcenter.yml" should contain:
     """
     vcenter:
-      name: default_app
+      name: app
     """
     And the file "infrastructure/network.yml" should contain:
     """
     network:
-      name: default_app
+      name: app
     """
     And the file "infrastructure/compute.yml" should contain:
     """
     compute:
-      name: default_app
+      name: app
     """
 
   Scenario: new platform called when platform already exists
@@ -38,8 +38,8 @@ Feature: creating NEW platform definition files
     Given a file named "platform.yml" with:
     """
     platform:
-      name: default_app
+      name: app
     """
-    When I run `elevage new default_app`
+    When I run `elevage new app`
     Then the exit status should be 1
-    And the result should contain "elevage: platform files already exist!"
+    And the output should contain "elevage: platform files already exist!"

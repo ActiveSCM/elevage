@@ -10,7 +10,10 @@ Feature: Behavior of CLI with general features and commands
     Then the exit status should be 0
     And the banner should be present
     And the following commands should be documented:
+      |health|
       |help|
+      |list|
+      |new|
       |version|
 
   Scenario: Can display gem version

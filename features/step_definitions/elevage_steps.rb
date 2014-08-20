@@ -31,9 +31,9 @@ Then(/^the output should display the version$/) do
   step %(the output should match /\\d+\\.\\d+\\.\\d+/)
 end
 
-Then(/^the result should contain "([^"]*)"$/) do |options|
-  options.split(',').map(&:strip).each do |option|
-    step %(the output should match /#{option}/)
-  end
-end
+# Then(/^the result should contain "([^"]*)"$/) do |options|
+#   options.split(',').map(&:strip).each do |option|
+#     step %(the output should match /#{option}/)
+#   end
+# end
 # rubocop:enable LineLength, StringLiterals

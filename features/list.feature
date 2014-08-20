@@ -9,8 +9,8 @@ Feature: LIST platform definition file items
     Given a file named "platform.yml" with:
     """
     platform:
-      name: default_app
-      description: 'description of the default_app'
+      name: app
+      description: 'description of the app'
 
       environments:
         - int
@@ -34,11 +34,11 @@ Feature: LIST platform definition file items
           tier: Web
           image: 'centos-6.5-x86_64-20140714'
           compute: nonprodweb
-          port: 0
+          port: 80
           runlist:
             - 'role[loc_uswest]'
             - 'role[base]'
-          componentrole: 'role[aw-#]'
+          componentrole: 'role[#]'
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
@@ -72,7 +72,7 @@ Feature: LIST platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      name: default_app
+      name: app
 
       locations:
         nonprod: &vcenter
@@ -82,7 +82,7 @@ Feature: LIST platform definition file items
           host: 'vcwest.corp.local'
           datacenter: 'WCDC NonProd'
           imagefolder: 'Corporate/Platform Services/Templates'
-          destfolder: 'Corporate/Platform Services/default_app'
+          destfolder: 'Corporate/Platform Services/app'
           resourcepool: 'App-Web Linux/Corporate'
           appendenv: true
           appenddomain: true
@@ -113,7 +113,7 @@ Feature: LIST platform definition file items
     Given a file named "infrastructure/network.yml" with:
     """
     network:
-      name: default_app
+      name: app
 
       devweb:
         vlanid: DEV_WEB_NET
@@ -138,7 +138,7 @@ Feature: LIST platform definition file items
     Given a file named "infrastructure/compute.yml" with:
     """
     compute:
-      name: default_app
+      name: app
 
       options:
         default: &default
@@ -273,45 +273,46 @@ Feature: LIST platform definition file items
                 - 10.119.161.207
     """
 
-
     When I run `elevage list environments`
     Then the exit status should be 0
-    And the result should contain "- int\n- prod"
+    And the output should contain "- int\n- prod"
 
     When I run `elevage list tiers`
     Then the exit status should be 0
-    And the result should contain "- Web\n- App"
+    And the output should contain "- Web\n- App"
 
     When I run `elevage list pools`
     Then the exit status should be 0
-    And the result should contain "appvmdefaults:\n  count: 2\n  tier: App\n  image: centos-6.5-x86_64-20140714\n  compute: nonprodapp\n  port: 0"
+    And the output should contain "appvmdefaults:\n  count: 2\n  tier: App\n  image: centos-6.5-x86_64-20140714\n  compute: nonprodapp\n  port: 80"
 
     When I run `elevage list components`
     Then the exit status should be 0
-    And the result should contain "terracotta:\n  count: 2\n  tier: Web\n  image: centos32g-6.5-x86_64-20140714\n  compute: nonprodtc\n  port: 0"
+    And the output should contain "terracotta:\n  count: 2\n  tier: Web\n  image: centos32g-6.5-x86_64-20140714\n  compute: nonprodtc\n  port: 80"
 
     When I run `elevage list vcenter`
     Then the exit status should be 0
-    And the result should contain "prod:\n    geo: west\n    timezone: 085\n    host: vcwest.corp.local\n    datacenter: WCDC Prod"
+    And the output should contain "prod:\n    geo: west\n    timezone: 085\n    host: vcwest.corp.local\n    datacenter: WCDC Prod"
 
     When I run `elevage list compute`
     Then the exit status should be 0
-    And the result should contain "prodtc:\n    cpu: 2\n    ram: 32"
+    And the output should contain "prodtc:\n    cpu: 2\n    ram: 32"
 
     When I run `elevage list network`
     Then the exit status should be 0
-    And the result should contain "prodweb:\n  vlanid: PRD_WEB_NET"
+    And the output should contain "prodweb:\n  vlanid: PRD_WEB_NET"
 
     When I run `elevage list prod`
     Then the exit status should be 0
-    And the result should contain "vlanid: PRD_WEB_NET"
-    And the result should contain "cpu: 2"
-    And the result should contain "datacenter: WCDC Prod"
+    And the output should contain "vlanid: PRD_WEB_NET"
+    And the output should contain "cpu: 2"
+    And the output should contain "datacenter: WCDC Prod"
+    And the output should contain "runlist: role[loc_uswest],role[base],role[api]"
 
     When I run `elevage list prod -n`
     Then the exit status should be 0
-    And the result should contain "prod-email-01w"
+    And the output should contain "prod-email-01w.app.corp.local"
+    And the output should contain "10.119.161.137"
 
     When I run `elevage list unknown`
     Then the exit status should be 1
-    And the result should contain "unknown LIST command"
+    And the output should contain "unknown LIST command"

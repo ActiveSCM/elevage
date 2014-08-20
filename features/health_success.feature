@@ -9,8 +9,8 @@ Feature: HEALTH check of platform definition file items
     Given a file named "platform.yml" with:
     """
     platform:
-      name: default_app
-      description: 'description of the default_app'
+      name: app
+      description: 'description of the app'
 
       environments:
         - int
@@ -34,7 +34,11 @@ Feature: HEALTH check of platform definition file items
           tier: Web
           image: 'centos-6.5-x86_64-20140714'
           compute: nonprodweb
-          port: 0
+          port: 80
+          runlist:
+            - 'role[loc_uswest]'
+            - 'role[base]'
+          componentrole: 'role[#]'
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
@@ -68,7 +72,7 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      name: default_app
+      name: app
 
       locations:
         nonprod: &vcenter
@@ -78,7 +82,7 @@ Feature: HEALTH check of platform definition file items
           host: 'vcwest.corp.local'
           datacenter: 'WCDC NonProd'
           imagefolder: 'Corporate/Platform Services/Templates'
-          destfolder: 'Corporate/Platform Services/default_app'
+          destfolder: 'Corporate/Platform Services/app'
           resourcepool: 'App-Web Linux/Corporate'
           appendenv: true
           appenddomain: true
@@ -109,7 +113,7 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/network.yml" with:
     """
     network:
-      name: default_app
+      name: app
 
       devweb:
         vlanid: DEV_WEB_NET
@@ -134,7 +138,7 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/compute.yml" with:
     """
     compute:
-      name: default_app
+      name: app
 
       options:
         default: &default
@@ -269,7 +273,6 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.161.207
     """
 
-
     When I run `elevage health`
     Then the exit status should be 0
-    And the result should contain "All platform desired state files present and consistently configured"
+    And the output should contain "All platform desired state files present and consistently configured"

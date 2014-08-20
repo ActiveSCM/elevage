@@ -29,13 +29,9 @@ module Elevage
       if LIST_CMDS.include?(item)
         puts @platform.send(item).to_yaml
       else
-        fail(IOError, ERROR_MSG[:unkown_list_command]) unless File.file?(ENV_FOLDER + item + '.yml')
+        fail(IOError, ERROR_MSG[:unknown_list_cmd]) unless File.file?(ENV_FOLDER + item + '.yml')
         environment = Elevage::Environment.new(item, @platform)
-        if options[:nodes]
-          environment.list_nodes
-        else
-          puts environment
-        end
+        puts options[:nodes] ? environment.list_nodes : environment
       end
     end
 

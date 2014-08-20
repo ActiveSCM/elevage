@@ -14,7 +14,7 @@ module Elevage
     attr_accessor :network
     attr_accessor :compute
 
-    # rubocop:disable all
+    # rubocop:disable MethodLength
     def initialize
       if platform_files_exists?
         platform = YAML.load_file(YML_PLATFORM).fetch('platform')
@@ -30,7 +30,7 @@ module Elevage
         @compute = YAML.load_file(YML_COMPUTE).fetch('compute')
       end
     end
-    # rubocop:enable all
+    # rubocop:enable MethodLength
 
     def healthy?
       # if @platform.value?('')
@@ -43,6 +43,9 @@ module Elevage
 
     private
 
+    # Private: confirms existence of the standard platform defintion files
+    #
+    # Returns true/false, results of missing_file_fail call for standard files
     def platform_files_exists?
       missing_file_fail(YML_PLATFORM, ERROR_MSG[:no_platform_file]) &&
       missing_file_fail(YML_VCENTER, ERROR_MSG[:no_vcenter_file]) &&
@@ -50,6 +53,12 @@ module Elevage
       missing_file_fail(YML_COMPUTE, ERROR_MSG[:no_compute_file])
     end
 
+    # Private: standard Ruby IOError fail based on existence of file
+    # Params
+    #   file: path/filename
+    #   msg: string, message to write to console if fail
+    #
+    # Returns true (or fails)
     def missing_file_fail(file, msg)
       fail(IOError, msg) unless File.file?(file)
       true
