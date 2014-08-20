@@ -18,6 +18,44 @@ vcenter:
   # domain        domain for fqdn of host
   # dnsips        ips of dns servers
   #
+  # Example
+  #
+  #  locations:
+  #      nonprod: &vcenter
+  #        geo: west
+  #        timezone: 085
+  #
+  #        host: 'vcwest.corp.local'
+  #        datacenter: 'WCDC NonProd'
+  #        imagefolder: 'Corporate/Platform Services/Templates'
+  #        destfolder: 'Corporate/Platform Services/app'
+  #        resourcepool: 'App-Web Linux/Corporate'
+  #        appendenv: true
+  #        appenddomain: true
+  #        datastores:
+  #          - NonProd_Cor_25
+  #          - NonProd_Cor_26
+  #          - NonProd_Cor_38
+  #          - NonProd_Cor_39
+  #
+  #        domain: dev.corp.local
+  #        dnsips:
+  #          - 10.10.10.5
+  #          - 10.10.10.6
+  #
+  #      prod:
+  #        <<: *vcenter
+  #
+  #        datacenter: 'WCDC Prod'
+  #        datastores:
+  #          - Prod_Cor_03
+  #          - Prod_Cor_04
+  #
+  #        domain: corp.local
+  #        dnsips:
+  #          - 10.20.100.5
+  #          - 10.20.100.6
+  #
   locations:
     nonprod: &default
       geo:

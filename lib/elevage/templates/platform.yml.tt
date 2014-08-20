@@ -4,10 +4,13 @@ platform:
   description: unedited platform template file
   # Environments are listed as individual yml array elements such as
   #
-  # - INT
-  # - QA
-  # - STAGE
-  # - PROD
+  # Example
+  #
+  # environments:
+  #   - INT
+  #   - QA
+  #   - STAGE
+  #   - PROD
   #
   environments:
     -
@@ -15,20 +18,32 @@ platform:
   # Tier names may be appended to vcenter resource folders. A typical platform may
   # be tiered as follows:
   #
-  # - web
-  # - app
-  # - db
+  # Example
+  #
+  # tiers:
+  #   - web
+  #   - app
+  #   - db
   #
   tiers:
     -
   # Individual node name are constructed at provision time based on the pattern
-  # you define here. Available options from the platform or environment yml keys are:
-  #
+  # you define here. Available options from the platform or environment yml keys are
   # environment
   # component
   # instance    single leading zero 0..9, up to count of component pool
   # geo         first letter of geo key value
   # 'string'    any single quoted string, escape char not evaluated
+  #
+  # Example
+  #
+  # nodenameconvention:
+  #   - environment
+  #   - '-'
+  #   - component
+  #   - instance
+  #
+  #   => "dev-api01"
   #
   nodenameconvention:
     - 'node'
@@ -36,17 +51,31 @@ platform:
   # Components are defined as part of a pool. The pool is where you assign a component
   # the following required items:
   #
-  # count     The number of components in the load balance pool
-  # tier      Which platform tier the component is built on
-  # image     The vmware image to clone for the nodes in this pool
-  # compute   Size of compute resource to assign, defined in the compute.yml file
-  # port      service comm port
+  # count           The number of components in the load balance pool
+  # tier            Which platform tier the component is built on
+  # image           The vmware image to clone for the nodes in this pool
+  # compute         Size of compute resource to assign, defined in the compute.yml file
+  # port            service comm port
+  # runlist         Chef runlist(s) for the node
+  # componentrole   optional custom role created by substituting the component name for # in the supplied string
   #
   # you may define any number of pools which may inherit based on yml default indicators.
   # Each component may share a pool definition or have a unique one.
   #
+  # Example
+  #
+  # pools:
+  #   vmdefaults: &vmdefaults
+  #     count: 4
+  #     tier: Web
+  #     image: 'centos-6.5-x86_64-20140714'
+  #     compute: dev
+  #     port: 80
+  #     runlist:
+  #       - 'role[base]'
+  #     componentrole: 'role[myapp-#]'
+  #
   pools:
-
     vmdefaults: &vmdefaults
       count:
       tier:
@@ -56,8 +85,23 @@ platform:
   # Components inherit all the key values from the assigned pool, which may be overridden
   # in addition you can define a service port number for individual service pools
   #
+  # Example
+  #
+  #   components:
+  #      api:
+  #        <<: *vmdefaults
+  #        port: 8080
+  #
+  #      cui:
+  #        <<: *vmdefaults
+  #        port: 8082
+  #
+  #      terracotta:
+  #        <<: *vmdefaults
+  #        compute: prodtc
+  #        image: 'centos32g-6.5-x86_64-20140714'
+  #
   components:
 
     component:
       <<: *vmdefaults
-
