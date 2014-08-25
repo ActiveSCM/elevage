@@ -62,7 +62,7 @@ module Elevage
       @vcenter['locations'].each do |_pool,values|
         health += HEALTH_MSG[:invalid_geo] if values['geo'].nil?
         health += HEALTH_MSG[:invalid_timezone] unless (0..159).member?(values['timezone'].to_i)
-        health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(values['host'])
+        #health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(values['host'])
         health += HEALTH_MSG[:invalid_datacenter] if values['datacenter'].nil?
         health += HEALTH_MSG[:invalid_imagefolder] if values['imagefolder'].nil?
         health += HEALTH_MSG[:invalid_destfolder] if values['destfolder'].nil?
@@ -70,7 +70,6 @@ module Elevage
         health += HEALTH_MSG[:invalid_appenddomain] unless values['appenddomain'] == true || values['appenddomain'] == false
         health += HEALTH_MSG[:empty_datastores] unless values['datastores'].all?
         health += HEALTH_MSG[:invalid_domain] if values['domain'].nil?
-        health += HEALTH_MSG[:empty_dnsips] unless values['dnsips'].all?
         values['dnsips'].each { |ip| health += HEALTH_MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip)}
       end
       health
@@ -114,9 +113,9 @@ module Elevage
     end
 
     def valid_vcenter_host?(address)
-      Net::HTTP.new(address).head('/').kind_of? Net::HTTPOK
-      # result = `ping -q -c 5 #{address}`
-      # $?.exitstatus == 0 ? true : false
+      # Net::HTTP.new(address).head('/').kind_of? Net::HTTPOK
+      result = `ping -q -c 5 #{address}`
+      $?.exitstatus == 0 ? true : false
     end
   end
 end

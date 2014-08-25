@@ -85,7 +85,7 @@ Feature: HEALTH check of platform definition file items
           geo:
           timezone: 200
 
-          host: '10.10.10.10'
+          host: 'vcwest.corp.local'
           datacenter:
           imagefolder:
           destfolder:
@@ -276,7 +276,6 @@ Feature: HEALTH check of platform definition file items
     And the output should contain "Pool Componentrole missing #"
     And the output should contain "no vCenter geo defined"
     And the output should contain "Invalid vCenter timezone"
-    And the output should contain "vCenter host not accessible"
     And the output should contain "No datacenter defined for vCenter"
     And the output should contain "No image location defined for vCenter build"
     And the output should contain "No destination folder defined for vCenter build"
@@ -284,5 +283,4 @@ Feature: HEALTH check of platform definition file items
     And the output should contain "prepend app name to domain must be true or false"
     And the output should contain "No data stores defined for vCenter build"
     And the output should contain "No domain defined for node fqdn"
-    And the output should contain "No IP's defined for DNS lookup"
     And the output should contain "Invalid IP's defined for DNS lookup"

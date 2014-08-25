@@ -9,7 +9,6 @@ module Elevage
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
-  VALID_IP = "/^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$/"
 
   MSG_HEALTH_SUCCESS = 'All platform desired state files present and consistently configured'
   HEALTH_MSG = {
@@ -33,7 +32,6 @@ module Elevage
     invalid_appenddomain: "prepend app name to domain must be true or false\n",
     empty_datastores: "No data stores defined for vCenter build\n",
     invalid_domain: "No domain defined for node fqdn\n",
-    empty_dnsips: "No IP's defined for DNS lookup\n",
     invalid_ip: "Invalid IP's defined for DNS lookup\n"
   }
 
