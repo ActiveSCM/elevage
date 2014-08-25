@@ -8,9 +8,34 @@ module Elevage
   DESC_HEALTH = 'Complete desired state yml files Health check'
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
-  MSG_HEALTH_SUCCESS = 'All platform desired state files present and consistently configured'
-
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
+  VALID_IP = "/^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$/"
+
+  MSG_HEALTH_SUCCESS = 'All platform desired state files present and consistently configured'
+  HEALTH_MSG = {
+    empty_environments: "Empty environment definitions\n",
+    empty_tiers: "Empty tier definitions\n",
+    empty_nodenameconvention: "Empty nodenameconvention definitions\n",
+    pool_count_size: "Must define 1 or more nodes in a pool\n",
+    invalid_tiers: "Pool contains invalid tier reference\n",
+    no_image_ref: "No vm image referenced in pool definition\n",
+    invalid_compute: "Pool contains invalid compute reference\n",
+    invalid_port: "Pool contains invalid port definition\n",
+    invalid_runlist: "No pool runlist definition\n",
+    invalid_componentrole: "Pool Componentrole missing #\n",
+    invalid_geo: "no vCenter geo defined\n",
+    invalid_timezone: "Invalid vCenter timezone\n",
+    invalid_host: "vCenter host not accessible\n",
+    invalid_datacenter: "No datacenter defined for vCenter\n",
+    invalid_imagefolder: "No image location defined for vCenter build\n",
+    invalid_destfolder: "No destination folder defined for vCenter build\n",
+    invalid_appendenv: "Append environment to destination folder must be true or false\n",
+    invalid_appenddomain: "prepend app name to domain must be true or false\n",
+    empty_datastores: "No data stores defined for vCenter build\n",
+    invalid_domain: "No domain defined for node fqdn\n",
+    empty_dnsips: "No IP's defined for DNS lookup\n",
+    invalid_ip: "Invalid IP's defined for DNS lookup\n"
+  }
 
   # Templates
   TEMPLATE_PLATFORM = 'templates/platform.yml.tt'
@@ -33,13 +58,8 @@ module Elevage
     no_vcenter_file: 'elevage: infastructure/vcenter.yml file not found!',
     no_network_file: 'elevage: infastructure/network.yml file not found!',
     no_compute_file: 'elevage: infastructure/compute.yml file not found!',
-    compute_platform_name_mismatch: 'elevage: compute.yml platform name does not match platform.yml',
-    vcenter_platform_name_mismatch: 'elevage: vcenter.yml platform name does not match platform.yml',
-    missing_environment_file: 'elevage: environment defined in platform.yml but not found in environments folder',
     environment_already_exists: 'elevage: environment file already exists!',
-    no_environments_defined: 'elevage: there are no environments defined in platform.yml',
-    too_many_environment_files: 'elevage: there are more environments files then ENV definitions',
-    nil_compute_values: 'elevage: compute components with empty settings'
+    fail_health_check: 'elevage: health check revealed errors'
   }
 
   MISSING_KEY = 'key not found'

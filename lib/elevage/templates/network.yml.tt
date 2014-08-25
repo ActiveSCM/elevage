@@ -8,7 +8,7 @@ network:
   #
   #  devweb:
   #    vlanid: DEV_WEB_NET
-  #    gateway: '10.10.128.1'
+  #    gateway: 10.10.128.1
   #    netmask: 19
   #
   networkname:

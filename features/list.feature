@@ -310,9 +310,14 @@ Feature: LIST platform definition file items
 
     When I run `elevage list prod -n`
     Then the exit status should be 0
-    And the output should contain "prod-email-01w.app.corp.local"
     And the output should contain "10.119.161.137"
+    And the output should contain "prod-email-01w.app.corp.local"
 
-    When I run `elevage list unknown`
+    When I run `elevage list int -n`
+    Then the exit status should be 0
+    And the output should contain "10.10.161.53"
+    And the output should contain "int-email-01w.app.dev.corp.local"
+
+    When I run `elevage list random`
     Then the exit status should be 1
     And the output should contain "unknown LIST command"

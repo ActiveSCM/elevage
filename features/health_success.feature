@@ -79,7 +79,7 @@ Feature: HEALTH check of platform definition file items
           geo: west
           timezone: 085
 
-          host: 'vcwest.corp.local'
+          host: 'www.google.com'
           datacenter: 'WCDC NonProd'
           imagefolder: 'Corporate/Platform Services/Templates'
           destfolder: 'Corporate/Platform Services/app'

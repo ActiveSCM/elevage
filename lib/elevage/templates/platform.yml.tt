@@ -1,7 +1,7 @@
 ? "%YAML 1.2"
 platform:
   name: <%= platform.downcase %>
-  description: unedited platform template file
+  description: platform desired state definition files
   # Environments are listed as individual yml array elements such as
   #
   # Example
@@ -82,6 +82,9 @@ platform:
       image:
       compute:
       port:
+      runlist:
+        -
+      componentrole: false
   # Components inherit all the key values from the assigned pool, which may be overridden
   # in addition you can define a service port number for individual service pools
   #

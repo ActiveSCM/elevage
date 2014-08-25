@@ -38,7 +38,11 @@ module Elevage
     desc 'health', DESC_HEALTH
     def health
       # errors handled in class methods
-      puts MSG_HEALTH_SUCCESS if (@platform = Elevage::Platform.new.healthy?)
+      if Elevage::Platform.new.healthy?
+        puts MSG_HEALTH_SUCCESS
+      else
+        fail(IOError, ERROR_MSG[:fail_health_check])
+      end
     end
 
     # subcommand in Thor called as registered classes
