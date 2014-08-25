@@ -1,5 +1,6 @@
 require 'yaml'
 require 'resolv'
+require 'English'
 require_relative 'environment'
 
 module Elevage
@@ -41,6 +42,7 @@ module Elevage
       health += HEALTH_MSG[:empty_nodenameconvention] unless @environments.all?
       health += health_pools
       health += health_vcenter
+      health += health_network
       # Hash
       # puts @vcenter.class
       # puts @network.class
@@ -57,12 +59,21 @@ module Elevage
 
     private
 
+    def health_network
+      health = ''
+      @network.each do |_pool, values|
+        health += HEALTH_MSG[:empty_network_definitions] if values.values.any? { |i| i.nil? }
+      end
+      health
+    end
+
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
     def health_vcenter
       health = ''
-      @vcenter['locations'].each do |_pool,values|
+      @vcenter.each do |_pool, values|
         health += HEALTH_MSG[:invalid_geo] if values['geo'].nil?
         health += HEALTH_MSG[:invalid_timezone] unless (0..159).member?(values['timezone'].to_i)
-        #health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(values['host'])
+        health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(values['host'])
         health += HEALTH_MSG[:invalid_datacenter] if values['datacenter'].nil?
         health += HEALTH_MSG[:invalid_imagefolder] if values['imagefolder'].nil?
         health += HEALTH_MSG[:invalid_destfolder] if values['destfolder'].nil?
@@ -70,10 +81,11 @@ module Elevage
         health += HEALTH_MSG[:invalid_appenddomain] unless values['appenddomain'] == true || values['appenddomain'] == false
         health += HEALTH_MSG[:empty_datastores] unless values['datastores'].all?
         health += HEALTH_MSG[:invalid_domain] if values['domain'].nil?
-        values['dnsips'].each { |ip| health += HEALTH_MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip)}
+        values['dnsips'].each { |ip| health += HEALTH_MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
       end
       health
     end
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
     # rubocop:disable all
     def health_pools
@@ -82,7 +94,7 @@ module Elevage
         health += HEALTH_MSG[:pool_count_size] if values['count'].nil?
         health += HEALTH_MSG[:invalid_tiers] unless @tiers.include?(values['tier'])
         health += HEALTH_MSG[:no_image_ref] if values['image'].nil?
-        health += HEALTH_MSG[:invalid_compute] unless @compute['options'].key?(values['compute'])
+        health += HEALTH_MSG[:invalid_compute] unless @compute.key?(values['compute'])
         health += HEALTH_MSG[:invalid_port] if values['port'].nil?
         health += HEALTH_MSG[:invalid_runlist] unless values['runlist'].all?
         health += HEALTH_MSG[:invalid_componentrole] unless values['componentrole'].include?('#') if values['componentrole']
@@ -112,10 +124,15 @@ module Elevage
       true
     end
 
+    # Private: given a url or ip check for access
+    #
+    # Returns true/false based on simple ping check
+    #   -would like to switch this to http or https based health check since
+    #   actually need to confirm health for API access
     def valid_vcenter_host?(address)
       # Net::HTTP.new(address).head('/').kind_of? Net::HTTPOK
-      result = `ping -q -c 5 #{address}`
-      $?.exitstatus == 0 ? true : false
+      _result = `ping -q -c 3 #{address}`
+      $CHILD_STATUS.exitstatus == 0 ? true : false
     end
   end
 end

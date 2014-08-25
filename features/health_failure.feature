@@ -78,32 +78,27 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      name: app
+      prod: &vcenter
+        geo:
+        timezone: 200
 
-      locations:
-        prod: &vcenter
-          geo:
-          timezone: 200
+        host: 'vcwest.corp.local'
+        datacenter:
+        imagefolder:
+        destfolder:
+        resourcepool:
+        appendenv: incorrect
+        appenddomain:
+        datastores:
+          -
 
-          host: 'vcwest.corp.local'
-          datacenter:
-          imagefolder:
-          destfolder:
-          resourcepool:
-          appendenv: incorrect
-          appenddomain:
-          datastores:
-            -
-
-          domain:
-          dnsips:
-            -
+        domain:
+        dnsips:
+          -
     """
     Given a file named "infrastructure/network.yml" with:
     """
-    network:
-      name: app
-
+  network:
       devweb:
         vlanid: DEV_WEB_NET
         gateway: '10.10.128.1'
@@ -127,44 +122,41 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/compute.yml" with:
     """
     compute:
-      name: app
+      default: &default
+        cpu: 2
+        ram: 2
 
-      options:
-        default: &default
-          cpu: 2
-          ram: 2
+      nonprodweb:
+        <<: *default
 
-        nonprodweb:
-          <<: *default
+      nonprodapp:
+        <<: *default
+        ram: 6
 
-        nonprodapp:
-          <<: *default
-          ram: 6
+      nonprodtc:
+        <<: *default
+        ram: 8
 
-        nonprodtc:
-          <<: *default
-          ram: 8
+      nonprodmq:
+        <<: *default
+        ram: 12
 
-        nonprodmq:
-          <<: *default
-          ram: 12
+      prodweb:
+        <<: *default
+        ram: 6
 
-        prodweb:
-          <<: *default
-          ram: 6
+      prodapp:
+        <<: *default
+        ram: 6
 
-        prodapp:
-          <<: *default
-          ram: 6
+      prodtc:
+        <<: *default
+        ram: 32
 
-        prodtc:
-          <<: *default
-          ram: 32
-
-        prodmq:
-          <<: *default
-          cpu: 8
-          ram: 32
+      prodmq:
+        <<: *default
+        cpu: 8
+        ram: 32
     """
     Given a file named "environments/int.yml" with:
     """

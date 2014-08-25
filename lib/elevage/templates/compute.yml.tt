@@ -1,12 +1,10 @@
 ? "%YAML 1.2"
 compute:
-  name: <%= platform.downcase %>
   # The compute name is used to specify the compute resources used in the provsion of the component node.
   # Currently available options are cpu and ram. Ram is an integer value representing Gb.
   #
   # Example:
   #
-  # options:
   #   dev:
   #     cpu: 2
   #     ram: 1
@@ -15,7 +13,6 @@ compute:
   #     cpu: 2
   #     ram: 12
   #
-  options:
-    default: &default
-      cpu:
-      ram:
+  default: &default
+    cpu:
+    ram:

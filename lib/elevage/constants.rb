@@ -32,7 +32,8 @@ module Elevage
     invalid_appenddomain: "prepend app name to domain must be true or false\n",
     empty_datastores: "No data stores defined for vCenter build\n",
     invalid_domain: "No domain defined for node fqdn\n",
-    invalid_ip: "Invalid IP's defined for DNS lookup\n"
+    invalid_ip: "Invalid IP's defined for DNS lookup\n",
+    empty_network_definitions: "Empty Network defintions\n"
   }
 
   # Templates

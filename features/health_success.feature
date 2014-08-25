@@ -72,49 +72,44 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      name: app
+      nonprod: &vcenter
+        geo: west
+        timezone: 085
 
-      locations:
-        nonprod: &vcenter
-          geo: west
-          timezone: 085
+        host: 'www.google.com'
+        datacenter: 'WCDC NonProd'
+        imagefolder: 'Corporate/Platform Services/Templates'
+        destfolder: 'Corporate/Platform Services/app'
+        resourcepool: 'App-Web Linux/Corporate'
+        appendenv: true
+        appenddomain: true
+        datastores:
+          - NonProd_Cor_25
+          - NonProd_Cor_26
+          - NonProd_Cor_38
+          - NonProd_Cor_39
 
-          host: 'www.google.com'
-          datacenter: 'WCDC NonProd'
-          imagefolder: 'Corporate/Platform Services/Templates'
-          destfolder: 'Corporate/Platform Services/app'
-          resourcepool: 'App-Web Linux/Corporate'
-          appendenv: true
-          appenddomain: true
-          datastores:
-            - NonProd_Cor_25
-            - NonProd_Cor_26
-            - NonProd_Cor_38
-            - NonProd_Cor_39
+        domain: dev.corp.local
+        dnsips:
+          - 10.10.10.5
+          - 10.10.10.6
 
-          domain: dev.corp.local
-          dnsips:
-            - 10.10.10.5
-            - 10.10.10.6
+      prod:
+        <<: *vcenter
 
-        prod:
-          <<: *vcenter
+        datacenter: 'WCDC Prod'
+        datastores:
+          - Prod_Cor_03
+          - Prod_Cor_04
 
-          datacenter: 'WCDC Prod'
-          datastores:
-            - Prod_Cor_03
-            - Prod_Cor_04
-
-          domain: corp.local
-          dnsips:
-            - 10.20.100.5
-            - 10.20.100.6
+        domain: corp.local
+        dnsips:
+          - 10.20.100.5
+          - 10.20.100.6
     """
     Given a file named "infrastructure/network.yml" with:
     """
-    network:
-      name: app
-
+  network:
       devweb:
         vlanid: DEV_WEB_NET
         gateway: '10.10.128.1'
@@ -138,44 +133,41 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/compute.yml" with:
     """
     compute:
-      name: app
+      default: &default
+        cpu: 2
+        ram: 2
 
-      options:
-        default: &default
-          cpu: 2
-          ram: 2
+      nonprodweb:
+        <<: *default
 
-        nonprodweb:
-          <<: *default
+      nonprodapp:
+        <<: *default
+        ram: 6
 
-        nonprodapp:
-          <<: *default
-          ram: 6
+      nonprodtc:
+        <<: *default
+        ram: 8
 
-        nonprodtc:
-          <<: *default
-          ram: 8
+      nonprodmq:
+        <<: *default
+        ram: 12
 
-        nonprodmq:
-          <<: *default
-          ram: 12
+      prodweb:
+        <<: *default
+        ram: 6
 
-        prodweb:
-          <<: *default
-          ram: 6
+      prodapp:
+        <<: *default
+        ram: 6
 
-        prodapp:
-          <<: *default
-          ram: 6
+      prodtc:
+        <<: *default
+        ram: 32
 
-        prodtc:
-          <<: *default
-          ram: 32
-
-        prodmq:
-          <<: *default
-          cpu: 8
-          ram: 32
+      prodmq:
+        <<: *default
+        cpu: 8
+        ram: 32
     """
     Given a file named "environments/int.yml" with:
     """

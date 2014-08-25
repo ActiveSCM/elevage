@@ -20,17 +20,14 @@ Feature: creating NEW platform definition files
     And the file "infrastructure/vcenter.yml" should contain:
     """
     vcenter:
-      name: app
     """
     And the file "infrastructure/network.yml" should contain:
     """
     network:
-      name: app
     """
     And the file "infrastructure/compute.yml" should contain:
     """
     compute:
-      name: app
     """
 
   Scenario: new platform called when platform already exists

@@ -60,7 +60,7 @@ module Elevage
     # rubocop:disable MethodLength, LineLength
     def build_environment(env, env_yaml, platform)
       # substitute vcenter resources from vcenter.yml for location defined in environment file
-      env_yaml['vcenter'] = platform.vcenter['locations'][env_yaml['vcenter']]
+      env_yaml['vcenter'] = platform.vcenter[env_yaml['vcenter']]
       # merge component resources from environment file and platform definition
       # platform info will be inserted where not found in env files, env overrides will be unchanged
       #
@@ -74,7 +74,7 @@ module Elevage
       # substitute network and components for specified values from platform definition files
       env_yaml['components'].each do |component, _config|
         env_yaml['components'][component]['network'] = platform.network[env_yaml['components'][component]['network']]
-        env_yaml['components'][component]['compute'] = platform.compute['options'][env_yaml['components'][component]['compute']]
+        env_yaml['components'][component]['compute'] = platform.compute[env_yaml['components'][component]['compute']]
         env_yaml['components'][component]['runlist'] = run_list(env_yaml['components'][component]['runlist'], env_yaml['components'][component]['componentrole'], component)
       end
       # append env name to destination folder if appendenv == true
