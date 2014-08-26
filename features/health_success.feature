@@ -267,4 +267,4 @@ Feature: HEALTH check of platform definition file items
 
     When I run `elevage health`
     Then the exit status should be 0
-    And the output should contain "All platform desired state files present and consistently configured"
+    And the output should contain "All base platform desired state files created and syntactically correct"

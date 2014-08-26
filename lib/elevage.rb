@@ -41,12 +41,6 @@ module Elevage
       # errors handled in class methods
       platform = Elevage::Platform.new
       if options[:environments]
-        if platform.healthy?
-          puts MSG_HEALTH_SUCCESS
-        else
-          fail(IOError, ERROR_MSG[:fail_health_check])
-        end
-      else
         platform.environments.each do |env|
           if Elevage::Environment.new(env, platform).healthy?
             puts env + MSG_ENV_HEALTH_SUCCESS
@@ -54,6 +48,12 @@ module Elevage
             fail(IOError, ERROR_MSG[:fail_health_check])
           end
           #check for extra files
+        end
+      else
+        if platform.healthy?
+          puts MSG_HEALTH_SUCCESS
+        else
+          fail(IOError, ERROR_MSG[:fail_health_check])
         end
       end
     end
