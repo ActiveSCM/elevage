@@ -39,17 +39,9 @@ module Elevage
       health = ''
       health += HEALTH_MSG[:empty_environments] unless @environments.all?
       health += HEALTH_MSG[:empty_tiers] unless @tiers.all?
-      health += HEALTH_MSG[:empty_nodenameconvention] unless @environments.all?
-      health += health_pools
-      health += health_vcenter
-      health += health_network
-      # Hash
-      # puts @vcenter.class
-      # puts @network.class
-      # puts @compute.class
+      health += health_nodename + health_pools + health_vcenter + health_network + health_compute
       if health.length > 0
-        puts health
-        puts "\n#{health.lines.count} offense(s) detected"
+        puts health + "\n#{health.lines.count} platform offense(s) detected"
         false
       else
         true
@@ -59,10 +51,26 @@ module Elevage
 
     private
 
+    def health_nodename
+      health = ''
+      health += HEALTH_MSG[:empty_nodenameconvention] unless @nodenameconvention.all?
+      health
+    end
+
+    def health_compute
+      health = ''
+      @compute.each do |_compute, v|
+        health += HEALTH_MSG[:Invalid_cpu_settings] unless (0..CPU_LIMIT).member?(v['cpu'])
+        health += HEALTH_MSG[:Invalid_ram_settings] unless (0..RAM_LIMIT).member?(v['ram'])
+      end
+      health
+    end
+
     def health_network
       health = ''
-      @network.each do |_pool, values|
-        health += HEALTH_MSG[:empty_network_definitions] if values.values.any? { |i| i.nil? }
+      @network.each do |_network, v|
+        health += HEALTH_MSG[:empty_network_definitions] if v.values.any? { |i| i.nil? }
+        health += HEALTH_MSG[:invalid_gateway] unless Resolv::IPv4::Regex.match(v['gateway'])
       end
       health
     end
@@ -70,18 +78,18 @@ module Elevage
     # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
     def health_vcenter
       health = ''
-      @vcenter.each do |_pool, values|
-        health += HEALTH_MSG[:invalid_geo] if values['geo'].nil?
-        health += HEALTH_MSG[:invalid_timezone] unless (0..159).member?(values['timezone'].to_i)
-        health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(values['host'])
-        health += HEALTH_MSG[:invalid_datacenter] if values['datacenter'].nil?
-        health += HEALTH_MSG[:invalid_imagefolder] if values['imagefolder'].nil?
-        health += HEALTH_MSG[:invalid_destfolder] if values['destfolder'].nil?
-        health += HEALTH_MSG[:invalid_appendenv] unless values['appendenv'] == true || values['appendenv'] == false
-        health += HEALTH_MSG[:invalid_appenddomain] unless values['appenddomain'] == true || values['appenddomain'] == false
-        health += HEALTH_MSG[:empty_datastores] unless values['datastores'].all?
-        health += HEALTH_MSG[:invalid_domain] if values['domain'].nil?
-        values['dnsips'].each { |ip| health += HEALTH_MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
+      @vcenter.each do |_vcenter, v|
+        health += HEALTH_MSG[:invalid_geo] if v['geo'].nil?
+        health += HEALTH_MSG[:invalid_timezone] unless (0..TIMEZONE_LIMIT).member?(v['timezone'].to_i)
+        health += HEALTH_MSG[:invalid_host] unless valid_vcenter_host?(v['host'])
+        health += HEALTH_MSG[:invalid_datacenter] if v['datacenter'].nil?
+        health += HEALTH_MSG[:invalid_imagefolder] if v['imagefolder'].nil?
+        health += HEALTH_MSG[:invalid_destfolder] if v['destfolder'].nil?
+        health += HEALTH_MSG[:invalid_appendenv] unless v['appendenv'] == true || v['appendenv'] == false
+        health += HEALTH_MSG[:invalid_appenddomain] unless v['appenddomain'] == true || v['appenddomain'] == false
+        health += HEALTH_MSG[:empty_datastores] unless v['datastores'].all?
+        health += HEALTH_MSG[:invalid_domain] if v['domain'].nil?
+        v['dnsips'].each { |ip| health += HEALTH_MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
       end
       health
     end
@@ -90,14 +98,14 @@ module Elevage
     # rubocop:disable all
     def health_pools
       health = ''
-      @pools.each do |_pool, values|
-        health += HEALTH_MSG[:pool_count_size] if values['count'].nil?
-        health += HEALTH_MSG[:invalid_tiers] unless @tiers.include?(values['tier'])
-        health += HEALTH_MSG[:no_image_ref] if values['image'].nil?
-        health += HEALTH_MSG[:invalid_compute] unless @compute.key?(values['compute'])
-        health += HEALTH_MSG[:invalid_port] if values['port'].nil?
-        health += HEALTH_MSG[:invalid_runlist] unless values['runlist'].all?
-        health += HEALTH_MSG[:invalid_componentrole] unless values['componentrole'].include?('#') if values['componentrole']
+      @pools.each do |_pool, v|
+        health += HEALTH_MSG[:pool_count_size] if v['count'].nil?
+        health += HEALTH_MSG[:invalid_tiers] unless @tiers.include?(v['tier'])
+        health += HEALTH_MSG[:no_image_ref] if v['image'].nil?
+        health += HEALTH_MSG[:invalid_compute] unless @compute.key?(v['compute'])
+        health += HEALTH_MSG[:invalid_port] if v['port'].nil?
+        health += HEALTH_MSG[:invalid_runlist] unless v['runlist'].all?
+        health += HEALTH_MSG[:invalid_componentrole] unless v['componentrole'].include?('#') if v['componentrole']
       end
       health
     end

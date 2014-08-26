@@ -112,22 +112,22 @@ Feature: HEALTH check of platform definition file items
   network:
       devweb:
         vlanid: DEV_WEB_NET
-        gateway: '10.10.128.1'
+        gateway: 10.10.128.1
         netmask: 19
 
       devapp:
         vlanid: DEV_APP_NET
-        gateway: '10.10.160.1'
+        gateway: 10.10.160.1
         netmask: 20
 
       prodweb:
         vlanid: PRD_WEB_NET
-        gateway: '10.119.128.1'
+        gateway: 10.119.128.1
         netmask: 19
 
       prodapp:
         vlanid: PRD_APP_NET
-        gateway: '10.119.160.1'
+        gateway: 10.119.160.1
         netmask: 20
     """
     Given a file named "infrastructure/compute.yml" with:

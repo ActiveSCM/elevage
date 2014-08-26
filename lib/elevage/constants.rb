@@ -5,12 +5,17 @@ module Elevage
   DESC_NEW = 'Prepare new platform files and folder structure at current location'
   DESC_LIST = 'List ITEMs from platform desired state yml files'
   DESC_LIST_NODES = 'used with environment name to list node names and ip addresses'
-  DESC_HEALTH = 'Complete desired state yml files Health check'
+  DESC_HEALTH = 'Health check of the Platform base desired state yml files'
+  DESC_HEALTH_ENV = 'Health check of Environments defined within the platform definition'
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
+  TIMEZONE_LIMIT = 159
+  CPU_LIMIT = 16
+  RAM_LIMIT = 128
 
-  MSG_HEALTH_SUCCESS = 'All platform desired state files present and consistently configured'
+  MSG_HEALTH_SUCCESS = 'All base platform desired state files created and syntactically correct'
+  MSG_ENV_HEALTH_SUCCESS = ' specific definition yml created and syntactically correct'
   HEALTH_MSG = {
     empty_environments: "Empty environment definitions\n",
     empty_tiers: "Empty tier definitions\n",
@@ -33,7 +38,10 @@ module Elevage
     empty_datastores: "No data stores defined for vCenter build\n",
     invalid_domain: "No domain defined for node fqdn\n",
     invalid_ip: "Invalid IP's defined for DNS lookup\n",
-    empty_network_definitions: "Empty Network defintions\n"
+    empty_network_definitions: "Empty Network defintions\n",
+    invalid_gateway: "Invalid gateway defined in network\n",
+    Invalid_cpu_settings: "Invalid compute cpu settings\n",
+    Invalid_ram_settings: "Invalid compute ram settings\n"
   }
 
   # Templates
@@ -60,7 +68,5 @@ module Elevage
     environment_already_exists: 'elevage: environment file already exists!',
     fail_health_check: 'elevage: health check revealed errors'
   }
-
-  MISSING_KEY = 'key not found'
 end
 # rubocop:enable LineLength, StringLiterals

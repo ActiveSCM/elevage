@@ -101,22 +101,22 @@ Feature: HEALTH check of platform definition file items
   network:
       devweb:
         vlanid: DEV_WEB_NET
-        gateway: '10.10.128.1'
+        gateway: 999.10.128.1
         netmask: 19
 
       devapp:
         vlanid: DEV_APP_NET
-        gateway: '10.10.160.1'
+        gateway: 10.10.160.1
         netmask: 20
 
       prodweb:
         vlanid: PRD_WEB_NET
-        gateway: '10.119.128.1'
+        gateway: 10.119.128.1
         netmask: 19
 
       prodapp:
         vlanid: PRD_APP_NET
-        gateway: '10.119.160.1'
+        gateway: 10.119.160.1
         netmask: 20
     """
     Given a file named "infrastructure/compute.yml" with:
@@ -155,8 +155,8 @@ Feature: HEALTH check of platform definition file items
 
       prodmq:
         <<: *default
-        cpu: 8
-        ram: 32
+        cpu: 99
+        ram: 999
     """
     Given a file named "environments/int.yml" with:
     """
@@ -276,3 +276,6 @@ Feature: HEALTH check of platform definition file items
     And the output should contain "No data stores defined for vCenter build"
     And the output should contain "No domain defined for node fqdn"
     And the output should contain "Invalid IP's defined for DNS lookup"
+    And the output should contain "Invalid gateway defined in network"
+    And the output should contain "Invalid compute cpu settings"
+    And the output should contain "Invalid compute ram settings"

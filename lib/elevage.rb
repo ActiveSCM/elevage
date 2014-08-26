@@ -36,12 +36,25 @@ module Elevage
     end
 
     desc 'health', DESC_HEALTH
+    method_option :environments, aliases: '-e', desc: DESC_HEALTH_ENV
     def health
       # errors handled in class methods
-      if Elevage::Platform.new.healthy?
-        puts MSG_HEALTH_SUCCESS
+      platform = Elevage::Platform.new
+      if options[:environments]
+        if platform.healthy?
+          puts MSG_HEALTH_SUCCESS
+        else
+          fail(IOError, ERROR_MSG[:fail_health_check])
+        end
       else
-        fail(IOError, ERROR_MSG[:fail_health_check])
+        platform.environments.each do |env|
+          if Elevage::Environment.new(env, platform).healthy?
+            puts env + MSG_ENV_HEALTH_SUCCESS
+          else
+            fail(IOError, ERROR_MSG[:fail_health_check])
+          end
+          #check for extra files
+        end
       end
     end
 

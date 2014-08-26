@@ -39,6 +39,17 @@ module Elevage
       nodes
     end
 
+    def healthy?
+      health = ''
+      if health.length > 0
+        puts health + "\n#{health.lines.count} environment offense(s) detected"
+        false
+      else
+        true
+      end
+
+    end
+
     # Public: basic class puts string output
     def to_s
       puts @name
