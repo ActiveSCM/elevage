@@ -1,7 +1,6 @@
 require 'yaml'
 require 'resolv'
 require 'English'
-require_relative 'environment'
 
 module Elevage
   # Platform class
@@ -39,7 +38,8 @@ module Elevage
       health = ''
       health += HEALTH_MSG[:empty_environments] unless @environments.all?
       health += HEALTH_MSG[:empty_tiers] unless @tiers.all?
-      health += health_nodename + health_pools + health_vcenter + health_network + health_compute
+      health += HEALTH_MSG[:empty_nodenameconvention] unless @nodenameconvention.all?
+      health += health_pools + health_vcenter + health_network + health_compute
       if health.length > 0
         puts health + "\n#{health.lines.count} platform offense(s) detected"
         false
@@ -51,17 +51,11 @@ module Elevage
 
     private
 
-    def health_nodename
-      health = ''
-      health += HEALTH_MSG[:empty_nodenameconvention] unless @nodenameconvention.all?
-      health
-    end
-
     def health_compute
       health = ''
       @compute.each do |_compute, v|
-        health += HEALTH_MSG[:Invalid_cpu_settings] unless (0..CPU_LIMIT).member?(v['cpu'])
-        health += HEALTH_MSG[:Invalid_ram_settings] unless (0..RAM_LIMIT).member?(v['ram'])
+        health += HEALTH_MSG[:invalid_cpu_settings] unless (0..CPU_LIMIT).member?(v['cpu'])
+        health += HEALTH_MSG[:invalid_ram_settings] unless (0..RAM_LIMIT).member?(v['ram'])
       end
       health
     end
@@ -95,11 +89,11 @@ module Elevage
     end
     # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
-    # rubocop:disable all
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
     def health_pools
       health = ''
       @pools.each do |_pool, v|
-        health += HEALTH_MSG[:pool_count_size] if v['count'].nil?
+        health += HEALTH_MSG[:pool_count_size] unless (0..POOL_LIMIT).member?(v['count'])
         health += HEALTH_MSG[:invalid_tiers] unless @tiers.include?(v['tier'])
         health += HEALTH_MSG[:no_image_ref] if v['image'].nil?
         health += HEALTH_MSG[:invalid_compute] unless @compute.key?(v['compute'])
@@ -109,26 +103,15 @@ module Elevage
       end
       health
     end
-    # rubocop:enable all
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
     # Private: confirms existence of the standard platform defintion files
-    #
-    # Returns true/false, results of missing_file_fail call for standard files
+    # Returns true if all standard files present
     def platform_files_exists?
-      missing_file_fail(YML_PLATFORM, ERROR_MSG[:no_platform_file]) &&
-      missing_file_fail(YML_VCENTER, ERROR_MSG[:no_vcenter_file]) &&
-      missing_file_fail(YML_NETWORK, ERROR_MSG[:no_network_file]) &&
-      missing_file_fail(YML_COMPUTE, ERROR_MSG[:no_compute_file])
-    end
-
-    # Private: standard Ruby IOError fail based on existence of file
-    # Params
-    #   file: path/filename
-    #   msg: string, message to write to console if fail
-    #
-    # Returns true (or fails)
-    def missing_file_fail(file, msg)
-      fail(IOError, msg) unless File.file?(file)
+      fail(IOError, ERROR_MSG[:no_platform_file]) unless File.file?(YML_PLATFORM)
+      fail(IOError, ERROR_MSG[:no_vcenter_file]) unless File.file?(YML_VCENTER)
+      fail(IOError, ERROR_MSG[:no_network_file]) unless File.file?(YML_NETWORK)
+      fail(IOError, ERROR_MSG[:no_compute_file]) unless File.file?(YML_COMPUTE)
       true
     end
 

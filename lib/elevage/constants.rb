@@ -5,17 +5,17 @@ module Elevage
   DESC_NEW = 'Prepare new platform files and folder structure at current location'
   DESC_LIST = 'List ITEMs from platform desired state yml files'
   DESC_LIST_NODES = 'used with environment name to list node names and ip addresses'
-  DESC_HEALTH = 'Health check of the Platform base desired state yml files'
-  DESC_HEALTH_ENV = 'Health check of Environments defined within the platform definition'
+  DESC_HEALTH = 'Health check of the Platform desired state yml files'
   DESC_GENERATE = 'Generate new environment files based on platform template'
 
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
   TIMEZONE_LIMIT = 159
   CPU_LIMIT = 16
   RAM_LIMIT = 128
+  POOL_LIMIT = 256
 
   MSG_HEALTH_SUCCESS = 'All base platform desired state files created and syntactically correct'
-  MSG_ENV_HEALTH_SUCCESS = ' specific definition yml created and syntactically correct'
+  MSG_ENV_HEALTH_SUCCESS = ' specific definition yml syntactically correct'
   HEALTH_MSG = {
     empty_environments: "Empty environment definitions\n",
     empty_tiers: "Empty tier definitions\n",
@@ -40,8 +40,19 @@ module Elevage
     invalid_ip: "Invalid IP's defined for DNS lookup\n",
     empty_network_definitions: "Empty Network defintions\n",
     invalid_gateway: "Invalid gateway defined in network\n",
-    Invalid_cpu_settings: "Invalid compute cpu settings\n",
-    Invalid_ram_settings: "Invalid compute ram settings\n"
+    invalid_cpu_settings: "Invalid compute cpu settings\n",
+    invalid_ram_settings: "Invalid compute ram settings\n",
+    invalid_env_vcenter: "Environment contains invalid vcenter definition\n",
+    invalid_env_network: "Environment contains invalid network definition\n",
+    invalid_env_count: "Environment contains invalid number of nodes in pool\n",
+    invalid_env_compute: "Environment component pool contains invalid compute definition\n",
+    invalid_env_ip: "Environment component pool contains invalid or missing ip address definition\n",
+    invalid_env_tier: "Environment component pool contains invalid tier definition\n",
+    invalid_env_image: "Environment component pool contains invalid image definition\n",
+    invalid_env_port: "Environment component pool contains invalid port definition\n",
+    invalid_env_runlist: "Environment component pool contains invalid runlist specification\n",
+    invalid_env_componentrole: "Environment component pool contains invalid componentrole definition\n",
+    env_component_mismatch: "Environment components do not match platform definition\n"
   }
 
   # Templates
@@ -66,7 +77,9 @@ module Elevage
     no_network_file: 'elevage: infastructure/network.yml file not found!',
     no_compute_file: 'elevage: infastructure/compute.yml file not found!',
     environment_already_exists: 'elevage: environment file already exists!',
-    fail_health_check: 'elevage: health check revealed errors'
+    no_environment_file: 'elevage: Environment file in platform.yml not found',
+    fail_health_check: 'elevage: health check revealed errors',
+    environment_not_defined: 'elevage: environment file not defined in platform'
   }
 end
 # rubocop:enable LineLength, StringLiterals

@@ -1,10 +1,11 @@
-Feature: HEALTH check of erroneous platform definition file items
+Feature: HEALTH check of erroneous environment-only definition file items
 
   As an Infracoder developing a command line tool
   I want to be able to diagnose the syntactical health of the standard platform definition and environment definition yml files
   In order to maintain the health of the elevage platform definition files
 
   Scenario: check health of standard desired state items
+
 
     Given a file named "platform.yml" with:
     """
@@ -13,11 +14,11 @@ Feature: HEALTH check of erroneous platform definition file items
       description: 'description of the app'
 
       environments:
-        -
+        - int
         - prod
 
       tiers:
-        -
+        - Web
         - App
 
       nodenameconvention:
@@ -25,7 +26,7 @@ Feature: HEALTH check of erroneous platform definition file items
         - '-'
         - component
         - '-'
-        -
+        - instance
         - geo
 
       pools:
@@ -42,14 +43,8 @@ Feature: HEALTH check of erroneous platform definition file items
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
-          count:
-          tier:
-          image:
-          port:
-          runlist:
-            -
-          componentrole: 'role[unknown]'
-          compute: unknown
+          tier: App
+          compute: nonprodapp
 
       components:
         api:
@@ -78,30 +73,47 @@ Feature: HEALTH check of erroneous platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      prod: &vcenter
-        geo:
-        timezone: 200
+      nonprod: &vcenter
+        geo: west
+        timezone: 085
 
-        host: 'vcwest.corp.local'
-        datacenter:
-        imagefolder:
-        destfolder:
-        resourcepool:
-        appendenv: incorrect
-        appenddomain:
+        host: 'www.google.com'
+        datacenter: 'WCDC NonProd'
+        imagefolder: 'Corporate/Platform Services/Templates'
+        destfolder: 'Corporate/Platform Services/app'
+        resourcepool: 'App-Web Linux/Corporate'
+        appendenv: true
+        appenddomain: true
         datastores:
-          -
+          - NonProd_Cor_25
+          - NonProd_Cor_26
+          - NonProd_Cor_38
+          - NonProd_Cor_39
 
-        domain:
+        domain: dev.corp.local
         dnsips:
-          -
+          - 10.10.10.5
+          - 10.10.10.6
+
+      prod:
+        <<: *vcenter
+
+        datacenter: 'WCDC Prod'
+        datastores:
+          - Prod_Cor_03
+          - Prod_Cor_04
+
+        domain: corp.local
+        dnsips:
+          - 10.20.100.5
+          - 10.20.100.6
     """
     Given a file named "infrastructure/network.yml" with:
     """
   network:
       devweb:
         vlanid: DEV_WEB_NET
-        gateway: 999.10.128.1
+        gateway: 10.10.128.1
         netmask: 19
 
       devapp:
@@ -155,8 +167,8 @@ Feature: HEALTH check of erroneous platform definition file items
 
       prodmq:
         <<: *default
-        cpu: 99
-        ram: 999
+        cpu: 8
+        ram: 32
     """
     Given a file named "environments/int.yml" with:
     """
@@ -166,12 +178,10 @@ Feature: HEALTH check of erroneous platform definition file items
       pool:
         webvmdefaults: &webvmdefaults
             network: devweb
-            compute: nonprodweb
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
           network: devapp
-          compute: nonprodapp
 
       components:
         api:
@@ -207,7 +217,7 @@ Feature: HEALTH check of erroneous platform definition file items
     Given a file named "environments/prod.yml" with:
     """
     environment:
-      vcenter: prod
+      vcenter: unknown
 
       pool:
         webvmdefaults: &webvmdefaults
@@ -217,7 +227,7 @@ Feature: HEALTH check of erroneous platform definition file items
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
-          network: prodapp
+          network: unknown
           compute: prodapp
 
 
@@ -240,12 +250,16 @@ Feature: HEALTH check of erroneous platform definition file items
 
         terracotta:
             <<: *webvmdefaults
-            count: 2
-            compute: prodtc
+            count: 1024
+            compute:
+            tier: unknown
+            image:
+            runlist:
+            componentrole: unknown
             addresses:
                 - 10.119.137.218
                 - 10.119.137.219
-            port: 0000
+            port: unknown
 
         email:
             <<: *appvmdefaults
@@ -265,26 +279,14 @@ Feature: HEALTH check of erroneous platform definition file items
     """
     When I run `elevage health`
     Then the exit status should be 1
-    And the output should contain "Empty environment definitions"
-    And the output should contain "Empty tier definitions"
-    And the output should contain "Empty nodenameconvention definitions"
-    And the output should contain "Must define 1 or more nodes in a pool"
-    And the output should contain "Pool contains invalid tier reference"
-    And the output should contain "No vm image referenced in pool definition"
-    And the output should contain "Pool contains invalid compute reference"
-    And the output should contain "Pool contains invalid port definition"
-    And the output should contain "No pool runlist definition"
-    And the output should contain "Pool Componentrole missing #"
-    And the output should contain "no vCenter geo defined"
-    And the output should contain "Invalid vCenter timezone"
-    And the output should contain "No datacenter defined for vCenter"
-    And the output should contain "No image location defined for vCenter build"
-    And the output should contain "No destination folder defined for vCenter build"
-    And the output should contain "Append environment to destination folder must be true or false"
-    And the output should contain "prepend app name to domain must be true or false"
-    And the output should contain "No data stores defined for vCenter build"
-    And the output should contain "No domain defined for node fqdn"
-    And the output should contain "Invalid IP's defined for DNS lookup"
-    And the output should contain "Invalid gateway defined in network"
-    And the output should contain "Invalid compute cpu settings"
-    And the output should contain "Invalid compute ram settings"
+    And the output should contain "Environment contains invalid vcenter definition"
+    And the output should contain "Environment contains invalid network definition"
+    And the output should contain "Environment contains invalid number of nodes in pool"
+    And the output should contain "Environment component pool contains invalid compute definition"
+    And the output should contain "Environment component pool contains invalid or missing ip address definition"
+    And the output should contain "Environment component pool contains invalid tier definition"
+    And the output should contain "Environment component pool contains invalid image definition"
+    And the output should contain "Environment component pool contains invalid port definition"
+    And the output should contain "Environment component pool contains invalid runlist specification"
+    And the output should contain "Environment component pool contains invalid componentrole definition"
+##    And the output should contain "Environment components do not match platform definition"

@@ -1,4 +1,4 @@
-Feature: HEALTH check of platform definition file items
+Feature: HEALTH check of correct platform definition file items
 
   As an Infracoder developing a command line tool
   I want to be able to diagnose the syntactical health of the standard platform definition and environment definition yml files
@@ -177,35 +177,38 @@ Feature: HEALTH check of platform definition file items
       pool:
         webvmdefaults: &webvmdefaults
             network: devweb
-            compute: nonprodweb
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
           network: devapp
-          compute: nonprodapp
 
       components:
         api:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.42
                 - 10.10.137.43
 
         cui:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.64
                 - 10.10.137.65
 
         terracotta:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.95
                 - 10.10.137.96
 
         email:
+            <<: *appvmdefaults
             addresses:
                 - 10.10.161.53
                 - 10.10.161.54
 
         mq:
+            <<: *appvmdefaults
             addresses:
                 - 10.10.161.77
                 - 10.10.161.78
@@ -229,6 +232,7 @@ Feature: HEALTH check of platform definition file items
 
       components:
         api:
+            <<: *webvmdefaults
             addresses:
                 - 10.119.137.72
                 - 10.119.137.73
@@ -236,6 +240,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.137.75
 
         cui:
+            <<: *webvmdefaults
             addresses:
                 - 10.119.137.133
                 - 10.119.137.134
@@ -243,6 +248,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.137.136
 
         terracotta:
+            <<: *webvmdefaults
             count: 2
             compute: prodtc
             addresses:
@@ -251,6 +257,7 @@ Feature: HEALTH check of platform definition file items
             port: 0000
 
         email:
+            <<: *appvmdefaults
             addresses:
                 - 10.119.161.137
                 - 10.119.161.138
@@ -258,6 +265,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.161.140
 
         mq:
+            <<: *appvmdefaults
             count: 2
             compute: prodmq
             addresses:
@@ -268,3 +276,7 @@ Feature: HEALTH check of platform definition file items
     When I run `elevage health`
     Then the exit status should be 0
     And the output should contain "All base platform desired state files created and syntactically correct"
+
+    When I run `elevage health -e`
+    Then the exit status should be 0
+    And the output should contain "specific definition yml syntactically correct"
