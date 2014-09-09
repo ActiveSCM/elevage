@@ -1,7 +1,9 @@
 require 'yaml'
+require 'resolv'
 
 require_relative 'constants'
-
+require_relative 'platform'
+# rubocop:disable ClassLength
 module Elevage
   # Environment class
   class Environment
@@ -10,23 +12,26 @@ module Elevage
     attr_accessor :components
     attr_accessor :nodenameconvention
 
-    # Class initialize
-    #
-    # Params
-    #   env: string passed from commend line, simple environment name
-    #   platform: Platform class object built from standard platform definition files
-    def initialize(env, platform)
-      environment = build_environment(env, YAML.load_file(ENV_FOLDER +
-                    env + '.yml').fetch('environment'), platform)
-      @name = env
-      @vcenter = environment['vcenter']
-      @components = environment['components']
-      @nodenameconvention = platform.nodenameconvention
+    # rubocop:disable LineLength, MethodLength
+    def initialize(env)
+      envfile = ENV_FOLDER + env.to_s + '.yml'
+      if env_file_exists?(envfile)
+        platform = Elevage::Platform.new
+        if platform.environments.include?(env)
+          environment = build_environment(env, YAML.load_file(envfile).fetch('environment'), platform)
+          @name = env
+          @vcenter = environment['vcenter']
+          @components = environment['components']
+          @nodenameconvention = platform.nodenameconvention
+        else
+          fail(IOError, ERROR_MSG[:environment_not_defined])
+        end
+      end
     end
+    # rubocop:enable LineLength, MethodLength
 
-    # Public: class method for Environment class, lists nodes with IPs, FQDN, Runlists
-    #
-    # Returns string to display on console
+    # Public: Environment class method that returns list of all nodes, including ips and runlist
+    # Returns multiline string
     def list_nodes
       nodes =  @vcenter['destfolder'].to_s + "\n"
       @components.each do |component, _config|
@@ -39,11 +44,44 @@ module Elevage
       nodes
     end
 
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+    def healthy?
+      platform = Elevage::Platform.new
+      health = ''
+      health += HEALTH_MSG[:invalid_env_vcenter] if @vcenter.nil?
+      @components.each do |component, v|
+        health += HEALTH_MSG[:invalid_env_network] if v['network'].nil?
+        health += HEALTH_MSG[:invalid_env_count] unless (0..POOL_LIMIT).member?(v['count'])
+        health += HEALTH_MSG[:invalid_env_compute] if v['compute'].nil?
+        health += HEALTH_MSG[:invalid_env_ip] if v['count'] != v['addresses'].size
+        if v['addresses'].nil?
+          health += HEALTH_MSG[:invalid_env_ip]
+        else
+          v['addresses'].each { |ip| health += HEALTH_MSG[:invalid_env_ip] unless Resolv::IPv4::Regex.match(ip) }
+        end
+        health += HEALTH_MSG[:invalid_env_tier] unless platform.tiers.include?(v['tier'])
+        health += HEALTH_MSG[:invalid_env_image] if v['image'].nil?
+        health += HEALTH_MSG[:invalid_env_port] unless v['port'].kind_of?(Integer) || v['port'].nil?
+        health += HEALTH_MSG[:invalid_env_runlist] if v['runlist'].nil? || v['runlist'].empty?
+        health += HEALTH_MSG[:invalid_env_componentrole] unless v['componentrole'].include?('#') if v['componentrole']
+        health += HEALTH_MSG[:env_component_mismatch] unless platform.components.include?(component)
+      end
+      health += HEALTH_MSG[:env_component_mismatch] unless platform.components.size == @components.size
+      if health.length > 0
+        puts health + "\n#{health.lines.count} environment offense(s) detected"
+        false
+      else
+        true
+      end
+    end
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
+
     # Public: basic class puts string output
     def to_s
       puts @name
       puts @vcenter.to_yaml
       puts @components.to_yaml
+      puts @nodenameconvention.to_yaml
     end
 
     private
@@ -54,13 +92,13 @@ module Elevage
     # Params
     #   env: string passed from commend line, simple environment name
     #   env_yaml: hash from requested environment.yml
-    #   platform: Platfor class object built from standard platform definition files
+    #   platform: Platform class object built from standard platform definition files
     #
     # Returns Hash: updated env_yaml hash
     # rubocop:disable MethodLength, LineLength
     def build_environment(env, env_yaml, platform)
       # substitute vcenter resources from vcenter.yml for location defined in environment file
-      env_yaml['vcenter'] = platform.vcenter['locations'][env_yaml['vcenter']]
+      env_yaml['vcenter'] = platform.vcenter[env_yaml['vcenter']]
       # merge component resources from environment file and platform definition
       # platform info will be inserted where not found in env files, env overrides will be unchanged
       #
@@ -69,18 +107,22 @@ module Elevage
       # component info. The Build command will run error checking before building, but to support
       #  the debugging value of the list command only hash.merge! is performed at this point.
       platform.components.each do |component, _config|
-        env_yaml['components'][component].merge!(platform.components[component]) { |_key, v1, _v2| v1 }
+        env_yaml['components'][component].merge!(platform.components[component]) { |_key, v1, _v2| v1 } unless env_yaml['components'][component].nil?
       end
       # substitute network and components for specified values from platform definition files
       env_yaml['components'].each do |component, _config|
         env_yaml['components'][component]['network'] = platform.network[env_yaml['components'][component]['network']]
-        env_yaml['components'][component]['compute'] = platform.compute['options'][env_yaml['components'][component]['compute']]
-        env_yaml['components'][component]['runlist'] = run_list(env_yaml['components'][component]['runlist'], env_yaml['components'][component]['componentrole'], component)
+        env_yaml['components'][component]['compute'] = platform.compute[env_yaml['components'][component]['compute']]
+        unless env_yaml['components'][component]['runlist'].nil?
+          env_yaml['components'][component]['runlist'] = run_list(env_yaml['components'][component]['runlist'], env_yaml['components'][component]['componentrole'], component)
+        end
       end
-      # append env name to destination folder if appendenv == true
-      env_yaml['vcenter']['destfolder'] += (env_yaml['vcenter']['appendenv'] ? '/' + env.to_s : '')
-      # prepend app name to domain if appenddomain == true
-      env_yaml['vcenter']['appenddomain'] ? env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain'] : ''
+      unless env_yaml['vcenter'].nil?
+        # append env name to destination folder if appendenv == true
+        env_yaml['vcenter']['destfolder'] += (env_yaml['vcenter']['appendenv'] ? '/' + env.to_s : '')
+        # prepend app name to domain if appenddomain == true
+        env_yaml['vcenter']['appenddomain'] ? env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain'] : ''
+      end
       env_yaml
     end
     # rubocop:enable MethodLength, LineLength
@@ -125,5 +167,11 @@ module Elevage
     def run_list(list, componentrole, component)
       list.join(',') + (componentrole ? ',' + componentrole.gsub('#', component) : '')
     end
+
+    def env_file_exists?(env_file)
+      fail(IOError, ERROR_MSG[:no_environment_file]) unless File.file?(env_file)
+      true
+    end
   end
 end
+# rubocop:enable ClassLength

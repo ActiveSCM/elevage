@@ -1,6 +1,5 @@
 ? "%YAML 1.2"
 vcenter:
-  name: <%= platform.downcase %>
   # you can add as many vcenter definitions as required. The default file configuratioon
   # includes two in the form of a production and non production datacenter.
   # Key elements are as follows:
@@ -56,24 +55,23 @@ vcenter:
   #          - 10.20.100.5
   #          - 10.20.100.6
   #
-  locations:
-    nonprod: &default
-      geo:
-      timezone:
+  nonprod: &default
+    geo:
+    timezone:
 
-      host:
-      datacenter:
-      imagefolder:
-      destfolder:
-      resourcepool:
-      appendenv: false
-      appenddomain: false
-      datastores:
-        -
+    host:
+    datacenter:
+    imagefolder:
+    destfolder:
+    resourcepool:
+    appendenv: false
+    appenddomain: false
+    datastores:
+      -
 
-      domain:
-      dnsips:
-        -
+    domain:
+    dnsips:
+      -
 
-    prod:
-      <<: *default
+  prod:
+    <<: *default

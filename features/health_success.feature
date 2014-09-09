@@ -1,4 +1,4 @@
-Feature: HEALTH check of platform definition file items
+Feature: HEALTH check of correct platform definition file items
 
   As an Infracoder developing a command line tool
   I want to be able to diagnose the syntactical health of the standard platform definition and environment definition yml files
@@ -72,110 +72,102 @@ Feature: HEALTH check of platform definition file items
     Given a file named "infrastructure/vcenter.yml" with:
     """
     vcenter:
-      name: app
+      nonprod: &vcenter
+        geo: west
+        timezone: 085
 
-      locations:
-        nonprod: &vcenter
-          geo: west
-          timezone: 085
+        host: 'www.google.com'
+        datacenter: 'WCDC NonProd'
+        imagefolder: 'Corporate/Platform Services/Templates'
+        destfolder: 'Corporate/Platform Services/app'
+        resourcepool: 'App-Web Linux/Corporate'
+        appendenv: true
+        appenddomain: true
+        datastores:
+          - NonProd_Cor_25
+          - NonProd_Cor_26
+          - NonProd_Cor_38
+          - NonProd_Cor_39
 
-          host: 'vcwest.corp.local'
-          datacenter: 'WCDC NonProd'
-          imagefolder: 'Corporate/Platform Services/Templates'
-          destfolder: 'Corporate/Platform Services/app'
-          resourcepool: 'App-Web Linux/Corporate'
-          appendenv: true
-          appenddomain: true
-          datastores:
-            - NonProd_Cor_25
-            - NonProd_Cor_26
-            - NonProd_Cor_38
-            - NonProd_Cor_39
+        domain: dev.corp.local
+        dnsips:
+          - 10.10.10.5
+          - 10.10.10.6
 
-          domain: dev.corp.local
-          dnsips:
-            - 10.10.10.5
-            - 10.10.10.6
+      prod:
+        <<: *vcenter
 
-        prod:
-          <<: *vcenter
+        datacenter: 'WCDC Prod'
+        datastores:
+          - Prod_Cor_03
+          - Prod_Cor_04
 
-          datacenter: 'WCDC Prod'
-          datastores:
-            - Prod_Cor_03
-            - Prod_Cor_04
-
-          domain: corp.local
-          dnsips:
-            - 10.20.100.5
-            - 10.20.100.6
+        domain: corp.local
+        dnsips:
+          - 10.20.100.5
+          - 10.20.100.6
     """
     Given a file named "infrastructure/network.yml" with:
     """
-    network:
-      name: app
-
+  network:
       devweb:
         vlanid: DEV_WEB_NET
-        gateway: '10.10.128.1'
+        gateway: 10.10.128.1
         netmask: 19
 
       devapp:
         vlanid: DEV_APP_NET
-        gateway: '10.10.160.1'
+        gateway: 10.10.160.1
         netmask: 20
 
       prodweb:
         vlanid: PRD_WEB_NET
-        gateway: '10.119.128.1'
+        gateway: 10.119.128.1
         netmask: 19
 
       prodapp:
         vlanid: PRD_APP_NET
-        gateway: '10.119.160.1'
+        gateway: 10.119.160.1
         netmask: 20
     """
     Given a file named "infrastructure/compute.yml" with:
     """
     compute:
-      name: app
+      default: &default
+        cpu: 2
+        ram: 2
 
-      options:
-        default: &default
-          cpu: 2
-          ram: 2
+      nonprodweb:
+        <<: *default
 
-        nonprodweb:
-          <<: *default
+      nonprodapp:
+        <<: *default
+        ram: 6
 
-        nonprodapp:
-          <<: *default
-          ram: 6
+      nonprodtc:
+        <<: *default
+        ram: 8
 
-        nonprodtc:
-          <<: *default
-          ram: 8
+      nonprodmq:
+        <<: *default
+        ram: 12
 
-        nonprodmq:
-          <<: *default
-          ram: 12
+      prodweb:
+        <<: *default
+        ram: 6
 
-        prodweb:
-          <<: *default
-          ram: 6
+      prodapp:
+        <<: *default
+        ram: 6
 
-        prodapp:
-          <<: *default
-          ram: 6
+      prodtc:
+        <<: *default
+        ram: 32
 
-        prodtc:
-          <<: *default
-          ram: 32
-
-        prodmq:
-          <<: *default
-          cpu: 8
-          ram: 32
+      prodmq:
+        <<: *default
+        cpu: 8
+        ram: 32
     """
     Given a file named "environments/int.yml" with:
     """
@@ -185,35 +177,38 @@ Feature: HEALTH check of platform definition file items
       pool:
         webvmdefaults: &webvmdefaults
             network: devweb
-            compute: nonprodweb
 
         appvmdefaults: &appvmdefaults
           <<: *webvmdefaults
           network: devapp
-          compute: nonprodapp
 
       components:
         api:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.42
                 - 10.10.137.43
 
         cui:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.64
                 - 10.10.137.65
 
         terracotta:
+            <<: *webvmdefaults
             addresses:
                 - 10.10.137.95
                 - 10.10.137.96
 
         email:
+            <<: *appvmdefaults
             addresses:
                 - 10.10.161.53
                 - 10.10.161.54
 
         mq:
+            <<: *appvmdefaults
             addresses:
                 - 10.10.161.77
                 - 10.10.161.78
@@ -237,6 +232,7 @@ Feature: HEALTH check of platform definition file items
 
       components:
         api:
+            <<: *webvmdefaults
             addresses:
                 - 10.119.137.72
                 - 10.119.137.73
@@ -244,6 +240,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.137.75
 
         cui:
+            <<: *webvmdefaults
             addresses:
                 - 10.119.137.133
                 - 10.119.137.134
@@ -251,6 +248,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.137.136
 
         terracotta:
+            <<: *webvmdefaults
             count: 2
             compute: prodtc
             addresses:
@@ -259,6 +257,7 @@ Feature: HEALTH check of platform definition file items
             port: 0000
 
         email:
+            <<: *appvmdefaults
             addresses:
                 - 10.119.161.137
                 - 10.119.161.138
@@ -266,6 +265,7 @@ Feature: HEALTH check of platform definition file items
                 - 10.119.161.140
 
         mq:
+            <<: *appvmdefaults
             count: 2
             compute: prodmq
             addresses:
@@ -275,4 +275,8 @@ Feature: HEALTH check of platform definition file items
 
     When I run `elevage health`
     Then the exit status should be 0
-    And the output should contain "All platform desired state files present and consistently configured"
+    And the output should contain "All base platform desired state files created and syntactically correct"
+
+    When I run `elevage health -e`
+    Then the exit status should be 0
+    And the output should contain "specific definition yml syntactically correct"
