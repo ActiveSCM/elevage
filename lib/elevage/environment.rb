@@ -3,7 +3,7 @@ require 'resolv'
 
 require_relative 'constants'
 require_relative 'platform'
-# rubocop:disable ClassLength
+
 module Elevage
   # Environment class
   class Environment
@@ -174,4 +174,4 @@ module Elevage
     end
   end
 end
-# rubocop:enable ClassLength
+

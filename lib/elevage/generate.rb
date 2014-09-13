@@ -12,10 +12,12 @@ module Elevage
       File.dirname(__FILE__)
     end
 
-    # def already_exists?
-    #   if File.file?(ENV_FOLDER + env + '.yml')
-    #     fail IOError, ERROR_MSG[:environment_already_exists]
-    #   end
-    # end
+    def create_environment
+      fail IOError, ERROR_MSG[:environment_already_exists] if File.file?(ENV_FOLDER + env + '.yml')
+      platform = Elevage::Platform.new
+      puts platform
+      # template(TEMPLATE_ENV, ENV_FOLDER + env + '.yml')
+      puts "#{env}.yml added in environments folder"
+    end
   end
 end

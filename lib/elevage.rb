@@ -4,6 +4,7 @@ require 'elevage/constants'
 require 'elevage/new'
 require 'elevage/platform'
 require 'elevage/environment'
+require 'elevage/generate'
 
 # Refer to README.md for use instructions
 module Elevage
@@ -45,6 +46,6 @@ module Elevage
 
     # subcommand in Thor called as registered class
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
-    # register(Elevage::Generate, 'generate', 'generate ENV', DESC_GENERATE)
+    register(Elevage::Generate, 'generate', 'generate ENV', DESC_GENERATE)
   end
 end

@@ -173,3 +173,47 @@ Feature: GENERATE new environment yml file
     When I run `elevage generate qa`
     Then the exit status should be 0
     And the output should contain "qa.yml added in environments folder"
+    And the file "environments/qa.yml" should contain:
+    """
+    environment:
+      vcenter:
+
+      pool:
+        webvmdefaults: &webvmdefaults
+          network:
+
+        appvmdefaults: &appvmdefaults
+          <<: *webvmdefaults
+          network:
+
+      components:
+        api:
+          <<: *webvmdefaults
+          addresses:
+              -
+              -
+
+        cui:
+          <<: *webvmdefaults
+          addresses:
+              -
+              -
+
+        terracotta:
+          <<: *webvmdefaults
+          addresses:
+              -
+              -
+
+        email:
+          <<: *appvmdefaults
+          addresses:
+              -
+              -
+
+        mq:
+          <<: *appvmdefaults
+          addresses:
+              -
+              -
+    """

@@ -6,7 +6,7 @@ module Elevage
   DESC_LIST = 'List ITEMs from platform desired state yml files'
   DESC_LIST_NODES = 'used with environment name to list node names and ip addresses'
   DESC_HEALTH = 'Health check of the Platform desired state yml files'
-  DESC_GENERATE = 'Generate new environment files based on platform template'
+  DESC_GENERATE = 'Generate new environment file based on platform template'
 
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
   TIMEZONE_LIMIT = 159
@@ -60,6 +60,7 @@ module Elevage
   TEMPLATE_VCENTER = 'templates/vcenter.yml.tt'
   TEMPLATE_NETWORK = 'templates/network.yml.tt'
   TEMPLATE_COMPUTE = 'templates/compute.yml.tt'
+  TEMPLATE_ENV = 'templates/environment.yml.tt'
 
   # filename defaults
   YML_PLATFORM = 'platform.yml'
