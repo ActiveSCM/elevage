@@ -3,6 +3,8 @@ platform.yml
 results.html
 infrastructure/
 environments/
+
+Gemfile.lock
 tmp/
 .idea/
 .rvmrc
