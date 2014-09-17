@@ -175,10 +175,23 @@ Feature: GENERATE new environment yml file
     And the output should contain "qa.yml added in environments folder"
     And the file "environments/qa.yml" should contain:
     """
+    ? "%YAML 1.2"
     environment:
       vcenter:
-
-      pool:
+      # Environment files are generated from the platform.yml defintion.
+      #
+      # You can override any of the default values based on the requirements
+      # of this particular environment. Though typically you will only
+      # want to override things like:
+      #
+      # count           The number of components in the load balance pool
+      # compute         Size of compute resource to assign, defined in the compute.yml file
+      # network         vlan the component nodes are attached
+      #
+      # Additionally, you must specify IP addresses for each node. The generate
+      # command will create array placeholders based on the default Count
+      #
+      pools:
         webvmdefaults: &webvmdefaults
           network:
 
@@ -186,34 +199,37 @@ Feature: GENERATE new environment yml file
           <<: *webvmdefaults
           network:
 
+
       components:
         api:
           <<: *webvmdefaults
           addresses:
-              -
-              -
+            -
+            -
 
         cui:
           <<: *webvmdefaults
           addresses:
-              -
-              -
+            -
+            -
 
         terracotta:
           <<: *webvmdefaults
           addresses:
-              -
-              -
+            -
+            -
 
         email:
           <<: *appvmdefaults
           addresses:
-              -
-              -
+            -
+            -
 
         mq:
           <<: *appvmdefaults
           addresses:
-              -
-              -
+            -
+            -
+
+
     """

@@ -1,51 +1,20 @@
 ? "%YAML 1.2"
 environment:
-  # Components are defined as part of a pool. The pool is where you assign a component
-  # the following required items:
+  vcenter:
+  # Environment files are generated from the platform.yml defintion.
+  #
+  # You can override any of the default values based on the requirements
+  # of this particular environment. Though typically you will only
+  # want to override things like:
   #
   # count           The number of components in the load balance pool
-  # tier            Which platform tier the component is built on
-  # image           The vmware image to clone for the nodes in this pool
   # compute         Size of compute resource to assign, defined in the compute.yml file
-  # port            service comm port
-  # runlist         Chef runlist(s) for the node
-  # componentrole   optional custom role created by substituting the component name for # in the supplied string
+  # network         vlan the component nodes are attached
   #
-  # The platform.yml file is the desired state of each environment. Within the Env file IP's and execeptions to the default are defined.
-  # Each component may share a pool definition or have a unique one.
-  #
-  # Example
-  #
-  # pools:
-  #   vmdefaults: &vmdefaults
-  #     count: 4
-  #     tier: Web
-  #     image: 'centos-6.5-x86_64-20140714'
-  #     compute: dev
-  #     port: 80
-  #     runlist:
-  #       - 'role[base]'
-  #     componentrole: 'role[myapp-#]'
+  # Additionally, you must specify IP addresses for each node. The generate
+  # command will create array placeholders based on the default Count
   #
   pools:
-  #  <%= platform.pools.to_yaml %>
-  # Components inherit all the key values from the assigned pool, which may be overridden
-  # in addition you can define a service port number for individual service pools
-  #
-  # Example
-  #
-  #   components:
-  #      api:
-  #        <<: *vmdefaults
-  #        port: 8080
-  #
-  #      cui:
-  #        <<: *vmdefaults
-  #        port: 8082
-  #
-  #      terracotta:
-  #        <<: *vmdefaults
-  #        compute: prodtc
-  #        image: 'centos32g-6.5-x86_64-20140714'
-  #
+<%= @env_pools %>
   components:
+<%= @env_components %>

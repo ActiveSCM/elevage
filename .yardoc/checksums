@@ -1,0 +1,9 @@
+lib/elevage.rb ca4e14eb77c6cb1231cfa8ff47860d0f198f33f9
+lib/elevage/new.rb 19debe7a53ddc19aa42af2bc792c78438663d0db
+lib/elevage/runner.rb cb8da0e44329245a3d0c1605e4502d21112da993
+lib/elevage/health.rb e9eca55ff30caacfbb93c5cf8e94de0000c284e7
+lib/elevage/version.rb 4141670ab60aaf1b878dd07c5fbfca0b53b97700
+lib/elevage/generate.rb 87eca7a6402f8837fcf7538417adc323eb8e89de
+lib/elevage/platform.rb c9c7d1426999339f1984de81ecc639d5c696a2bb
+lib/elevage/constants.rb 30fe195cb3d50617988ab988881de10cb17caf28
+lib/elevage/environment.rb 4f8be1993d9fc8c96af9e267e09af64c08fc2210
