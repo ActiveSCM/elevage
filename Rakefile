@@ -6,6 +6,13 @@ require 'yard'
 RSpec::Core::RakeTask.new(:spec)
 Cucumber::Rake::Task.new(:features)
 Coveralls::RakeTask.new
-YARD::Rake::YardocTask.new
 
-task default: [:spec, :features, 'coveralls:push']
+task :style do
+  sh 'rubocop'
+end
+
+task :doc do
+  sh 'yard'
+end
+
+task default: [:spec, :features, :style, :doc, 'coveralls:push']

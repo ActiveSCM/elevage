@@ -8,6 +8,3 @@ guard :rubocop do
 end
 
 notification :growl
-
-
-

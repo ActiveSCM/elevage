@@ -160,7 +160,7 @@ module Elevage
     # Private: Constructs the node runlist from parameters
     #
     # Params
-    #   list: Array of string from component runlist hash key value
+    #   list: Array of strings from component runlist hash key value
     #   componentrole:  String value from component, performs simple
     #                   string substitution of for component string
     #                   in component role string
