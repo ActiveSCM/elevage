@@ -1,14 +1,14 @@
 # Elevage
 
-[![Build Status](https://travis-ci.org/Cheneweth/elevage.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/Cheneweth/elevage.png?travis)][gemnasium]
-[![Coverage Status](https://coveralls.io/repos/Cheneweth/elevage/badge.png?branch=master)][coveralls]
-[![Inline docs](http://inch-ci.org/github/Cheneweth/elevage.png?branch=master)][inch]
+[![Build Status](https://travis-ci.org/ActiveSCM/elevage.svg?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/ActiveSCM/elevage.png?travis)][gemnasium]
+[![Coverage Status](https://coveralls.io/repos/ActiveSCM/elevage/badge.png?branch=master)][coveralls]
+[![Inline docs](http://inch-ci.org/github/ActiveSCM/elevage.png?branch=master)][inch]
 
-[travis]: http://travis-ci.org/Cheneweth/elevage
-[gemnasium]: https://gemnasium.com/Cheneweth/elevage
-[coveralls]: https://coveralls.io/r/Cheneweth/elevage
-[inch]: http://inch-ci.org/github/Cheneweth/elevage
+[travis]: http://travis-ci.org/ActiveSCM/elevage
+[gemnasium]: https://gemnasium.com/ActiveSCM/elevage
+[coveralls]: https://coveralls.io/r/ActiveSCM/elevage
+[inch]: http://inch-ci.org/github/ActiveSCM/elevage
 
 #### Installation
 
@@ -52,17 +52,17 @@ $ elevage generate <environment name>
 ```
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/elevage/fork )
+1. Fork it ( https://github.com/ActiveSCM/elevage/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
 ### License and Authors
-- Authors:: Nic Cheneweth (<nic.cheneweth@activenetwork.com>), Name <email@activenetwork.com>
+- Authors:: Nic Cheneweth (<nic.cheneweth@activenetwork.com>), (Gregory Ruiz-Ade <gregory.ruiz-ade@activenetwork.com>)
 
 ```
-Copyright 2009-2014 Active Network, LLC
+Copyright 2014 Active Network, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
