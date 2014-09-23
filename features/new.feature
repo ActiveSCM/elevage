@@ -30,7 +30,7 @@ Feature: creating NEW platform definition files
     compute:
     """
 
-  Scenario: new platform called when platform already exists
+  Scenario: generating new platform called when platform already exists
 
     Given a file named "platform.yml" with:
     """
@@ -40,3 +40,29 @@ Feature: creating NEW platform definition files
     When I run `elevage new app`
     Then the exit status should be 1
     And the output should contain "elevage: platform files already exist!"
+
+#  Scenario: generating new platform with -chef option
+#
+#    When I run `elevage new app -chef`
+#    Then the following files should exist:
+#      |app_definition/platform.yml|
+#      |app_definition/infrastructure/vcenter.yml|
+#      |app_definition/infrastructure/compute.yml|
+#      |app_definition/infrastructure/network.yml|
+#    And the file "app_definition/platform.yml" should contain:
+#    """
+#    platform:
+#      name: app
+#    """
+#    And the file "app_definition/infrastructure/vcenter.yml" should contain:
+#    """
+#    vcenter:
+#    """
+#    And the file "app_definition/infrastructure/network.yml" should contain:
+#    """
+#    network:
+#    """
+#    And the file "app_definition/infrastructure/compute.yml" should contain:
+#    """
+#    compute:
+#    """

@@ -33,68 +33,14 @@ module Elevage
     end
     # rubocop:enable MethodLength
 
-    # rubocop:disable MethodLength
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity, AmbiguousOperator
     def healthy?
       health = ''
+      # Array of string checked for empty values
       health += MSG[:empty_environments] unless @environments.all?
       health += MSG[:empty_tiers] unless @tiers.all?
       health += MSG[:empty_nodenameconvention] unless @nodenameconvention.all?
-      health += health_pools + health_vcenter + health_network + health_compute
-      if health.length > 0
-        puts health + "\n#{health.lines.count} platform offense(s) detected"
-        false
-      else
-        true
-      end
-    end
-    # rubocop:enable MethodLength
-
-    private
-
-    def health_compute
-      health = ''
-      @compute.each do |_compute, v|
-        health += MSG[:invalid_cpu] unless (0..CPU_LIMIT).member?(v['cpu'])
-        health += MSG[:invalid_ram] unless (0..RAM_LIMIT).member?(v['ram'])
-      end
-      health
-    end
-
-    # rubocop:disable AmbiguousOperator
-    def health_network
-      health = ''
-      @network.each do |_network, v|
-        puts v
-        health += MSG[:empty_network] if v.values.any? &:nil?
-        health += MSG[:invalid_gateway] unless Resolv::IPv4::Regex.match(v['gateway'])
-      end
-      health
-    end
-    # rubocop:enable AmbiguousOperator
-
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
-    def health_vcenter
-      health = ''
-      @vcenter.each do |_vcenter, v|
-        health += MSG[:invalid_geo] if v['geo'].nil?
-        health += MSG[:invalid_timezone] unless (0..TIMEZONE_LIMIT).member?(v['timezone'].to_i)
-        health += MSG[:invalid_host] unless valid_vcenter_host?(v['host'])
-        health += MSG[:invalid_datacenter] if v['datacenter'].nil?
-        health += MSG[:invalid_imagefolder] if v['imagefolder'].nil?
-        health += MSG[:invalid_destfolder] if v['destfolder'].nil?
-        health += MSG[:invalid_appendenv] unless v['appendenv'] == true || v['appendenv'] == false
-        health += MSG[:invalid_appenddomain] unless v['appenddomain'] == true || v['appenddomain'] == false
-        health += MSG[:empty_datastores] unless v['datastores'].all?
-        health += MSG[:invalid_domain] if v['domain'].nil?
-        v['dnsips'].each { |ip| health += MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
-      end
-      health
-    end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
-
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
-    def health_pools
-      health = ''
+      # Loop through all pool definitions, check for valid settings
       @pools.each do |_pool, v|
         health += MSG[:pool_count_size] unless (0..POOL_LIMIT).member?(v['count'])
         health += MSG[:invalid_tiers] unless @tiers.include?(v['tier'])
@@ -104,11 +50,42 @@ module Elevage
         health += MSG[:invalid_runlist] unless v['runlist'].all?
         health += MSG[:invalid_componentrole] unless v['componentrole'].include?('#') if v['componentrole']
       end
-      health
+      # Loop through all vcenter definitions, check for valid settings
+      @vcenter.each do |_vcenter, v|
+        health += MSG[:invalid_geo] if v['geo'].nil?
+        health += MSG[:invalid_timezone] unless (0..TIMEZONE_LIMIT).member?(v['timezone'].to_i)
+        health += MSG[:invalid_host] if v['host'].nil?
+        health += MSG[:invalid_datacenter] if v['datacenter'].nil?
+        health += MSG[:invalid_imagefolder] if v['imagefolder'].nil?
+        health += MSG[:invalid_destfolder] if v['destfolder'].nil?
+        health += MSG[:invalid_appendenv] unless v['appendenv'] == true || v['appendenv'] == false
+        health += MSG[:invalid_appenddomain] unless v['appenddomain'] == true || v['appenddomain'] == false
+        health += MSG[:empty_datastores] unless v['datastores'].all?
+        health += MSG[:invalid_domain] if v['domain'].nil?
+        v['dnsips'].each { |ip| health += MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
+      end
+      # Loop through all network definitions, check for valid settings
+      @network.each do |_network, v|
+        health += MSG[:empty_network] if v.values.any? &:nil?
+        health += MSG[:invalid_gateway] unless Resolv::IPv4::Regex.match(v['gateway'])
+      end
+      # Loop through all compute definitions, check for valid settings
+      @compute.each do |_compute, v|
+        health += MSG[:invalid_cpu] unless (0..CPU_LIMIT).member?(v['cpu'])
+        health += MSG[:invalid_ram] unless (0..RAM_LIMIT).member?(v['ram'])
+      end
+      if health.length > 0
+        puts health + "\n#{health.lines.count} platform offense(s) detected"
+        false
+      else
+        true
+      end
     end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity, AmbiguousOperator
 
-    # Private: confirms existence of the standard platform defintion files
+    private
+
+    # Private: confirms existence of the standard platform definition files
     # Returns true if all standard files present
     def platform_files_exists?
       fail(IOError, ERR[:no_platform_file]) unless File.file?(YML_PLATFORM)
@@ -118,13 +95,11 @@ module Elevage
       true
     end
 
-    # Private: given a url or ip check for access
-    # Returns true/false based on simple ping check
-    def valid_vcenter_host?(address)
-      _result = `ping -q -c 3 #{address}`
-      $CHILD_STATUS.exitstatus == 0 ? true : false
-      true
-    end
+    # Unimplemented - part of future Communication health check option
+    # def valid_vcenter_host?(address)
+    #   _result = `ping -q -c 3 #{address}`
+    #   $CHILD_STATUS.exitstatus == 0 ? true : false
+    #   true
+    # end
   end
 end
-# rubocop:enable LineLength

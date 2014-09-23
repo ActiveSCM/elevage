@@ -257,12 +257,12 @@ definition.</p>
       <pre class="lines">
 
 
+10
 11
-12
-13</pre>
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/elevage/new.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/elevage/new.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_source_root'>source_root</span>
   <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span>
@@ -326,7 +326,7 @@ definition</p>
       <pre class="code"><span class="info file"># File 'lib/elevage/new.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_already_exists?'>already_exists?</span>
-  <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span><span class='lparen'>(</span><span class='const'>YML_PLATFORM</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_fail'>fail</span><span class='lparen'>(</span><span class='const'>IOError</span><span class='comma'>,</span> <span class='const'>ERR</span><span class='lbracket'>[</span><span class='symbol'>:platform_already_exists</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span><span class='lparen'>(</span><span class='const'>YML_PLATFORM</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_fail'>fail</span><span class='lparen'>(</span><span class='const'>IOError</span><span class='comma'>,</span> <span class='const'>ERR</span><span class='lbracket'>[</span><span class='symbol'>:platform_exists</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -402,7 +402,7 @@ definition</p>
 </div>
 
     <div id="footer">
-  Generated on Sun Sep 14 19:51:02 2014 by
+  Generated on Wed Sep 17 18:22:08 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.2).
 </div>
