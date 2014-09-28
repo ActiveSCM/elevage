@@ -6,6 +6,7 @@ require 'elevage/platform'
 require 'elevage/environment'
 require 'elevage/health'
 require 'elevage/generate'
+require 'elevage/build'
 
 # Refer to README.md for use instructions
 module Elevage
@@ -39,5 +40,6 @@ module Elevage
     register(Elevage::New, 'new', 'new PLATFORM', DESC_NEW)
     register(Elevage::Health, 'health', 'health', DESC_HEALTH)
     register(Elevage::Generate, 'generate', 'generate ENV', DESC_GENERATE)
+    register(Elevage::Build, 'build', 'build TARGET', DESC_BUILD)
   end
 end

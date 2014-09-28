@@ -1,61 +1,14 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/ncheneweth/Documents/dev/elevage/features/step_definitions/elevage_steps.rb": [
-        null,
-        1,
-        0,
-        0,
-        null,
-        null,
-        null,
-        1,
-        1,
-        1,
-        1,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        1,
-        1,
-        5,
-        null,
-        null,
-        null,
-        1,
-        5,
-        5,
-        null,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-      ]
     },
-    "timestamp": 1410603937
+    "timestamp": 1411936412
   },
   "Cucumber Features": {
     "coverage": {
       "/Users/ncheneweth/Documents/dev/elevage/features/step_definitions/elevage_steps.rb": [
         null,
         1,
-        0,
-        0,
-        null,
-        null,
-        null,
-        1,
         1,
         1,
         1,
@@ -79,16 +32,10 @@
         null,
         1,
         1,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
         null,
         null
       ]
     },
-    "timestamp": 1411489790
+    "timestamp": 1411936410
   }
 }

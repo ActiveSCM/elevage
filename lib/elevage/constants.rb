@@ -8,6 +8,7 @@ module Elevage
   DESC_LIST_NODES = 'used with environment name to list node names and ip addresses'
   DESC_HEALTH = 'Health check of the Platform desired state yml files'
   DESC_GENERATE = 'Generate new environment file based on platform template'
+  DESC_BUILD = 'Provision vms in an environment definition'
 
   # available List commands
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
