@@ -265,6 +265,7 @@ Feature: HEALTH check of erroneous platform definition file items
     """
     When I run `elevage health`
     Then the exit status should be 1
+    And the output should contain "health check revealed errors"
     And the output should contain "Empty environment definitions"
     And the output should contain "Empty tier definitions"
     And the output should contain "Empty nodenameconvention definitions"

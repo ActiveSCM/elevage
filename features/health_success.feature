@@ -276,7 +276,4 @@ Feature: HEALTH check of correct platform definition file items
     When I run `elevage health`
     Then the exit status should be 0
     And the output should contain "All base platform desired state files created and syntactically correct"
-
-    When I run `elevage health -e`
-    Then the exit status should be 0
     And the output should contain "specific definition yml syntactically correct"

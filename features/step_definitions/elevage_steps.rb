@@ -1,10 +1,4 @@
 # rubocop:disable LineLength, StringLiterals
-Given(/^the following files exist:$/) do |options|
-  options.raw.each do |option|
-    step %(an empty file named "#{option[0]}")
-  end
-end
-
 When(/^I get general help for "([^"]*)"$/) do |app_name|
   @app_name = app_name
   step %(I run `#{app_name} --help`)
@@ -30,10 +24,4 @@ end
 Then(/^the output should display the version$/) do
   step %(the output should match /\\d+\\.\\d+\\.\\d+/)
 end
-
-# Then(/^the result should contain "([^"]*)"$/) do |options|
-#   options.split(',').map(&:strip).each do |option|
-#     step %(the output should match /#{option}/)
-#   end
-# end
 # rubocop:enable LineLength, StringLiterals
