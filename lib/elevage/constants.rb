@@ -9,6 +9,13 @@ module Elevage
   DESC_HEALTH = 'Health check of the Platform desired state yml files'
   DESC_GENERATE = 'Generate new environment file based on platform template'
   DESC_BUILD = 'Provision vms in an environment definition'
+  DESC_BUILD_ENV = 'Name of the platform environment to provision'
+  DESC_BUILD_USER = 'User name for vSphere'
+  DESC_BUILD_PASSWD = 'Password for vSphere'
+  DESC_BUILD_ALL = 'Build everything for the named environment'
+  DESC_BUILD_TIER = 'Build everything for the specified tier in the named environment'
+  DESC_BUILD_COMPONENT = 'Build all nodes for the specified component'
+  DESC_BUILD_NODE = 'Build the single specified node'
 
   # available List commands
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
