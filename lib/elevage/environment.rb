@@ -84,6 +84,13 @@ module Elevage
       puts @nodenameconvention.to_yaml
     end
 
+    # Public: method to request provisioning of all or a portion of the environment
+    def provision(type, tier, component, node)
+
+      # do stuff here.
+
+    end
+
     private
 
     # Private: updates env hash with necessary info from Platform files.
