@@ -35,7 +35,7 @@ module Elevage
       #
       if ((options[:all] && options[:tier]) \
            || (options[:all] && options[:component]) \
-           || (options[:tier] && options[:comonent]))
+           || (options[:tier] && options[:component]))
 
         warn 'The --all, --tier and --component options may not be specified together.'
         exit false
