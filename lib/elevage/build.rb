@@ -103,9 +103,7 @@ module Elevage
 
       # =============================================================
 
-    end # build_temp
+    end
 
-
-  end # class Build
-
-end # module Elevage
+  end
+end
