@@ -21,13 +21,6 @@ module Elevage
       @environment = Elevage::Environment.new(env)
       fail(IOError) unless @environment.healthy?
 
-      # Some debugging output
-      #puts "env: [#{@environment.name}]"
-      #puts "all: [#{options[:all]}]"
-      #puts "tier: [#{options[:tier]}]"
-      #puts "component: [#{options[:component]}]"
-      #puts "node: [#{options[:node]}]"
-
       # =============================================================
       # Option sanity checking.
       #
