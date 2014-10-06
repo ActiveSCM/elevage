@@ -85,8 +85,14 @@ module Elevage
     end
 
     # Public: method to request provisioning of all or a portion of the environment
-    def provision(type, tier, component, node)
+    def provision(type, **target)
 
+      # Some debugging output
+      puts "Type:       #{type}"
+      puts "Tier:       #{target[:tier]}"
+      puts "Component:  #{target[:component]}"
+      puts "Node:       #{target[:node]}"
+\
       # do stuff here.
 
     end

@@ -26,21 +26,21 @@ module Elevage
       #
       # What are we going to reject as invalid options?
       #
-      if ((options[:all] && options[:tier]) \
-           || (options[:all] && options[:component]) \
-           || (options[:tier] && options[:component]))
+      if options[:all] && options[:tier] \
+         || options[:all] && options[:component] \
+         || options[:tier] && options[:component]
 
         warn 'The --all, --tier and --component options may not be specified together.'
         exit false
 
       end
 
-      if (options[:node] && ! options[:component])
+      if options[:node] && ! options[:component]
         warn 'When requesting a --node you must specify which --component.'
         exit false
       end
 
-      unless (options[:all] || options[:tier] || options[:component])
+      unless options[:all] || options[:tier] || options[:component]
         warn 'You must specify one of --all, --tier=<tier>, or --component=<component>'
         exit false
       end
@@ -49,10 +49,7 @@ module Elevage
       # Build ALL THE THINGS!
       #
       if options[:all]
-        puts 'Building ALL THE THINGS!'
-
-        # @environment.provision(type: :all)
-
+        @environment.provision(:all)
       end
 
       # =============================================================
@@ -63,33 +60,23 @@ module Elevage
           warn 'Was asked to build a tier, but was not told which one!'
           exit false
         end
-
-        puts "Building the #{options[:tier]} tier."
-
-        # @environment.provision(type: :tier, tier: options[:tier])
-
+        @environment.provision(:tier, tier: options[:tier])
       end
 
       # =============================================================
       # Build a few things...
       #
       if options[:component]
-        if (options[:component].eql?('component'))
+        if options[:component].eql?('component')
           warn 'Was asked to build a component, but was not told which one!'
           exit false
         end
 
         # See if we're actually only supposed to build just one thing...
         if options[:node]
-          puts "Building node #{options[:node]} of component #{options[:component]}"
-
-          # @environment.provision(type: :node, component: options[:component], node: options[:node])
-
+          @environment.provision(:node, component: options[:component], node: options[:node])
         else
-          puts "Building all nodes for the #{options[:component]} component" if options[:component]
-
-          # @environment.provision(type: :component, component: options[:component])
-
+          @environment.provision(:component, component: options[:component])
         end
 
       end
