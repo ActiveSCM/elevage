@@ -49,7 +49,7 @@ module Elevage
       # Build ALL THE THINGS!
       #
       if options[:all]
-        @environment.provision(:all)
+        @environment.provision(type: :all)
       end
 
       # =============================================================
@@ -60,7 +60,7 @@ module Elevage
           warn 'Was asked to build a tier, but was not told which one!'
           exit false
         end
-        @environment.provision(:tier, tier: options[:tier])
+        @environment.provision(type: :tier, tier: options[:tier])
       end
 
       # =============================================================
@@ -74,9 +74,9 @@ module Elevage
 
         # See if we're actually only supposed to build just one thing...
         if options[:node]
-          @environment.provision(:node, component: options[:component], node: options[:node])
+          @environment.provision(type: :node, component: options[:component], instance: options[:node])
         else
-          @environment.provision(:component, component: options[:component])
+          @environment.provision(type: :component, component: options[:component])
         end
 
       end
