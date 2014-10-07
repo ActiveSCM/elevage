@@ -5,7 +5,8 @@ module Elevage
   class Build < Thor::Group
     include Thor::Actions
 
-    argument :env, :type => :string, :desc => "The name of the environment to build things from."
+    # Build subcommand arguments and options
+    argument :env, type: :string, desc: DESC_BUILD
     class_option :all, type: :boolean, aliases: '-a', desc: DESC_BUILD_ALL
     class_option :tier, type: :string, aliases: '-t', desc: DESC_BUILD_TIER
     class_option :component, type: :string, aliases: '-c', desc: DESC_BUILD_COMPONENT
