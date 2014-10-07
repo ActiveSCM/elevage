@@ -27,13 +27,9 @@ module Elevage
       #
       # What are we going to reject as invalid options?
       #
-      if options[:all] && options[:tier] \
-         || options[:all] && options[:component] \
-         || options[:tier] && options[:component]
-
+      if options[:all] && options[:tier] || options[:all] && options[:component] || options[:tier] && options[:component]
         warn 'The --all, --tier and --component options may not be specified together.'
         exit false
-
       end
 
       if options[:node] && ! options[:component]
@@ -72,17 +68,13 @@ module Elevage
           warn 'Was asked to build a component, but was not told which one!'
           exit false
         end
-
         # See if we're actually only supposed to build just one thing...
         if options[:node]
           @environment.provision(type: :node, component: options[:component], instance: options[:node])
         else
           @environment.provision(type: :component, component: options[:component])
         end
-
       end
-
-      # =============================================================
 
     end
 
