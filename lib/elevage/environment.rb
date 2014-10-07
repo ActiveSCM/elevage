@@ -87,7 +87,7 @@ module Elevage
     end
 
     # Public: method to request provisioning of all or a portion of the environment
-    def provision(type: all, tier: nil, component: nil, instance: nil)
+    def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
 
       @components.each do |component_name, component_data|
         if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
@@ -96,7 +96,7 @@ module Elevage
 
               instance_name = node_name(component_name, component_instance)
 
-              provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self)
+              provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
               provisioner.build
 
             end

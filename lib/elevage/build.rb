@@ -12,6 +12,14 @@ module Elevage
     class_option :component, type: :string, aliases: '-c', desc: DESC_BUILD_COMPONENT
     class_option :node, type: :numeric, aliases: '-n', desc: DESC_BUILD_NODE
 
+    # Additional options for passing to the knife command
+    class_option :vsuser, required: true, type: :string, desc: DESC_BUILD_VSUSER
+    class_option :vspass, required: true, type: :string, desc: DESC_BUILD_VSPASS
+    class_option :sshuser, required: true, type: :string, aliases: '-x', desc: DESC_BUILD_SSHUSER
+    class_option :sshkey, required: true, type: :string, aliases: '-i', desc: DESC_BUILD_SSHKEY
+    class_option :templatefile, required: true, type: :string, aliases: '-t', desc: DESC_BUILD_TEMPLATE_FILE
+    class_option :bootstrapversion, required: true, type: :string, aliases: '-b', desc: DESC_BUILD_BOOTSTRAP_VERSION
+
     def self.source_root
       File.dirname(__FILE__)
     end
@@ -46,7 +54,7 @@ module Elevage
       # Build ALL THE THINGS!
       #
       if options[:all]
-        @environment.provision(type: :all)
+        @environment.provision(type: :all, options: options)
       end
 
       # =============================================================
@@ -57,7 +65,7 @@ module Elevage
           warn 'Was asked to build a tier, but was not told which one!'
           exit false
         end
-        @environment.provision(type: :tier, tier: options[:tier])
+        @environment.provision(type: :tier, tier: options[:tier], options: options)
       end
 
       # =============================================================
@@ -70,9 +78,9 @@ module Elevage
         end
         # See if we're actually only supposed to build just one thing...
         if options[:node]
-          @environment.provision(type: :node, component: options[:component], instance: options[:node])
+          @environment.provision(type: :node, component: options[:component], instance: options[:node], options: options)
         else
-          @environment.provision(type: :component, component: options[:component])
+          @environment.provision(type: :component, component: options[:component], options: options)
         end
       end
 

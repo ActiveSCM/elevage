@@ -12,15 +12,14 @@ module Elevage
     attr_accessor :username
     attr_accessor :password
 
-    def initialize(name, component, instance, environment)
+    def initialize(name, component, instance, environment, options)
 
       @name = name
       @component = component
       @instance = instance
       @environment = environment
+      @options = options
       @vcenter = @environment.vcenter
-      @username = ENV['ELEVAGE_USER'] || ENV['USER']
-      @password = ENV['ELEVAGE_PASSWORD'] || 'changeme'
 
     end
 
@@ -45,8 +44,8 @@ module Elevage
       knife_cmd = "knife vsphere vm clone"
 
       # Authentication and host
-      knife_cmd << " --vsuser #{@username}"
-      knife_cmd << " --vspass #{@password}"
+      knife_cmd << " --vsuser #{@options[:vsuser]}"
+      knife_cmd << " --vspass #{@options[:vspass]}"
       knife_cmd << " --vshost #{@vcenter['host']}"
 
       # vSphere destination information
@@ -80,12 +79,12 @@ module Elevage
 
       # Knife Bootstrap options
       knife_cmd << " --bootstrap"
-      knife_cmd << " --template-file $templatefile"
+      knife_cmd << " --template-file '#{@options[:templatefile]}'"
 
       # knife fqdn specifies how knife will connect to the target (in this case by IP)
       knife_cmd << " --fqdn #{@component['addresses'][@instance - 1]}"
-      knife_cmd << " --ssh-user knife"
-      knife_cmd << " --identity-file $identityfile"
+      knife_cmd << " --ssh-user #{@options[:sshuser]}"
+      knife_cmd << " --identity-file '#{@options[:sshkey]}'"
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
@@ -100,7 +99,7 @@ module Elevage
       knife_cmd << " --environment " << @environment.name
 
       # What version of chef-client are we bootstrapping (not sure this is necessary)
-      knife_cmd << " --bootstrap-version $bootstrapversion"
+      knife_cmd << " --bootstrap-version #{@options[:bootstrapversion]}"
 
       # Finally, the name of the VM as seen by vSphere.
       # Whereas nodename will optionally append the domain name, VM names should *always* have the domain name
