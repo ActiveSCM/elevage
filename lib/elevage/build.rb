@@ -16,12 +16,12 @@ module Elevage
     class_option 'dry-run', type: :boolean, desc: DESC_BUILD_DRY_RUN
 
     # Additional options for passing to the knife command
-    class_option :vsuser, required: true, type: :string, desc: DESC_BUILD_VSUSER
-    class_option :vspass, required: true, type: :string, desc: DESC_BUILD_VSPASS
-    class_option :sshuser, required: true, type: :string, aliases: '-x', desc: DESC_BUILD_SSHUSER
-    class_option :sshkey, required: true, type: :string, aliases: '-i', desc: DESC_BUILD_SSHKEY
-    class_option :templatefile, required: true, type: :string, aliases: '-t', desc: DESC_BUILD_TEMPLATE_FILE
-    class_option :bootstrapversion, required: true, type: :string, aliases: '-b', desc: DESC_BUILD_BOOTSTRAP_VERSION
+    class_option 'vsuser', required: true, type: :string, desc: DESC_BUILD_VSUSER
+    class_option 'vspass', required: true, type: :string, desc: DESC_BUILD_VSPASS
+    class_option 'ssh-user', required: true, type: :string, aliases: '-x', desc: DESC_BUILD_SSHUSER
+    class_option 'ssh-key', required: true, type: :string, aliases: '-i', desc: DESC_BUILD_SSHKEY
+    class_option 'template-file', required: true, type: :string, aliases: '-t', desc: DESC_BUILD_TEMPLATE_FILE
+    class_option 'bootstrap-file', required: true, type: :string, aliases: '-b', desc: DESC_BUILD_BOOTSTRAP_VERSION
 
     def self.source_root
       File.dirname(__FILE__)

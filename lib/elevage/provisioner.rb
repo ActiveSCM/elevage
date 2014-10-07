@@ -86,12 +86,12 @@ module Elevage
 
       # Knife Bootstrap options
       knife_cmd << " --bootstrap"
-      knife_cmd << " --template-file '#{@options[:templatefile]}'"
+      knife_cmd << " --template-file '#{@options['template-file']}'"
 
       # knife fqdn specifies how knife will connect to the target (in this case by IP)
       knife_cmd << " --fqdn #{@component['addresses'][@instance - 1]}"
-      knife_cmd << " --ssh-user #{@options[:sshuser]}"
-      knife_cmd << " --identity-file '#{@options[:sshkey]}'"
+      knife_cmd << " --ssh-user #{@options['ssh-user']}"
+      knife_cmd << " --identity-file '#{@options['ssh-key']}'"
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
@@ -106,7 +106,7 @@ module Elevage
       knife_cmd << " --environment '#{@environment.name}'"
 
       # What version of chef-client are we bootstrapping (not sure this is necessary)
-      knife_cmd << " --bootstrap-version #{@options[:bootstrapversion]}"
+      knife_cmd << " --bootstrap-version #{@options['bootstrap-version']}"
 
       # Finally, the name of the VM as seen by vSphere.
       # Whereas nodename will optionally append the domain name, VM names should *always* have the domain name
