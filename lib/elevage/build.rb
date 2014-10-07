@@ -16,7 +16,7 @@ module Elevage
       File.dirname(__FILE__)
     end
 
-    def build_temp
+    def build
 
       # Fetch the environment and make sure it passes basic health checks
       @environment = Elevage::Environment.new(env)
