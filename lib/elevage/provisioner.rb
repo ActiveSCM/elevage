@@ -12,6 +12,7 @@ module Elevage
     attr_accessor :username
     attr_accessor :password
 
+    # Set us up to build the specified instance of component
     def initialize(name, component, instance, environment, options)
 
       @name = name
@@ -32,6 +33,7 @@ module Elevage
       puts "Password: " << @password
     end
 
+    # Public: Build the node
     def build
 
       # Get the knife command
