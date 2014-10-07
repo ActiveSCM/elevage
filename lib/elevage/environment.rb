@@ -97,7 +97,7 @@ module Elevage
               instance_name = node_name(component_name, component_instance)
 
               provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self)
-              provisioner.build_knife_cmd
+              provisioner.build
 
             end
           end

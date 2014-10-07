@@ -33,7 +33,13 @@ module Elevage
       puts "Password: " << @password
     end
 
-    # It'll all eventually boil down to building a massive 'knife vsphere' command
+    def build
+      build_knife_cmd
+    end
+
+    private
+
+    # Private: Build the knife command that will do the provisioning.
     def build_knife_cmd
 
       knife_cmd = "knife vsphere vm clone"
