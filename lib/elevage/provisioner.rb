@@ -33,7 +33,8 @@ module Elevage
     end
 
     def build
-      build_knife_cmd
+      puts build_knife_cmd
+      puts ""
     end
 
     private
@@ -41,22 +42,26 @@ module Elevage
     # Private: Build the knife command that will do the provisioning.
     def build_knife_cmd
 
-      knife_cmd = "knife vsphere vm clone"
+      knife_cmd = "knife vsphere vm clone --vsinsecure --start"
 
       # Authentication and host
       knife_cmd << " --vsuser #{@options[:vsuser]}"
       knife_cmd << " --vspass #{@options[:vspass]}"
       knife_cmd << " --vshost #{@vcenter['host']}"
 
-      # vSphere destination information
+      # VM Template (what we're cloning)
+      knife_cmd << " --folder '#{@vcenter['imagefolder']}'"
+      knife_cmd << " --template '#{@component['image']}'"
+
+      # vSphere destination information (where the clone will end up)
       knife_cmd << " --vsdc '#{@vcenter['datacenter']}'"
       knife_cmd << " --dest-folder '#{@vcenter['destfolder']}'"
       knife_cmd << " --datastore '#{@vcenter['datastores'][rand(@vcenter['datastores'].count)]}'"
-      knife_cmd << " --folder '#{@vcenter['destfolder']}'"
       knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
 
-      # VM Template
-      knife_cmd << " --template '#{@component['image']}'"
+      # VM Hardware
+      knife_cmd << " --ccpu #{@component['compute']['cpu'].to_s}"
+      knife_cmd << " --cram #{@component['compute']['ram'].to_s}"
 
       # VM Networking
       knife_cmd << " --cvlan '#{@component['network']['vlanid']}'"
@@ -65,11 +70,6 @@ module Elevage
       knife_cmd << " --cgw #{@component['network']['gateway']}"
       knife_cmd << " --chostname #{@name}"
       knife_cmd << " --ctz #{@vcenter['timezone'].to_s}"
-
-      # VM Hardware
-      knife_cmd << " --ccpu #{@component['compute']['cpu'].to_s}"
-      knife_cmd << " --cram #{@component['compute']['ram'].to_s}"
-      knife_cmd << " --start --vsinsecure"
 
       # AD Domain and DNS Suffix
       domain = @vcenter['domain']
@@ -93,10 +93,10 @@ module Elevage
       knife_cmd << " --node-name '#{nodename}'"
 
       # Assign the run_list
-      knife_cmd << " --run-list " << @component['runlist']
+      knife_cmd << " --run-list '#{@component['runlist']}'"
 
       # Assign the Chef environment
-      knife_cmd << " --environment " << @environment.name
+      knife_cmd << " --environment '#{@environment.name}'"
 
       # What version of chef-client are we bootstrapping (not sure this is necessary)
       knife_cmd << " --bootstrap-version #{@options[:bootstrapversion]}"
@@ -108,10 +108,6 @@ module Elevage
       vmname << '.' << @environment.name if @vcenter['appendenv']
       vmname << @vcenter['domain']
       knife_cmd << " #{vmname}"
-
-      # spit the command line out for now
-      puts knife_cmd
-      puts ""
 
       # Assert
       knife_cmd
