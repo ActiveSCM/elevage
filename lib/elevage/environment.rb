@@ -3,6 +3,8 @@ require 'resolv'
 
 require_relative 'constants'
 require_relative 'platform'
+require_relative 'provisioner'
+
 # rubocop:disable ClassLength
 module Elevage
   # Environment class
@@ -85,15 +87,22 @@ module Elevage
     end
 
     # Public: method to request provisioning of all or a portion of the environment
-    def provision(type, **target)
+    def provision(type: all, tier: nil, component: nil, instance: nil)
 
-      # Some debugging output
-      puts "Type:       #{type}"
-      puts "Tier:       #{target[:tier]}"
-      puts "Component:  #{target[:component]}"
-      puts "Node:       #{target[:node]}"
-\
-      # do stuff here.
+      @components.each do |component_name, component_data|
+        if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
+          1.upto(component_data['addresses'].count) do |component_instance|
+            if instance == component_instance || instance == nil
+
+              instance_name = node_name(component_name, component_instance)
+
+              provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self)
+              provisioner.build_knife_cmd
+
+            end
+          end
+        end
+      end
 
     end
 
