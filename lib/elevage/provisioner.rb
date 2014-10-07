@@ -33,8 +33,15 @@ module Elevage
     end
 
     def build
-      puts build_knife_cmd
-      puts ""
+
+      # Get the knife command
+      knife_cmd = build_knife_cmd
+
+      # If we're doing a dry-run, spit out the command
+      if @options['dry-run']
+        puts "#{knife_cmd}\n\n"
+      end
+
     end
 
     private

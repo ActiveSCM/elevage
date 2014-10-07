@@ -12,6 +12,9 @@ module Elevage
     class_option :component, type: :string, aliases: '-c', desc: DESC_BUILD_COMPONENT
     class_option :node, type: :numeric, aliases: '-n', desc: DESC_BUILD_NODE
 
+    # dry-run
+    class_option 'dry-run', type: :boolean, desc: DESC_BUILD_DRY_RUN
+
     # Additional options for passing to the knife command
     class_option :vsuser, required: true, type: :string, desc: DESC_BUILD_VSUSER
     class_option :vspass, required: true, type: :string, desc: DESC_BUILD_VSPASS

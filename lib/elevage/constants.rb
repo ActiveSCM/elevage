@@ -9,6 +9,7 @@ module Elevage
   DESC_HEALTH = 'Health check of the Platform desired state yml files'
   DESC_GENERATE = 'Generate new environment file based on platform template'
   DESC_BUILD = 'Provision vms in an environment definition'
+  DESC_BUILD_DRY_RUN = 'Do not actually do anything, just display the commands that would be run.'
   DESC_BUILD_ENV = 'Name of the platform environment to provision'
   DESC_BUILD_USER = 'User name for vSphere'
   DESC_BUILD_PASSWD = 'Password for vSphere'
