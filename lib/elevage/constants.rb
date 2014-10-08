@@ -19,8 +19,8 @@ module Elevage
   DESC_BUILD_NODE = 'Build the single specified node'
   DESC_BUILD_VSUSER = 'Username for vSphere'
   DESC_BUILD_VSPASS = 'Password for vSphere'
-  DESC_BUILD_SSHUSER = 'Unix username for ssh for chef-client bootstrap (must have sudo NOPASSWD access for root)'
-  DESC_BUILD_SSHKEY = 'Path to SSH private key for ssh username for key-based authentication'
+  DESC_BUILD_SSH_USER = 'Unix username for ssh for chef-client bootstrap (must have sudo NOPASSWD access for root)'
+  DESC_BUILD_SSH_KEY = 'Path to SSH private key for ssh username for key-based authentication'
   DESC_BUILD_TEMPLATE_FILE = 'File to be used as the chef-client bootstrap template script'
   DESC_BUILD_BOOTSTRAP_VERSION = 'Version of chef-client to bootstrap on node'
 

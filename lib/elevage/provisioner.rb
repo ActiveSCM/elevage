@@ -9,8 +9,6 @@ module Elevage
     attr_accessor :instance
     attr_accessor :environment
     attr_accessor :vcenter
-    attr_accessor :username
-    attr_accessor :password
 
     # Set us up to build the specified instance of component
     def initialize(name, component, instance, environment, options)
@@ -25,12 +23,12 @@ module Elevage
     end
 
     def to_s
-      puts "Name: " << @name
-      puts "Instance: " << @instance
+      puts "Name: #{@name}"
+      puts "Instance: #{@instance}"
+      puts "Component: #{@component}"
       puts @component.to_yaml
+      puts 'Environment:'
       puts @environment.to_yaml
-      puts "User: " << @username
-      puts "Password: " << @password
     end
 
     # Public: Build the node
