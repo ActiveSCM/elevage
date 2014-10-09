@@ -37,10 +37,14 @@ module Elevage
       # Get the knife command
       knife_cmd = build_knife_cmd
 
-      # If we're doing a dry-run, spit out the command
+      # If we're doing a dry-run, spit out the command and quit
       if @options['dry-run']
         puts "#{knife_cmd}\n\n"
+        return
       end
+
+      # Replace this with something that actually does something.
+      puts "#{knife_cmd}\n\n"
 
     end
 
