@@ -81,8 +81,8 @@ module Elevage
       # AD Domain and DNS Suffix
       domain = @vcenter['domain']
       domain = domain[1, domain.length] if domain.start_with?('.')
-      knife_cmd << " --cdomain " << domain
-      knife_cmd << " --cdnssuffix " << domain
+      knife_cmd << " --cdomain #{domain}"
+      knife_cmd << " --cdnssuffix #{domain}"
 
       # Knife Bootstrap options
       knife_cmd << " --bootstrap"
