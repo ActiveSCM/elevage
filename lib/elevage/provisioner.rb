@@ -126,4 +126,77 @@ module Elevage
     end
 
   end
+
+  class ProvisionerRunner
+
+    attr_reader :running_tasks
+    attr_accessor :max_concurrent
+    attr_accessor :busy_wait_timeout
+
+    # Public: Initialize the object
+    def initialize
+      @running_tasks = 0
+      @max_concurrent = 8
+      @busy_wait_timeout = 5
+      @provisioners = Array.new
+    end
+
+    # Public: Add a Provisioner to the queue for us to process
+    def add_provisioner (prov)
+      @provisioners << prov
+    end
+
+    # Public: run() - Process the queue
+    def run
+
+      # Hash to track our child processes with...
+      children = Hash.new
+
+      # Trap SIGCHLD so that the system can notify us whenever
+      # one of our child processes terminates.
+      trap("CLD") do
+        pid = Process.wait
+        # print "pid #{pid} - Provisioner terminated, status = #{$?.exitstatus}\n"
+        @running_tasks -= 1
+        children.delete(pid)
+      end
+
+      @provisioners.each do |prov|
+
+        print "max: #{@max_concurrent} running: #{@running_tasks}\n"
+
+        # Make sure we're not running more jobs than we're allowed
+        while @running_tasks >= @max_concurrent do
+          wait_for_tasks children
+        end
+
+        child_pid = fork do
+          print "pid #$$ - #{prov.name} Provisioning...\n"
+          # prov.build
+          sleeptime = rand(30)
+          # print "pid #$$ - #{prov.name} Sleeping #{sleeptime}s to simulate processing time...\n"
+          sleep sleeptime
+          print "pid #$$ - #{prov.name} Completed processing\n"
+        end
+        children[child_pid] = prov.name
+
+        @running_tasks += 1
+
+      end
+
+      # Hang around until we collect all the rest of the children
+      while @running_tasks > 0 do
+        wait_for_tasks children
+      end
+
+    end
+
+    private
+
+    def wait_for_tasks(children)
+      print "Waiting #{@busy_wait_timeout} seconds for #{children.size} jobs: #{children.keys}\n"
+      sleep @busy_wait_timeout
+    end
+
+  end
 end

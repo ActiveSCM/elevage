@@ -89,6 +89,12 @@ module Elevage
     # Public: method to request provisioning of all or a portion of the environment
     def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
 
+      # Create the ProvisionerRunner to batch up our tasks
+      runner = ProvisionerRunner.new
+
+      # Temporarily set max to 1 to force behavior
+      runner.max_concurrent = 4
+
       @components.each do |component_name, component_data|
         if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
           1.upto(component_data['addresses'].count) do |component_instance|
@@ -96,13 +102,19 @@ module Elevage
 
               instance_name = node_name(component_name, component_instance)
 
+              # Create the Provisioner
               provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
-              provisioner.build
+
+              # Add it to the queue
+              runner.add_provisioner(provisioner)
 
             end
           end
         end
       end
+
+      # Process the queue
+      runner.run
 
     end
 
