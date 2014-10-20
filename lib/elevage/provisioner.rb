@@ -35,7 +35,7 @@ module Elevage
     def build
 
       # Get the knife command
-      knife_cmd = build_knife_cmd
+      knife_cmd = generate_knife_cmd
 
       # If we're doing a dry-run, spit out the command and quit
       if @options['dry-run']
@@ -51,7 +51,7 @@ module Elevage
     private
 
     # Private: Build the knife command that will do the provisioning.
-    def build_knife_cmd
+    def generate_knife_cmd
 
       knife_cmd = "knife vsphere vm clone --vsinsecure --start"
 
