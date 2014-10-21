@@ -91,7 +91,12 @@ module Elevage
 
       # Create the ProvisionerRunQueue to batch up our tasks
       runner = ProvisionerRunQueue.new
-      runner.max_concurrent = options[:concurrency]
+      unless options['dry-run']
+        runner.max_concurrent = options[:concurrency]
+      else
+        puts "Dry run requested, forcing concurrency to '1'."
+        runner.max_concurrent = 1
+      end
 
       @components.each do |component_name, component_data|
         if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
