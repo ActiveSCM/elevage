@@ -40,14 +40,14 @@ module Elevage
 
       # If we're doing a dry-run, spit out the command and quit
       if @options['dry-run']
-        puts "#{knife_cmd}\n\n"
-        return
+        puts "#{knife_cmd}"
+        return true
       end
 
-      # Replace this with something that actually does something.
-      # puts "#{knife_cmd}\n\n"
-      # Figure out why this is barfing.
-      system(knife_cmd)
+      # Execute the build command
+      unless system(knife_cmd)
+        puts "#{Time.now} [#$$]: #{@name} knife vshere vm clone failed with status: #{$?.exitstatus}"
+      end
 
     end
 
