@@ -12,6 +12,7 @@ module Elevage
     class_option :component, type: :string, aliases: '-c', desc: DESC_BUILD_COMPONENT
     class_option :node, type: :numeric, aliases: '-n', desc: DESC_BUILD_NODE
     class_option :concurrency, type: :numeric, aliases: '-C', default: 8, desc: DESC_BUILD_CONCURRENCY
+    class_option :logfiles, type: :string, aliases: '-l', default: 'logs', desc: DESC_BUILD_LOGFILES
 
     # dry-run
     class_option 'dry-run', type: :boolean, desc: DESC_BUILD_DRY_RUN
@@ -29,6 +30,11 @@ module Elevage
     end
 
     def build
+
+      # Make the logfile directory if it doesn't exist
+      unless Dir.exists?(options[:logfiles])
+        Dir.mkdir(options[:logfiles])
+      end
 
       # Fetch the environment and make sure it passes basic health checks
       @environment = Elevage::Environment.new(env)

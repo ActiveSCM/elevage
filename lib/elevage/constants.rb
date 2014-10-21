@@ -24,6 +24,7 @@ module Elevage
   DESC_BUILD_TEMPLATE_FILE = 'File to be used as the chef-client bootstrap template script'
   DESC_BUILD_BOOTSTRAP_VERSION = 'Version of chef-client to bootstrap on node'
   DESC_BUILD_CONCURRENCY = 'Maximum number of simultaneous provisioning tasks'
+  DESC_BUILD_LOGFILES = 'Path where log files should be written'
 
   # available List commands
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)

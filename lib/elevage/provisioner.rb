@@ -1,6 +1,7 @@
 require_relative 'constants'
 require_relative 'platform'
 require_relative 'provisionerrunqueue'
+require 'open3'
 
 module Elevage
   class Provisioner
@@ -44,10 +45,26 @@ module Elevage
         return true
       end
 
-      # Execute the build command
-      unless system(knife_cmd)
-        puts "#{Time.now} [#$$]: #{@name} knife vshere vm clone failed with status: #{$?.exitstatus}"
-      end
+      # Open the logfile for writing
+      logfile = File.new("#{@options[:logfiles]}/#{@name}.log",'w')
+      puts "#{Time.now} [#$$]: #{@name}: logging to #{logfile.path}"
+
+      Open3.popen3(knife_cmd) {|stdin, stdout, stderr, wait_thr|
+
+        pid = wait_thr.pid
+
+        stderr.each do |line|
+          line.chomp
+          logfile.print("#{Time.now} [#$$]: #{line}\n")
+        end
+
+        stdout.each do |line|
+          line.chomp
+          logfile.print("#{Time.now} [#$$]: #{line}\n")
+        end
+
+      }
+      logfile.close
 
     end
 
