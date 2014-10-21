@@ -91,9 +91,7 @@ module Elevage
 
       # Create the ProvisionerRunner to batch up our tasks
       runner = ProvisionerRunner.new
-
-      # Temporarily set max to 1 to force behavior
-      runner.max_concurrent = 4
+      runner.max_concurrent = options[:concurrency]
 
       @components.each do |component_name, component_data|
         if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
