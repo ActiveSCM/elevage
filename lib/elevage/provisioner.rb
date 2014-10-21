@@ -138,10 +138,19 @@ module Elevage
 
     # Public: Initialize the object
     def initialize
+
+      # We start out with nothing running
       @running_tasks = 0
+
+      # By default we'll run 4 things at once
       @max_concurrent = 4
-      @busy_wait_timeout = 5
+
+      # We'll check if we can start a new child every half second
+      @busy_wait_timeout = 0.5
+
+      # Create an emtpy array for the Provisioners
       @provisioners = Array.new
+
     end
 
     # Public: run() - Process the queue
