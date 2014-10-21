@@ -146,24 +146,23 @@ module Elevage
     def run
 
       # Hash to track our child processes with...
+      # Key is PID of child process, value is node name of Provisioner
       children = Hash.new
 
       # Trap SIGCHLD so that the system can notify us whenever
       # one of our child processes terminates.
       trap("CLD") do
         pid = Process.wait
-        # print "pid #{pid} - Provisioner terminated, status = #{$?.exitstatus}\n"
         @running_tasks -= 1
         children.delete(pid)
       end
 
       @provisioners.each do |prov|
 
-        print "max: #{@max_concurrent} running: #{@running_tasks}\n"
-
         # Make sure we're not running more jobs than we're allowed
         wait_for_tasks children, :running
 
+        # Start the provisioner in its own child process
         child_pid = fork do
           print "pid #$$ - #{prov.name} Provisioning...\n"
           # prov.build
