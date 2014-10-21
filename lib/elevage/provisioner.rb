@@ -164,12 +164,13 @@ module Elevage
 
         # Start the provisioner in its own child process
         child_pid = fork do
-          print "pid #$$ - #{prov.name} Provisioning...\n"
-          # prov.build
-          sleeptime = rand(30)
-          # print "pid #$$ - #{prov.name} Sleeping #{sleeptime}s to simulate processing time...\n"
-          sleep sleeptime
-          print "pid #$$ - #{prov.name} Completed processing\n"
+          start_time = Time.now
+          print "#{Time.now} [#$$]: #{prov.name} Provisioning...\n"
+          prov.build
+          # sleeptime = rand(120)
+          # sleep sleeptime
+          run_time = Time.now - start_time
+          print "#{Time.now} [#$$]: #{prov.name} Completed in #{run_time.round(2)} seconds.\n"
         end
         children[child_pid] = prov.name
 
