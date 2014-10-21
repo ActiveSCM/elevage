@@ -162,9 +162,7 @@ module Elevage
         print "max: #{@max_concurrent} running: #{@running_tasks}\n"
 
         # Make sure we're not running more jobs than we're allowed
-        while @running_tasks >= @max_concurrent do
-          wait_for_tasks children
-        end
+        wait_for_tasks children, :running
 
         child_pid = fork do
           print "pid #$$ - #{prov.name} Provisioning...\n"
@@ -181,17 +179,32 @@ module Elevage
       end
 
       # Hang around until we collect all the rest of the children
-      while @running_tasks > 0 do
-        wait_for_tasks children
-      end
+      wait_for_tasks children, :collect
 
     end
 
     private
 
-    def wait_for_tasks(children)
-      print "Waiting #{@busy_wait_timeout} seconds for #{children.size} jobs: #{children.keys}\n"
-      sleep @busy_wait_timeout
+    # Private: Wait for child tasks to return
+    # Since our trap for SIGCHLD will clean up the @running_tasks count and
+    # the children hash, here we can just keep checking until @running_tasks
+    # is 0.
+    # If we've been waiting at least a minute, print out a notice of what
+    # we're still waiting for.
+    def wait_for_tasks(children, state)
+      # MAGIC NUMBER: Print a message at least once a minute (60 seconds)
+      i = interval = 60/@busy_wait_timeout
+      while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
+        if i <= 0
+          print "#{Time.now} [#$$]: Waiting for #{children.size} jobs:\n"
+          children.each do |pid, name|
+            print " - #{pid}: #{name}\n"
+          end
+          i = interval
+        end
+        i -= 1
+        sleep @busy_wait_timeout
+      end
     end
 
   end
