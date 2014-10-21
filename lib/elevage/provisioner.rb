@@ -136,7 +136,7 @@ module Elevage
     # Public: Initialize the object
     def initialize
       @running_tasks = 0
-      @max_concurrent = 8
+      @max_concurrent = 4
       @busy_wait_timeout = 5
       @provisioners = Array.new
     end
