@@ -127,7 +127,7 @@ module Elevage
 
   end
 
-  class ProvisionerRunner
+  class ProvisionerRunQueue
 
     attr_reader :running_tasks
     attr_accessor :max_concurrent

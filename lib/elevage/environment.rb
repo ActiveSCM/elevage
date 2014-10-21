@@ -89,8 +89,8 @@ module Elevage
     # Public: method to request provisioning of all or a portion of the environment
     def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
 
-      # Create the ProvisionerRunner to batch up our tasks
-      runner = ProvisionerRunner.new
+      # Create the ProvisionerRunQueue to batch up our tasks
+      runner = ProvisionerRunQueue.new
       runner.max_concurrent = options[:concurrency]
 
       @components.each do |component_name, component_data|
