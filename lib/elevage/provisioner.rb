@@ -168,6 +168,7 @@ module Elevage
         children.delete(pid)
       end
 
+      # Spin each provisioner into its own process
       @provisioners.each do |prov|
 
         # Make sure we're not running more jobs than we're allowed
