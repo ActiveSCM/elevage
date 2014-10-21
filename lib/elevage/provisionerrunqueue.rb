@@ -24,12 +24,6 @@ module Elevage
       # Create an emtpy array for the Provisioners
       @provisioners = Array.new
 
-      # Failed tasks
-      @failed_tasks = Hash.new
-
-      # Lost tasks
-      @lost_tasks = Hash.new
-
     end
 
     # Public: run() - Process the queue
@@ -71,13 +65,6 @@ module Elevage
 
       # Hang around until we collect all the rest of the children
       wait_for_tasks children, :collect
-
-      if children.keys.size > 0
-        puts "The following children got lost:"
-        children.each do |pid, name|
-          puts " - #{pid}: #{name}"
-        end
-      end
 
     end
 
