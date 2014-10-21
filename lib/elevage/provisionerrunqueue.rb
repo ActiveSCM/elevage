@@ -24,6 +24,12 @@ module Elevage
       # Create an emtpy array for the Provisioners
       @provisioners = Array.new
 
+      # Failed tasks
+      @failed_tasks = Hash.new
+
+      # Lost tasks
+      @lost_tasks = Hash.new
+
     end
 
     # Public: run() - Process the queue
@@ -36,9 +42,15 @@ module Elevage
       # Trap SIGCHLD so that the system can notify us whenever
       # one of our child processes terminates.
       trap("CLD") do
-        pid = Process.wait
+        pid = nil
+        begin
+          pid = Process.wait
+        rescue
+          # If a process fails to terminate cleanly, eat the exception
+          # and carry on.
+        end
         @running_tasks -= 1
-        children.delete(pid)
+        children.delete(pid) unless pid.nil?
       end
 
       # Spin each provisioner into its own process
@@ -60,6 +72,13 @@ module Elevage
       # Hang around until we collect all the rest of the children
       wait_for_tasks children, :collect
 
+      if children.keys.size > 0
+        puts "The following children got lost:"
+        children.each do |pid, name|
+          puts " - #{pid}: #{name}"
+        end
+      end
+
     end
 
     private
@@ -74,14 +93,15 @@ module Elevage
 
       status = 'FAILED'
       # Kick off the provisioning process itself
-      # status = 'succeeded' if provisioner.build
+      status = 'succeeded' if provisioner.build
 
       # Or pretend do since we're testing concurrency
-      sleeptime = 60 * rand(5)
-      status = 'Succeeded' if sleep(sleeptime) != 0
+      # sleeptime = 60 * rand(5)
+      # status = 'Succeeded' if sleep(sleeptime) != 0
 
       run_time = Time.now - start_time
       print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
+
     end
 
     # Private: Wait for child tasks to return
