@@ -104,7 +104,7 @@ module Elevage
               provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
 
               # Add it to the queue
-              runner.add_provisioner(provisioner)
+              runner.provisioners << provisioner
 
             end
           end

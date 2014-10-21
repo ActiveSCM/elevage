@@ -130,6 +130,7 @@ module Elevage
   class ProvisionerRunQueue
 
     attr_reader :running_tasks
+    attr_accessor :provisioners
     attr_accessor :max_concurrent
     attr_accessor :busy_wait_timeout
 
@@ -139,11 +140,6 @@ module Elevage
       @max_concurrent = 4
       @busy_wait_timeout = 5
       @provisioners = Array.new
-    end
-
-    # Public: Add a Provisioner to the queue for us to process
-    def add_provisioner (prov)
-      @provisioners << prov
     end
 
     # Public: run() - Process the queue
