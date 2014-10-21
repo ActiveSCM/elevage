@@ -95,10 +95,6 @@ module Elevage
       # Kick off the provisioning process itself
       status = 'succeeded' if provisioner.build
 
-      # Or pretend do since we're testing concurrency
-      # sleeptime = 60 * rand(5)
-      # status = 'Succeeded' if sleep(sleeptime) != 0
-
       run_time = Time.now - start_time
       print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
 
