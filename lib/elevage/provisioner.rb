@@ -44,7 +44,9 @@ module Elevage
       end
 
       # Replace this with something that actually does something.
-      puts "#{knife_cmd}\n\n"
+      # puts "#{knife_cmd}\n\n"
+      # Figure out why this is barfing.
+      system(knife_cmd)
 
     end
 
