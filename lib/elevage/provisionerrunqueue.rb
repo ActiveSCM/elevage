@@ -72,7 +72,7 @@ module Elevage
       start_time = Time.now
       print "#{Time.now} [#$$]: #{provisioner.name} Provisioning...\n"
       status = provisioner.build ? 'succeeded' : 'FAILED'
-      # status = sleep(rand(5)) != 0 ? 'succeeded' : 'FAILED'
+      # status = sleep(rand(5)) != 0 ? 'succeeded' : 'FAILED' # testing process handling
       run_time = Time.now - start_time
       print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
