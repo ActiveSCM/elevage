@@ -107,7 +107,7 @@ module Elevage
     # we're still waiting for.
     def wait_for_tasks(children, state)
       # MAGIC NUMBER: Print a message at least once a minute (60 seconds)
-      i = interval = 60/@busy_wait_timeout
+      i = interval = @build_status_interval/@busy_wait_timeout
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
         if i <= 0
           print "#{Time.now} [#$$]: Waiting for #{children.size} jobs:\n"
