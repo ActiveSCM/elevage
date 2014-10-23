@@ -3,8 +3,14 @@ platform.yml
 results.html
 infrastructure/
 environments/
+logs/
 
+# bundler workings
 Gemfile.lock
+.bundle/
+vendor/
+
+# Misc things
 tmp/
 .idea/
 .rvmrc
