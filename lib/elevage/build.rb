@@ -13,6 +13,7 @@ module Elevage
     class_option :node, type: :numeric, aliases: '-n', desc: DESC_BUILD_NODE
     class_option :concurrency, type: :numeric, aliases: '-C', default: 8, desc: DESC_BUILD_CONCURRENCY
     class_option :logfiles, type: :string, aliases: '-l', default: 'logs', desc: DESC_BUILD_LOGFILES
+    class_option :verbose, type: :boolean, aliases: '-v', default: false
 
     # dry-run
     class_option 'dry-run', type: :boolean, desc: DESC_BUILD_DRY_RUN
