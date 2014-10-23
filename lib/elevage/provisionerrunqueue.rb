@@ -85,18 +85,12 @@ module Elevage
     # Private: provision_task is the method that should execute in the child
     # process, and contain all the logic for the child process.
     def provision_task (provisioner)
-
-      # Get some rudimentary timing
       start_time = Time.now
       print "#{Time.now} [#$$]: #{provisioner.name} Provisioning...\n"
-
-      status = 'FAILED'
-      # Kick off the provisioning process itself
-      status = 'succeeded' if provisioner.build
-
+      status = provisioner.build ? 'succeeded' : 'FAILED'
+      # status = sleep(rand(5)) != 0 ? 'succeeded' : 'FAILED'
       run_time = Time.now - start_time
       print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
-
     end
 
     # Private: Wait for child tasks to return
