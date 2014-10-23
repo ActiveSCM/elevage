@@ -116,6 +116,8 @@ module Elevage
         end
       end
 
+      runner.to_s if options['dry-run']
+
       # Process the queue
       runner.run
 
