@@ -28,33 +28,27 @@ module Elevage
       # Create an emtpy array for the Provisioners
       @provisioners = Array.new
 
+      # Hash to track our child processes with...
+      # Key is PID of child process, value is node name of Provisioner
+      @children = Hash.new
+
     end
 
     # Public: run() - Process the queue
     def run
-
-      # Hash to track our child processes with...
-      # Key is PID of child process, value is node name of Provisioner
-      children = Hash.new
-
       # Spin each provisioner into its own process
       @provisioners.each do |provisioner|
-
         # Make sure we're not running more jobs than we're allowed
-        wait_for_tasks children, :running
-
-        # Start the provisioner in its own child process
+        wait_for_tasks :running
         child_pid = fork do
           provision_task(provisioner)
         end
-        children[child_pid] = provisioner.name
-
+        @children[child_pid] = provisioner.name
         @running_tasks += 1
-
       end
-
       # Hang around until we collect all the rest of the children
-      wait_for_tasks children, :collect
+      wait_for_tasks :collect
+    end
 
     def to_s
       puts "Running Tasks: #{@running_tasks}"
@@ -89,7 +83,7 @@ module Elevage
     # is 0.
     # If we've been waiting at least a minute, print out a notice of what
     # we're still waiting for.
-    def wait_for_tasks(children, state)
+    def wait_for_tasks(state)
       # MAGIC NUMBER: Print a message at least once a minute (60 seconds)
       i = interval = @build_status_interval/@busy_wait_timeout
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
@@ -106,7 +100,7 @@ module Elevage
         # Is it time for a status update yet?
         if i <= 0
           print "#{Time.now} [#$$]: Waiting for #{children.size} jobs:\n"
-          children.each do |pid, name|
+          @children.each do |pid, name|
             print " - #{pid}: #{name}\n"
           end
           i = interval
