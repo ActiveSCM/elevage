@@ -8,6 +8,7 @@ module Elevage
     attr_accessor :provisioners
     attr_accessor :max_concurrent
     attr_accessor :busy_wait_timeout
+    attr_accessor :build_status_interval
 
     # Public: Initialize the object
     def initialize
@@ -20,6 +21,9 @@ module Elevage
 
       # We'll check if we can start a new child every half second
       @busy_wait_timeout = 0.5
+
+      # How often we'll give a status update if nothing is happening
+      @build_status_interval = 60
 
       # Create an emtpy array for the Provisioners
       @provisioners = Array.new
