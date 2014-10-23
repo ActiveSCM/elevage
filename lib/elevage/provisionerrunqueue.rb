@@ -36,7 +36,6 @@ module Elevage
 
     # Public: run() - Process the queue
     def run
-      # Spin each provisioner into its own process
       @provisioners.each do |provisioner|
         # Make sure we're not running more jobs than we're allowed
         wait_for_tasks :running
@@ -48,8 +47,10 @@ module Elevage
       end
       # Hang around until we collect all the rest of the children
       wait_for_tasks :collect
+      puts "#{Time.now} [#{$$}]: Provisioning completed."
     end
 
+    # Public: Display a string representation
     def to_s
       puts "Running Tasks: #{@running_tasks}"
       puts "Max Concurrency: #{@max_concurrent}"
@@ -72,7 +73,7 @@ module Elevage
       start_time = Time.now
       print "#{Time.now} [#$$]: #{provisioner.name} Provisioning...\n"
       status = provisioner.build ? 'succeeded' : 'FAILED'
-      # status = sleep(rand(5)) != 0 ? 'succeeded' : 'FAILED' # testing process handling
+      # status = sleep(rand(120)) != 0 ? 'succeeded' : 'FAILED' # testing process handling
       run_time = Time.now - start_time
       print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
@@ -84,11 +85,12 @@ module Elevage
     # If we've been waiting at least a minute, print out a notice of what
     # we're still waiting for.
     def wait_for_tasks(state)
-      # MAGIC NUMBER: Print a message at least once a minute (60 seconds)
+
       i = interval = @build_status_interval/@busy_wait_timeout
+
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
 
-        # Check to see if any of our children should be reaped
+        # Always having to clean up after our children...
         @children.each do |pid, name|
           childpid = Process.wait(pid, Process::WNOHANG|Process::WUNTRACED)
           unless childpid.nil?
@@ -99,15 +101,20 @@ module Elevage
 
         # Is it time for a status update yet?
         if i <= 0
-          print "#{Time.now} [#$$]: Waiting for #{children.size} jobs:\n"
+          print "#{Time.now} [#$$]: Waiting for #{@children.size} jobs:\n"
           @children.each do |pid, name|
             print " - #{pid}: #{name}\n"
           end
+          # reset the status counter
           i = interval
         end
+
+        # tick the status counter
         i -= 1
         sleep @busy_wait_timeout
+
       end
+
     end
 
   end
