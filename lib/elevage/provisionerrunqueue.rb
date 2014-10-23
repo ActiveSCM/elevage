@@ -66,6 +66,18 @@ module Elevage
       # Hang around until we collect all the rest of the children
       wait_for_tasks children, :collect
 
+    def to_s
+      puts "Running Tasks: #{@running_tasks}"
+      puts "Max Concurrency: #{@max_concurrent}"
+      puts "Wait status interval: #{@build_status_interval}"
+      puts "Current Child processes:"
+      @children.each do |pid, name|
+        puts " - [#{pid}]: #{name}"
+      end
+      puts "Queued Provisioners:"
+      @provisioners.each do |provisioner|
+        puts " - #{provisioner.name}"
+      end
     end
 
     private
