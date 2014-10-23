@@ -33,5 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('chef')
   spec.add_development_dependency('knife-vsphere')
   spec.add_dependency('thor')
+  spec.add_dependency('open4')
 end
 # rubocop:enable all

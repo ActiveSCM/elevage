@@ -1,7 +1,8 @@
 require_relative 'constants'
 require_relative 'platform'
 require_relative 'provisionerrunqueue'
-require 'open3'
+require 'thread'
+require 'open4'
 
 module Elevage
   class Provisioner
@@ -36,10 +37,8 @@ module Elevage
     # Public: Build the node
     def build
 
-      # Get the knife command
       knife_cmd = generate_knife_cmd
 
-      # If we're doing a dry-run, spit out the command and quit
       if @options['dry-run']
         puts "#{knife_cmd}"
         return true
@@ -47,24 +46,33 @@ module Elevage
 
       # Open the logfile for writing
       logfile = File.new("#{@options[:logfiles]}/#{@name}.log",'w')
-      puts "#{Time.now} [#$$]: #{@name}: logging to #{logfile.path}"
+      puts "#{Time.now} [#{$$}]: #{@name}: logging to #{logfile.path}"
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: Provisioning."
 
-      Open3.popen3(knife_cmd) {|stdin, stdout, stderr, wait_thr|
-
-        pid = wait_thr.pid
-
-        stderr.each do |line|
-          line.chomp
-          logfile.print("#{Time.now} [#$$]: #{line}\n")
+      # Execute the knife command, capturing stderr and stdout as they
+      # produce anything, and push it all into a Queue object, which we then
+      # write to the log file as things come available.
+      status = Open4.popen4(knife_cmd) do |pid, stdin, stdout, stderr|
+        sem = Mutex.new
+        err_thread = Thread.new do
+          while (line = stderr.gets)
+            sem.synchronize { logfile.puts "#{Time.now} [#{$$}]: #{line}" }
+          end
         end
-
-        stdout.each do |line|
-          line.chomp
-          logfile.print("#{Time.now} [#$$]: #{line}\n")
+        out_thread = Thread.new do
+          while (line = stdout.gets)
+            sem.synchronize { logfile.puts "#{Time.now} [#{$$}]: #{line}" }
+          end
         end
+        out_thread.join
+        # err_thread.exit
+      end
 
-      }
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
       logfile.close
+
+      # Pass on the knife command's exit status as ours
+      true unless status.exitstatus
 
     end
 
