@@ -37,20 +37,6 @@ module Elevage
       # Key is PID of child process, value is node name of Provisioner
       children = Hash.new
 
-      # Trap SIGCHLD so that the system can notify us whenever
-      # one of our child processes terminates.
-      trap("CLD") do
-        pid = nil
-        begin
-          pid = Process.wait
-        rescue
-          # If a process fails to terminate cleanly, eat the exception
-          # and carry on.
-        end
-        @running_tasks -= 1
-        children.delete(pid) unless pid.nil?
-      end
-
       # Spin each provisioner into its own process
       @provisioners.each do |provisioner|
 
@@ -107,6 +93,17 @@ module Elevage
       # MAGIC NUMBER: Print a message at least once a minute (60 seconds)
       i = interval = @build_status_interval/@busy_wait_timeout
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
+
+        # Check to see if any of our children should be reaped
+        @children.each do |pid, name|
+          childpid = Process.wait(pid, Process::WNOHANG|Process::WUNTRACED)
+          unless childpid.nil?
+            @children.delete(childpid)
+            @running_tasks -= 1
+          end
+        end
+
+        # Is it time for a status update yet?
         if i <= 0
           print "#{Time.now} [#$$]: Waiting for #{children.size} jobs:\n"
           children.each do |pid, name|
