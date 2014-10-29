@@ -88,6 +88,10 @@ module Elevage
 
       i = interval = @build_status_interval/@busy_wait_timeout
 
+      # We are either "running", and waiting for a child to return so we can
+      # dispatch a new child, or we are "collecting", in which case we have
+      # no more children waiting to be dispatched, and are waiting for them
+      # all to finish.
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
 
         # Always having to clean up after our children...
