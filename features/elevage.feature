@@ -15,6 +15,7 @@ Feature: Behavior of CLI with general features and commands
       |list|
       |new|
       |version|
+      |generate|
       |build|
 
   Scenario: Can display gem version
