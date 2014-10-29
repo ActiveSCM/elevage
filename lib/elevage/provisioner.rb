@@ -39,9 +39,12 @@ module Elevage
 
       knife_cmd = generate_knife_cmd
 
+
+      # Modify behavior for dry-run
+      # Echo command to stdout and logfile instead of executing command.
       if @options['dry-run']
         puts "#{knife_cmd}"
-        return true
+        knife_cmd = "echo #{knife_cmd}"
       end
 
       # Open the logfile for writing

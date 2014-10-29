@@ -91,6 +91,8 @@ module Elevage
 
       # Create the ProvisionerRunQueue to batch up our tasks
       runner = ProvisionerRunQueue.new
+
+      # Modify behavior for dry-run (no concurrency)
       unless options['dry-run']
         runner.max_concurrent = options[:concurrency]
       else
