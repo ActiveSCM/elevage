@@ -75,7 +75,7 @@ module Elevage
       logfile.close
 
       # Pass on the knife command's exit status as ours
-      true unless status.exitstatus
+      status.exitstatus ? true : false
 
     end
 
