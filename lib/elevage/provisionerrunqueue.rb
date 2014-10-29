@@ -71,11 +71,11 @@ module Elevage
     # process, and contain all the logic for the child process.
     def provision_task (provisioner)
       start_time = Time.now
-      print "#{Time.now} [#$$]: #{provisioner.name} Provisioning...\n"
-      status = provisioner.build ? 'succeeded' : 'FAILED'
+      print "#{Time.now} [#$$]: #{task.name} Provisioning...\n"
+      status = task.build ? 'succeeded' : 'FAILED'
       # status = sleep(rand(120)) != 0 ? 'succeeded' : 'FAILED' # testing process handling
       run_time = Time.now - start_time
-      print "#{Time.now} [#$$]: #{provisioner.name} #{status} in #{run_time.round(2)} seconds.\n"
+      print "#{Time.now} [#$$]: #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
 
     # Private: Wait for child tasks to return
