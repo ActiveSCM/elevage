@@ -74,8 +74,9 @@ module Elevage
       logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
       logfile.close
 
-      # Pass on the knife command's exit status as ours
-      status.exitstatus ? true : false
+      # Inform our master whether we succeeded or failed. Any non-zero
+      # exit status is a failure, and the details will be in the logfile
+      status.exitstatus ? false : true
 
     end
 
