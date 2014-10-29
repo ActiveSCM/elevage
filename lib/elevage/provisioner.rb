@@ -76,7 +76,7 @@ module Elevage
 
       # Inform our master whether we succeeded or failed. Any non-zero
       # exit status is a failure, and the details will be in the logfile
-      status.exitstatus ? false : true
+      status.exitstatus == 0 ? true : false
 
     end
 
