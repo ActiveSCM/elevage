@@ -91,6 +91,11 @@ module Elevage
   YML_COMPUTE = 'infrastructure/compute.yml'
   ENV_FOLDER = 'environments/'
 
+  # Build defaults
+  BUILD_CONCURRENT_DEFAULT = 4
+  BUILD_CHILD_WAIT_TIMEOUT = 0.5
+  BUILD_STATUS_INTERVAL = 60
+
   # error messages
   ERR = {
     platform_exists: 'elevage: platform files already exist!',

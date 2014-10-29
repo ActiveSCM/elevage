@@ -17,13 +17,13 @@ module Elevage
       @running_tasks = 0
 
       # By default we'll run 4 things at once
-      @max_concurrent = 4
+      @max_concurrent = BUILD_CONCURRENT_DEFAULT
 
       # We'll check if we can start a new child every half second
-      @busy_wait_timeout = 0.5
+      @busy_wait_timeout = BUILD_CHILD_WAIT_TIMEOUT
 
       # How often we'll give a status update if nothing is happening
-      @build_status_interval = 60
+      @build_status_interval = BUILD_STATUS_INTERVAL
 
       # Create an emtpy array for the Provisioners
       @provisioners = Array.new
