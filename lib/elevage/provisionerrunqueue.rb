@@ -38,15 +38,15 @@ module Elevage
     def run
       @provisioners.each do |provisioner|
         # Make sure we're not running more jobs than we're allowed
-        wait_for_tasks :running
+        wait_for_tasks
         child_pid = fork do
-          provision_task(provisioner)
+          provision_task task: provisioner
         end
         @children[child_pid] = provisioner.name
         @running_tasks += 1
       end
       # Hang around until we collect all the rest of the children
-      wait_for_tasks :collect
+      wait_for_tasks state: :collect
       puts "#{Time.now} [#{$$}]: Provisioning completed."
     end
 
@@ -69,7 +69,7 @@ module Elevage
 
     # Private: provision_task is the method that should execute in the child
     # process, and contain all the logic for the child process.
-    def provision_task (provisioner)
+    def provision_task (task: nil)
       start_time = Time.now
       print "#{Time.now} [#$$]: #{task.name} Provisioning...\n"
       status = task.build ? 'succeeded' : 'FAILED'
@@ -84,7 +84,7 @@ module Elevage
     # is 0.
     # If we've been waiting at least a minute, print out a notice of what
     # we're still waiting for.
-    def wait_for_tasks(state)
+    def wait_for_tasks(state: :running)
 
       i = interval = @build_status_interval/@busy_wait_timeout
 
