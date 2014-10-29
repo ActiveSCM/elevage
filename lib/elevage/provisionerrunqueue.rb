@@ -95,7 +95,7 @@ module Elevage
       while @running_tasks >= @max_concurrent && state.eql?(:running) || @running_tasks > 0 && state.eql?(:collect) do
 
         # Always having to clean up after our children...
-        @children.each do |pid, name|
+        @children.keys.each do |pid|
           childpid = Process.wait(pid, Process::WNOHANG|Process::WUNTRACED)
           unless childpid.nil?
             @children.delete(childpid)
