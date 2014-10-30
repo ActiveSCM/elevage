@@ -1,12 +1,13 @@
+require 'english'
+require 'thread'
+require 'open4'
 require_relative 'constants'
 require_relative 'platform'
 require_relative 'provisionerrunqueue'
-require 'thread'
-require 'open4'
 
 module Elevage
+  # Provisioner class
   class Provisioner
-
     attr_accessor :name
     attr_accessor :component
     attr_accessor :instance
@@ -15,14 +16,12 @@ module Elevage
 
     # Set us up to build the specified instance of component
     def initialize(name, component, instance, environment, options)
-
       @name = name
       @component = component
       @instance = instance
       @environment = environment
       @options = options
       @vcenter = @environment.vcenter
-
     end
 
     def to_s
@@ -35,10 +34,9 @@ module Elevage
     end
 
     # Public: Build the node
+    # rubocop:disable MethodLength, LineLength
     def build
-
       knife_cmd = generate_knife_cmd
-
 
       # Modify behavior for dry-run
       # Echo command to stdout and logfile instead of executing command.
@@ -48,44 +46,46 @@ module Elevage
       end
 
       # Open the logfile for writing
-      logfile = File.new("#{@options[:logfiles]}/#{@name}.log",'w')
-      puts "#{Time.now} [#{$$}]: #{@name}: logging to #{logfile.path}"
-      logfile.puts "#{Time.now} [#{$$}]: #{@name}: Provisioning."
+      logfile = File.new("#{@options[:logfiles]}/#{@name}.log", 'w')
+      puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: logging to #{logfile.path}"
+      logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: Provisioning."
 
       # Execute the knife command, capturing stderr and stdout as they
       # produce anything, and push it all into a Queue object, which we then
       # write to the log file as things come available.
-      status = Open4.popen4(knife_cmd) do |pid, stdin, stdout, stderr|
+      status = Open4.popen4(knife_cmd) do |_pid, _stdin, stdout, stderr|
         sem = Mutex.new
-        err_thread = Thread.new do
+        # Set and forget the thread for stderror...
+        # err_thread = Thread.new do
+        Thread.new do
           while (line = stderr.gets)
-            sem.synchronize { logfile.puts "#{Time.now} [#{$$}]: #{line}" }
+            sem.synchronize { logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{line}" }
           end
         end
         out_thread = Thread.new do
           while (line = stdout.gets)
-            sem.synchronize { logfile.puts "#{Time.now} [#{$$}]: #{line}" }
+            sem.synchronize { logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{line}" }
           end
         end
         out_thread.join
         # err_thread.exit
       end
 
-      logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
+      logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: status: #{status}"
       logfile.close
 
       # Inform our master whether we succeeded or failed. Any non-zero
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
-
     end
+    # rubocop:enable MethodLength, LineLength
 
     private
 
     # Private: Build the knife command that will do the provisioning.
+    # rubocop:disable MethodLength, LineLength
     def generate_knife_cmd
-
-      knife_cmd = "knife vsphere vm clone --vsinsecure --start"
+      knife_cmd = 'knife vsphere vm clone --vsinsecure --start'
 
       # Authentication and host
       knife_cmd << " --vsuser #{@options[:vsuser]}"
@@ -103,8 +103,8 @@ module Elevage
       knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
 
       # VM Hardware
-      knife_cmd << " --ccpu #{@component['compute']['cpu'].to_s}"
-      knife_cmd << " --cram #{@component['compute']['ram'].to_s}"
+      knife_cmd << " --ccpu #{@component['compute']['cpu']}"
+      knife_cmd << " --cram #{@component['compute']['ram']}"
 
       # VM Networking
       knife_cmd << " --cvlan '#{@component['network']['vlanid']}'"
@@ -112,7 +112,7 @@ module Elevage
       knife_cmd << " --cdnsips #{@vcenter['dnsips'].join(',')}"
       knife_cmd << " --cgw #{@component['network']['gateway']}"
       knife_cmd << " --chostname #{@name}"
-      knife_cmd << " --ctz #{@vcenter['timezone'].to_s}"
+      knife_cmd << " --ctz #{@vcenter['timezone']}"
 
       # AD Domain and DNS Suffix
       domain = @vcenter['domain']
@@ -121,7 +121,7 @@ module Elevage
       knife_cmd << " --cdnssuffix #{domain}"
 
       # Knife Bootstrap options
-      knife_cmd << " --bootstrap"
+      knife_cmd << ' --bootstrap'
       knife_cmd << " --template-file '#{@options['template-file']}'"
 
       # knife fqdn specifies how knife will connect to the target (in this case by IP)
@@ -151,12 +151,7 @@ module Elevage
       vmname << '.' << @environment.name if @vcenter['appendenv']
       vmname << @vcenter['domain']
       knife_cmd << " #{vmname}"
-
-      # Assert
-      knife_cmd
-
     end
-
+    # rubocop:enable MethodLength, LineLength
   end
-
 end

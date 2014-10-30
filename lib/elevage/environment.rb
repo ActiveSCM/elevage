@@ -86,14 +86,15 @@ module Elevage
       puts @nodenameconvention.to_yaml
     end
 
-    # Public: method to request provisioning of all or a portion of the environment
+    # Public: method to request provisioning of all or a portion
+    # of the environment
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
     def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
-
       # Create the ProvisionerRunQueue to batch up our tasks
       runner = ProvisionerRunQueue.new
 
       # Modify behavior for dry-run (no concurrency)
-      unless options['dry-run']
+      if !options['dry-run']
         runner.max_concurrent = options[:concurrency]
       else
         puts "Dry run requested, forcing concurrency to '1'."
@@ -101,20 +102,19 @@ module Elevage
       end
 
       @components.each do |component_name, component_data|
-        if type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
-          1.upto(component_data['addresses'].count) do |component_instance|
-            if instance == component_instance || instance == nil
+        next unless type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
 
-              instance_name = node_name(component_name, component_instance)
+        1.upto(component_data['addresses'].count) do |component_instance|
+          next unless instance == component_instance || instance.nil?
 
-              # Create the Provisioner
-              provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
+          instance_name = node_name(component_name, component_instance)
 
-              # Add it to the queue
-              runner.provisioners << provisioner
+          # Create the Provisioner
+          provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
 
-            end
-          end
+          # Add it to the queue
+          runner.provisioners << provisioner
+
         end
       end
 
@@ -122,8 +122,8 @@ module Elevage
 
       # Process the queue
       runner.run
-
     end
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     private
 
