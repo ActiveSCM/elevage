@@ -1,4 +1,4 @@
-require 'english'
+require 'English'
 require 'thread'
 require 'open4'
 require_relative 'constants'
