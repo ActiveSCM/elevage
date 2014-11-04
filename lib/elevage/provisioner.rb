@@ -1,4 +1,3 @@
-require 'English'
 require 'thread'
 require 'open4'
 require_relative 'constants'
@@ -34,7 +33,7 @@ module Elevage
     end
 
     # Public: Build the node
-    # rubocop:disable MethodLength, LineLength
+    # rubocop:disable MethodLength, LineLength, GlobalVars
     def build
       knife_cmd = generate_knife_cmd
 
@@ -47,8 +46,8 @@ module Elevage
 
       # Open the logfile for writing
       logfile = File.new("#{@options[:logfiles]}/#{@name}.log", 'w')
-      puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: logging to #{logfile.path}"
-      logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: Provisioning."
+      puts "#{Time.now} [#{$$}]: #{@name}: logging to #{logfile.path}"
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: Provisioning."
 
       # Execute the knife command, capturing stderr and stdout as they
       # produce anything, and push it all into a Queue object, which we then
@@ -59,26 +58,26 @@ module Elevage
         # err_thread = Thread.new do
         Thread.new do
           while (line = stderr.gets)
-            sem.synchronize { logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{line}" }
+            sem.synchronize { logfile.puts line }
           end
         end
         out_thread = Thread.new do
           while (line = stdout.gets)
-            sem.synchronize { logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{line}" }
+            sem.synchronize { logfile.puts line }
           end
         end
         out_thread.join
         # err_thread.exit
       end
 
-      logfile.puts "#{Time.now} [#{$PROCESS_ID}]: #{@name}: status: #{status}"
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
       logfile.close
 
       # Inform our master whether we succeeded or failed. Any non-zero
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
     end
-    # rubocop:enable MethodLength, LineLength
+    # rubocop:enable MethodLength, LineLength, GlobalVars
 
     private
 

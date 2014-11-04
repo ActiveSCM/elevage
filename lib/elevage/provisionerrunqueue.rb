@@ -1,4 +1,3 @@
-require 'English'
 require_relative 'constants'
 
 module Elevage
@@ -33,7 +32,7 @@ module Elevage
       end
       # Hang around until we collect all the rest of the children
       wait_for_tasks state: :collect
-      puts "#{Time.now} [#{$PROCESS_ID}]: Provisioning completed."
+      puts "#{Time.now} [#{$$}]: Provisioning completed."
     end
 
     # Public: Display a string representation
@@ -55,19 +54,19 @@ module Elevage
 
     private
 
-    # rubocop:disable LineLength
+    # rubocop:disable LineLength, GlobalVars
     # Private: provision_task is the method that should execute in the child
     # process, and contain all the logic for the child process.
     def provision_task(task: nil)
       start_time = Time.now
-      print "#{Time.now} [#{$PROCESS_ID}]: #{task.name} Provisioning...\n"
+      print "#{Time.now} [#{$$}]: #{task.name} Provisioning...\n"
       status = task.build ? 'succeeded' : 'FAILED'
       run_time = Time.now - start_time
-      print "#{Time.now} [#{$PROCESS_ID}]: #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
+      print "#{Time.now} [#{$$}]: #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
-    # rubocop:enable LineLength
+    # rubocop:enable LineLength, GlobalVars
 
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, GlobalVars
     # Private: Wait for child tasks to return
     # Since our trap for SIGCHLD will clean up the @running_tasks count and
     # the children hash, here we can just keep checking until @running_tasks
@@ -94,7 +93,7 @@ module Elevage
 
         # Is it time for a status update yet?
         if i <= 0
-          print "#{Time.now} [#{$PROCESS_ID}]: Waiting for #{@children.size} jobs:\n"
+          print "#{Time.now} [#{$$}]: Waiting for #{@children.size} jobs:\n"
           @children.each do |pid, name|
             print " - #{pid}: #{name}\n"
           end
@@ -107,6 +106,6 @@ module Elevage
         sleep @busy_wait_timeout
       end
     end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, GlobalVars
   end
 end
