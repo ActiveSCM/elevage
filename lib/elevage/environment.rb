@@ -39,8 +39,8 @@ module Elevage
       @components.each do |component, _config|
         (1..@components[component]['count']).each do |i|
           nodes += @components[component]['addresses'][i - 1].ljust(18, ' ') +
-                    node_name(component, i) + @vcenter['domain'] + '   ' +
-                    @components[component]['runlist'].to_s + "\n"
+                   node_name(component, i) + @vcenter['domain'] + '   ' +
+                   @components[component]['runlist'].to_s + "\n"
         end
       end
       nodes
