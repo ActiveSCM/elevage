@@ -2,3 +2,5 @@ AllCops:
   Exclude:
     - Guardfile
     - vendor/**/*
+Style/SpecialGlobalVars:
+  Enabled: false

@@ -46,8 +46,8 @@ module Elevage
 
       # Open the logfile for writing
       logfile = File.new("#{@options[:logfiles]}/#{@name}.log", 'w')
-      puts "#{Time.now} #{@name}: logging to #{logfile.path}"
-      logfile.puts "#{Time.now} #{@name}: Provisioning."
+      puts "#{Time.now} [#{$$}]: #{@name}: logging to #{logfile.path}"
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: Provisioning."
 
       # Execute the knife command, capturing stderr and stdout as they
       # produce anything, and push it all into a Queue object, which we then
@@ -70,7 +70,7 @@ module Elevage
         # err_thread.exit
       end
 
-      logfile.puts "#{Time.now} #{@name}: status: #{status}"
+      logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
       logfile.close
 
       # Inform our master whether we succeeded or failed. Any non-zero

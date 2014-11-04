@@ -32,7 +32,7 @@ module Elevage
       end
       # Hang around until we collect all the rest of the children
       wait_for_tasks state: :collect
-      puts "#{Time.now} Provisioning completed."
+      puts "#{Time.now} [#{$$}]: Provisioning completed."
     end
 
     # Public: Display a string representation
@@ -59,10 +59,10 @@ module Elevage
     # process, and contain all the logic for the child process.
     def provision_task(task: nil)
       start_time = Time.now
-      print "#{Time.now} #{task.name} Provisioning...\n"
+      print "#{Time.now} [#{$$}]: #{task.name} Provisioning...\n"
       status = task.build ? 'succeeded' : 'FAILED'
       run_time = Time.now - start_time
-      print "#{Time.now} #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
+      print "#{Time.now} [#{$$}]: #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
     # rubocop:enable LineLength, GlobalVars
 
@@ -93,7 +93,7 @@ module Elevage
 
         # Is it time for a status update yet?
         if i <= 0
-          print "#{Time.now} Waiting for #{@children.size} jobs:\n"
+          print "#{Time.now} [#{$$}]: Waiting for #{@children.size} jobs:\n"
           @children.each do |pid, name|
             print " - #{pid}: #{name}\n"
           end
