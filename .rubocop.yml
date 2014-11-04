@@ -2,5 +2,7 @@ AllCops:
   Exclude:
     - Guardfile
     - vendor/**/*
+Metrics/AbcSize:
+  Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
