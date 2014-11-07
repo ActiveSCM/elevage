@@ -21,6 +21,7 @@ module Elevage
 
     # Public: run() - Process the queue
     def run
+      puts "#{Time.now} [#{$$}]: Provisioning started."
       @provisioners.each do |provisioner|
         # Make sure we're not running more jobs than we're allowed
         wait_for_tasks
