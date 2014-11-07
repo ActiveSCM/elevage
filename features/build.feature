@@ -229,7 +229,9 @@ Feature: Provisioning platform vm's
     Queued Provisioners:
      - qa-mq-01w
     """
-#    And the file "logs/qa-mq-01w.log" should contain:
-#    """
-#    knife vsphere vm clone --vsinsecure --start --vsuser svc_provisioner --vspass changeme --vshost www.google.com --folder Corporate/Platform Services/Templates --template centos32g-6.5-x86_64-20140714 --vsdc WCDC NonProd --dest-folder Corporate/Platform Services/default_app --datastore NonProd_Cor_25 --resource-pool App-Web Linux/Corporate --ccpu 2 --cram 12 --cvlan DEV_APP_NET --cips 10.10.161.121/20 --cdnsips 10.10.10.5,10.10.10.6 --cgw 10.10.160.1 --chostname qa-mq-01w --ctz 085 --cdomain app.dev.corp.local --cdnssuffix app.dev.corp.local --bootstrap --template-file chef-rull.erb --fqdn 10.10.161.121 --ssh-user knife --identity-file knife_rsa --node-name qa-mq-01w.app.dev.corp.local --run-list role[loc_uswest],role[base],role[aw-mq] --environment qa --bootstrap-version 11.4.0 qa-mq-01w.app.dev.corp.local
-#    """
+    And the file "logs/qa-mq-01w.log" should contain:
+    """
+    qa-mq-01w: Provisioning.
+    knife vsphere vm clone --vsinsecure --start --vsuser svc_provisioner --vspass changeme --vshost www.google.com --folder Corporate/Platform Services/Templates --template centos32g-6.5-x86_64-20140714 --vsdc WCDC NonProd --dest-folder Corporate/Platform Services/default_app --resource-pool App-Web Linux/Corporate --datastore NonProd_Cor_25 --ccpu 2 --cram 12 --cvlan DEV_APP_NET --cips 10.10.161.121/20 --cdnsips 10.10.10.5,10.10.10.6 --cgw 10.10.160.1 --chostname qa-mq-01w --ctz 085 --cdomain app.dev.corp.local --cdnssuffix app.dev.corp.local --bootstrap --template-file chef-full.erb --fqdn 10.10.161.121 --ssh-user knife --identity-file knife_rsa --node-name qa-mq-01w.app.dev.corp.local --run-list role[loc_uswest],role[base],role[aw-mq] --environment qa --bootstrap-version 11.4.0 qa-mq-01w.app.dev.corp.local
+    qa-mq-01w: exit status: 0
+    """
