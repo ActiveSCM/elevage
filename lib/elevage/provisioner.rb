@@ -87,10 +87,10 @@ module Elevage
     # Private: Determine which datastore to use for this specific
     # provisioning.
     def select_datastore
-      unless @options['dry-run']
-        @vcenter['datastores'][rand(@vcenter['datastores'].count)]
-      else
+      if @options['dry-run']
         @vcenter['datastores'][0]
+      else
+        @vcenter['datastores'][rand(@vcenter['datastores'].count)]
       end
     end
 
