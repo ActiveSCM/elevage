@@ -26,7 +26,7 @@ module Elevage
     class_option 'vspass', default: 'changeme', type: :string, desc: DESC_BUILD_VSPASS
     class_option 'ssh-user', default: 'knife', type: :string, aliases: '-x', desc: DESC_BUILD_SSH_USER
     class_option 'ssh-key', default: 'knife_rsa', type: :string, aliases: '-i', desc: DESC_BUILD_SSH_KEY
-    class_option 'template-file', default: 'chef-rull.erb', type: :string, aliases: '-t', desc: DESC_BUILD_TEMPLATE_FILE
+    class_option 'template-file', default: 'chef-full.erb', type: :string, aliases: '-t', desc: DESC_BUILD_TEMPLATE_FILE
     class_option 'bootstrap-version', default: '11.4.0', type: :string, aliases: '-b', desc: DESC_BUILD_BOOTSTRAP_VERSION
     # rubocop:enable LineLength
 
