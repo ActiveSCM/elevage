@@ -81,7 +81,11 @@ module Elevage
     # Private: Determine which datastore to use for this specific
     # provisioning.
     def select_datastore
-      @vcenter['datastores'][rand(@vcenter['datastores'].count)]
+      unless @options['dry-run']
+        @vcenter['datastores'][rand(@vcenter['datastores'].count)]
+      else
+        @vcenter['datastores'][0]
+      end
     end
 
     # Private: Build the knife command that will do the provisioning.
