@@ -16,3 +16,5 @@ tmp/
 .rvmrc
 .*sw[p-z]
 .ruby-version
+coverage/.last_run.json
+coverage/.resultset.json
