@@ -54,7 +54,7 @@ module Elevage
       # write to the log file as things come available.
       status = Open4.popen4(knife_cmd) do |_pid, _stdin, stdout, stderr|
         sem = Mutex.new
-        # Set and forget the thread for stderror...
+        # Set and forget the thread for stderr...
         # err_thread = Thread.new do
         Thread.new do
           while (line = stderr.gets)
