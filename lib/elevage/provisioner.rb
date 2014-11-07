@@ -39,12 +39,17 @@ module Elevage
 
       # Modify behavior for dry-run
       # Echo command to stdout and logfile instead of executing command.
-      knife_cmd = "echo #{knife_cmd}" if @options['dry-run']
+      if @options['dry-run']
+        puts knife_cmd
+        knife_cmd = "echo #{knife_cmd}"
+      end
 
       # Open the logfile for writing
       logfile = File.new("#{@options[:logfiles]}/#{@name}.log", 'w')
-      puts "#{Time.now} [#{$$}]: #{@name}: logging to #{logfile.path}"
-      logfile.puts "#{Time.now} [#{$$}]: #{@name}: Provisioning."
+
+      stamp = @options['dry-run'] ? '' : "#{Time.now} [#{$$}]: "
+      puts "#{stamp}#{@name}: logging to #{logfile.path}"
+      logfile.puts "#{stamp}#{@name}: Provisioning."
 
       # Execute the knife command, capturing stderr and stdout as they
       # produce anything, and push it all into a Queue object, which we then
@@ -67,7 +72,8 @@ module Elevage
         # err_thread.exit
       end
 
-      logfile.puts "#{Time.now} [#{$$}]: #{@name}: status: #{status}"
+      stamp = @options['dry-run'] ? '' : "#{Time.now} [#{$$}]: "
+      logfile.puts "#{stamp}#{@name}: exit status: #{status.exitstatus}"
       logfile.close
 
       # Inform our master whether we succeeded or failed. Any non-zero
