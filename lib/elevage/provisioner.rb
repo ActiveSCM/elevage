@@ -39,10 +39,7 @@ module Elevage
 
       # Modify behavior for dry-run
       # Echo command to stdout and logfile instead of executing command.
-      if @options['dry-run']
-        puts "#{knife_cmd}"
-        knife_cmd = "echo #{knife_cmd}"
-      end
+      knife_cmd = "echo #{knife_cmd}" if @options['dry-run']
 
       # Open the logfile for writing
       logfile = File.new("#{@options[:logfiles]}/#{@name}.log", 'w')
