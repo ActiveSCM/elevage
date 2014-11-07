@@ -81,6 +81,12 @@ module Elevage
 
     private
 
+    # Private: Determine which datastore to use for this specific
+    # provisioning.
+    def select_datastore
+      @vcenter['datastores'][rand(@vcenter['datastores'].count)]
+    end
+
     # Private: Build the knife command that will do the provisioning.
     # rubocop:disable MethodLength, LineLength
     def generate_knife_cmd
@@ -98,8 +104,8 @@ module Elevage
       # vSphere destination information (where the clone will end up)
       knife_cmd << " --vsdc '#{@vcenter['datacenter']}'"
       knife_cmd << " --dest-folder '#{@vcenter['destfolder']}'"
-      knife_cmd << " --datastore '#{@vcenter['datastores'][rand(@vcenter['datastores'].count)]}'"
       knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
+      knife_cmd << " --datastore '#{select_datastore}'"
 
       # VM Hardware
       knife_cmd << " --ccpu #{@component['compute']['cpu']}"
