@@ -20,6 +20,7 @@ module Elevage
     end
 
     # Public: run() - Process the queue
+    # rubocop:disable MethodLength
     def run
       puts "#{Time.now} [#{$$}]: Provisioning started."
       @provisioners.each do |provisioner|
@@ -35,6 +36,7 @@ module Elevage
       wait_for_tasks state: :collect
       puts "#{Time.now} [#{$$}]: Provisioning completed."
     end
+    # rubocop:enable MethodLength
 
     # Public: Display a string representation
     # rubocop:disable MethodLength

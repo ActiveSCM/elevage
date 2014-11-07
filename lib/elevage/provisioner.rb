@@ -33,7 +33,7 @@ module Elevage
     end
 
     # Public: Build the node
-    # rubocop:disable MethodLength, LineLength, GlobalVars
+    # rubocop:disable MethodLength, LineLength, GlobalVars, CyclomaticComplexity
     def build
       knife_cmd = generate_knife_cmd
 
@@ -74,7 +74,7 @@ module Elevage
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
     end
-    # rubocop:enable MethodLength, LineLength, GlobalVars
+    # rubocop:enable MethodLength, LineLength, GlobalVars, CyclomaticComplexity
 
     private
 
