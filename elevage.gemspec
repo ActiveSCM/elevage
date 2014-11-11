@@ -30,6 +30,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('guard-rubocop')
   spec.add_development_dependency('growl')
   spec.add_development_dependency('coveralls')
+  spec.add_development_dependency('chef')
+  spec.add_development_dependency('knife-vsphere')
   spec.add_dependency('thor')
+  spec.add_dependency('open4')
+  spec.add_dependency('english')
 end
 # rubocop:enable all

@@ -9,6 +9,22 @@ module Elevage
   DESC_HEALTH = 'Health check of the Platform desired state yml files'
   DESC_GENERATE = 'Generate new environment file based on platform template'
   DESC_BUILD = 'Provision vms in an environment definition'
+  DESC_BUILD_DRY_RUN = 'Do not actually do anything, just display the commands that would be run.'
+  DESC_BUILD_ENV = 'Name of the platform environment to provision'
+  DESC_BUILD_USER = 'User name for vSphere'
+  DESC_BUILD_PASSWD = 'Password for vSphere'
+  DESC_BUILD_ALL = 'Build everything for the named environment'
+  DESC_BUILD_TIER = 'Build everything for the specified tier in the named environment'
+  DESC_BUILD_COMPONENT = 'Build all nodes for the specified component'
+  DESC_BUILD_NODE = 'Build the single specified node'
+  DESC_BUILD_VSUSER = 'Username for vSphere'
+  DESC_BUILD_VSPASS = 'Password for vSphere'
+  DESC_BUILD_SSH_USER = 'Unix username for ssh for chef-client bootstrap (must have sudo NOPASSWD access for root)'
+  DESC_BUILD_SSH_KEY = 'Path to SSH private key for ssh username for key-based authentication'
+  DESC_BUILD_TEMPLATE_FILE = 'File to be used as the chef-client bootstrap template script'
+  DESC_BUILD_BOOTSTRAP_VERSION = 'Version of chef-client to bootstrap on node'
+  DESC_BUILD_CONCURRENCY = 'Maximum number of simultaneous provisioning tasks'
+  DESC_BUILD_LOGFILES = 'Path where log files should be written'
 
   # available List commands
   LIST_CMDS = %w(environments tiers pools components network vcenter compute)
@@ -74,6 +90,11 @@ module Elevage
   YML_NETWORK = 'infrastructure/network.yml'
   YML_COMPUTE = 'infrastructure/compute.yml'
   ENV_FOLDER = 'environments/'
+
+  # Build defaults
+  BUILD_CONCURRENT_DEFAULT = 4
+  BUILD_CHILD_WAIT_TIMEOUT = 0.5
+  BUILD_STATUS_INTERVAL = 60
 
   # error messages
   ERR = {

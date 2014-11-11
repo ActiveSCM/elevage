@@ -3,9 +3,18 @@ platform.yml
 results.html
 infrastructure/
 environments/
+logs/
 
+# bundler workings
 Gemfile.lock
+.bundle/
+vendor/
+
+# Misc things
 tmp/
 .idea/
 .rvmrc
+.*sw[p-z]
 .ruby-version
+coverage/.last_run.json
+coverage/.resultset.json

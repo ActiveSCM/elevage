@@ -3,6 +3,8 @@ require 'resolv'
 
 require_relative 'constants'
 require_relative 'platform'
+require_relative 'provisioner'
+
 # rubocop:disable ClassLength
 module Elevage
   # Environment class
@@ -37,8 +39,8 @@ module Elevage
       @components.each do |component, _config|
         (1..@components[component]['count']).each do |i|
           nodes += @components[component]['addresses'][i - 1].ljust(18, ' ') +
-                    node_name(component, i) + @vcenter['domain'] + '   ' +
-                    @components[component]['runlist'].to_s + "\n"
+                   node_name(component, i) + @vcenter['domain'] + '   ' +
+                   @components[component]['runlist'].to_s + "\n"
         end
       end
       nodes
@@ -83,6 +85,45 @@ module Elevage
       puts @components.to_yaml
       puts @nodenameconvention.to_yaml
     end
+
+    # Public: method to request provisioning of all or a portion
+    # of the environment
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
+    def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
+      # Create the ProvisionerRunQueue to batch up our tasks
+      runner = ProvisionerRunQueue.new
+
+      # Modify behavior for dry-run (no concurrency)
+      if !options['dry-run']
+        runner.max_concurrent = options[:concurrency]
+      else
+        puts "Dry run requested, forcing concurrency to '1'."
+        runner.max_concurrent = 1
+      end
+
+      @components.each do |component_name, component_data|
+        next unless type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
+
+        1.upto(component_data['addresses'].count) do |component_instance|
+          next unless instance == component_instance || instance.nil?
+
+          instance_name = node_name(component_name, component_instance)
+
+          # Create the Provisioner
+          provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
+
+          # Add it to the queue
+          runner.provisioners << provisioner
+
+        end
+      end
+
+      runner.to_s if options['dry-run']
+
+      # Process the queue
+      runner.run
+    end
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     private
 
