@@ -45,11 +45,45 @@ Check health of platform definition files.
 ```bash
 $ elevage health
 ```
+
 Generate a new environment file.  Comments within the template files describe necessary customizations.
 
 ```bash
 $ elevage generate <environment name>
 ```
+
+Provision nodes from platform and environment definition
+
+```bash
+$ elevage build <params>
+
+Options:
+  -a, [--all], [--no-all]                      # Build everything for the named environment
+  -t, [--tier=TIER]                            # Build everything for the specified tier in the named environment
+  -c, [--component=COMPONENT]                  # Build all nodes for the specified component
+  -n, [--node=N]                               # Build the single specified node
+  -C, [--concurrency=N]                        # Maximum number of simultaneous provisioning tasks
+                                               # Default: 8
+  -l, [--logfiles=LOGFILES]                    # Path where log files should be written
+                                               # Default: logs
+  -v, [--verbose], [--no-verbose]
+      [--dry-run], [--no-dry-run]              # Do not actually do anything
+                                               # Just display the commands that would be run.
+      [--vsuser=VSUSER]                        # Username for vSphere
+                                               # Default: svc_provisioner
+      [--vspass=VSPASS]                        # Password for vSphere
+                                               # Default: changeme
+  -x, [--ssh-user=SSH-USER]                    # Unix username for ssh for chef-client bootstrap
+                                               # (must have sudo NOPASSWD access for root)
+                                               # Default: knife
+  -i, [--ssh-key=SSH-KEY]                      # Path to SSH private key for ssh username for key-based authentication
+                                               # Default: knife_rsa
+  -t, [--template-file=TEMPLATE-FILE]          # File to be used as the chef-client bootstrap template script
+                                               # Default: chef-full.erb
+  -b, [--bootstrap-version=BOOTSTRAP-VERSION]  # Version of chef-client to bootstrap on node
+                                               # Default: 11.4.0
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/ActiveSCM/elevage/fork )

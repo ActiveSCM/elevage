@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.8.7.4
+    &mdash; Documentation by YARD 0.8.7.6
   
 </title>
 
@@ -108,6 +108,36 @@ describe necessary customizations.</p>
 
 <pre class="code ruby"><code class="ruby">$ elevage generate &lt;environment name&gt;</code></pre>
 
+<p>Provision nodes from platform and environment definition</p>
+
+<pre class="code ruby"><code class="ruby">$ elevage build &lt;params&gt;
+
+Options:
+  -a, [--all], [--no-all]                      # Build everything for the named environment
+  -t, [--tier=TIER]                            # Build everything for the specified tier in the named environment
+  -c, [--component=COMPONENT]                  # Build all nodes for the specified component
+  -n, [--node=N]                               # Build the single specified node
+  -C, [--concurrency=N]                        # Maximum number of simultaneous provisioning tasks
+                                               # Default: 8
+  -l, [--logfiles=LOGFILES]                    # Path where log files should be written
+                                               # Default: logs
+  -v, [--verbose], [--no-verbose]
+      [--dry-run], [--no-dry-run]              # Do not actually do anything
+                                               # Just display the commands that would be run.
+      [--vsuser=VSUSER]                        # Username for vSphere
+                                               # Default: svc_provisioner
+      [--vspass=VSPASS]                        # Password for vSphere
+                                               # Default: changeme
+  -x, [--ssh-user=SSH-USER]                    # Unix username for ssh for chef-client bootstrap
+                                               # (must have sudo NOPASSWD access for root)
+                                               # Default: knife
+  -i, [--ssh-key=SSH-KEY]                      # Path to SSH private key for ssh username for key-based authentication
+                                               # Default: knife_rsa
+  -t, [--template-file=TEMPLATE-FILE]          # File to be used as the chef-client bootstrap template script
+                                               # Default: chef-full.erb
+  -b, [--bootstrap-version=BOOTSTRAP-VERSION]  # Version of chef-client to bootstrap on node
+                                               # Default: 11.4.0</code></pre>
+
 <h2 id="label-Contributing">Contributing</h2>
 <ol><li>
 <p>Fork it ( <a
@@ -148,9 +178,9 @@ limitations under the License.</code></pre>
 </div></div>
 
     <div id="footer">
-  Generated on Sun Sep 28 15:33:31 2014 by
+  Generated on Tue Nov 11 17:39:22 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.2).
 </div>
 
   </body>

@@ -6,7 +6,7 @@
 <title>
   Module: Elevage
   
-    &mdash; Documentation by YARD 0.8.7.4
+    &mdash; Documentation by YARD 0.8.7.6
   
 </title>
 
@@ -80,7 +80,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/elevage.rb<span class="defines">,<br />
-  lib/elevage/new.rb,<br /> lib/elevage/build.rb,<br /> lib/elevage/health.rb,<br /> lib/elevage/runner.rb,<br /> lib/elevage/version.rb,<br /> lib/elevage/generate.rb,<br /> lib/elevage/platform.rb,<br /> lib/elevage/constants.rb,<br /> lib/elevage/environment.rb</span>
+  lib/elevage/new.rb,<br /> lib/elevage/build.rb,<br /> lib/elevage/runner.rb,<br /> lib/elevage/health.rb,<br /> lib/elevage/version.rb,<br /> lib/elevage/generate.rb,<br /> lib/elevage/platform.rb,<br /> lib/elevage/constants.rb,<br /> lib/elevage/provisioner.rb,<br /> lib/elevage/environment.rb,<br /> lib/elevage/provisionerrunqueue.rb</span>
 </dd>
   
 </dl>
@@ -103,7 +103,7 @@
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Elevage/Build.html" title="Elevage::Build (class)">Build</a></span>, <span class='object_link'><a href="Elevage/CLI.html" title="Elevage::CLI (class)">CLI</a></span>, <span class='object_link'><a href="Elevage/Environment.html" title="Elevage::Environment (class)">Environment</a></span>, <span class='object_link'><a href="Elevage/Generate.html" title="Elevage::Generate (class)">Generate</a></span>, <span class='object_link'><a href="Elevage/Health.html" title="Elevage::Health (class)">Health</a></span>, <span class='object_link'><a href="Elevage/New.html" title="Elevage::New (class)">New</a></span>, <span class='object_link'><a href="Elevage/Platform.html" title="Elevage::Platform (class)">Platform</a></span>, <span class='object_link'><a href="Elevage/Runner.html" title="Elevage::Runner (class)">Runner</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Elevage/Build.html" title="Elevage::Build (class)">Build</a></span>, <span class='object_link'><a href="Elevage/CLI.html" title="Elevage::CLI (class)">CLI</a></span>, <span class='object_link'><a href="Elevage/Environment.html" title="Elevage::Environment (class)">Environment</a></span>, <span class='object_link'><a href="Elevage/Generate.html" title="Elevage::Generate (class)">Generate</a></span>, <span class='object_link'><a href="Elevage/Health.html" title="Elevage::Health (class)">Health</a></span>, <span class='object_link'><a href="Elevage/New.html" title="Elevage::New (class)">New</a></span>, <span class='object_link'><a href="Elevage/Platform.html" title="Elevage::Platform (class)">Platform</a></span>, <span class='object_link'><a href="Elevage/Provisioner.html" title="Elevage::Provisioner (class)">Provisioner</a></span>, <span class='object_link'><a href="Elevage/ProvisionerRunQueue.html" title="Elevage::ProvisionerRunQueue (class)">ProvisionerRunQueue</a></span>, <span class='object_link'><a href="Elevage/Runner.html" title="Elevage::Runner (class)">Runner</a></span>
     
   
 </p>
@@ -162,6 +162,86 @@
           
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Provision vms in an environment definition</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_DRY_RUN-constant" class="">DESC_BUILD_DRY_RUN =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Do not actually do anything, just display the commands that would be run.</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_ENV-constant" class="">DESC_BUILD_ENV =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Name of the platform environment to provision</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_USER-constant" class="">DESC_BUILD_USER =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>User name for vSphere</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_PASSWD-constant" class="">DESC_BUILD_PASSWD =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Password for vSphere</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_ALL-constant" class="">DESC_BUILD_ALL =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build everything for the named environment</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_TIER-constant" class="">DESC_BUILD_TIER =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build everything for the specified tier in the named environment</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_COMPONENT-constant" class="">DESC_BUILD_COMPONENT =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build all nodes for the specified component</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_NODE-constant" class="">DESC_BUILD_NODE =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build the single specified node</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_VSUSER-constant" class="">DESC_BUILD_VSUSER =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Username for vSphere</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_VSPASS-constant" class="">DESC_BUILD_VSPASS =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Password for vSphere</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_SSH_USER-constant" class="">DESC_BUILD_SSH_USER =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Unix username for ssh for chef-client bootstrap (must have sudo NOPASSWD access for root)</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_SSH_KEY-constant" class="">DESC_BUILD_SSH_KEY =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Path to SSH private key for ssh username for key-based authentication</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_TEMPLATE_FILE-constant" class="">DESC_BUILD_TEMPLATE_FILE =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>File to be used as the chef-client bootstrap template script</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_BOOTSTRAP_VERSION-constant" class="">DESC_BUILD_BOOTSTRAP_VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Version of chef-client to bootstrap on node</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_CONCURRENCY-constant" class="">DESC_BUILD_CONCURRENCY =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Maximum number of simultaneous provisioning tasks</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DESC_BUILD_LOGFILES-constant" class="">DESC_BUILD_LOGFILES =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Path where log files should be written</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
         <dt id="LIST_CMDS-constant" class="">LIST_CMDS =
           <div class="docstring">
@@ -345,6 +425,32 @@
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>environments/</span><span class='tstring_end'>&#39;</span></span></pre></dd>
       
+        <dt id="BUILD_CONCURRENT_DEFAULT-constant" class="">BUILD_CONCURRENT_DEFAULT =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Build defaults</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>4</span></pre></dd>
+      
+        <dt id="BUILD_CHILD_WAIT_TIMEOUT-constant" class="">BUILD_CHILD_WAIT_TIMEOUT =
+          
+        </dt>
+        <dd><pre class="code"><span class='float'>0.5</span></pre></dd>
+      
+        <dt id="BUILD_STATUS_INTERVAL-constant" class="">BUILD_STATUS_INTERVAL =
+          
+        </dt>
+        <dd><pre class="code"><span class='int'>60</span></pre></dd>
+      
         <dt id="ERR-constant" class="">ERR =
           <div class="docstring">
   <div class="discussion">
@@ -386,9 +492,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Sep 28 15:33:31 2014 by
+  Generated on Tue Nov 11 17:39:23 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.4 (ruby-2.1.2).
+  0.8.7.6 (ruby-2.1.2).
 </div>
 
   </body>

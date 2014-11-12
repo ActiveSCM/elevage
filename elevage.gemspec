@@ -7,10 +7,10 @@ require 'elevage/version'
 Gem::Specification.new do |spec|
   spec.name          = 'elevage'
   spec.version       = Elevage::VERSION
-  spec.authors       = ['Nic Cheneweth']
-  spec.email         = ['Nic.Cheneweth@activenetwork.com']
-  spec.summary       = 'Summary description'
-  spec.description   = 'Longer description'
+  spec.authors       = ['Nic Cheneweth','Gregory Ruiz-ade']
+  spec.email         = ['Nic.Cheneweth@activenetwork.com','gregory.ruiz-ade@activenetwork.com']
+  spec.summary       = 'vSphere provisioning'
+  spec.description   = 'Command line tool to automate the provision and bootstrap of chef managed nodes, tiers, pools, and whole environments in vSphere'
   spec.homepage      = ''
   spec.license       = 'Apache 2.0'
 
