@@ -86,13 +86,25 @@ module Elevage
 
     # Private: Determine which datastore to use for this specific
     # provisioning.
+    # rubocop:disable LineLength
     def select_datastore
-      if @options['dry-run']
-        @vcenter['datastores'][0]
-      else
-        @vcenter['datastores'][rand(@vcenter['datastores'].count)]
-      end
+      knife_cmd = 'knife vsphere datastore maxfree --vsinsecure'
+
+      # Authentication and host
+      knife_cmd << " --vsuser #{@options[:vsuser]}"
+      knife_cmd << " --vspass #{@options[:vspass]}"
+      knife_cmd << " --vshost #{@vcenter['host']}"
+
+      # vSphere destination information (where the clone will end up)
+      knife_cmd << " --vsdc '#{@vcenter['datacenter']}'"
+
+      # datastore prefix
+      knife_cmd << " --regex #{@vcenter['datastore']}"
+
+      # get result and clean up
+      @options['dry-run'] ? @vcenter['datastore'] : `#{knife_cmd}`.to_s.gsub!("\n", '')
     end
+    # rubocop:enable LineLength
 
     # Private: Build the knife command that will do the provisioning.
     # rubocop:disable MethodLength, LineLength
