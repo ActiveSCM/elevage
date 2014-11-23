@@ -93,7 +93,7 @@ Options:
 5. Create a new Pull Request
 
 ### License and Authors
-- [Nic Cheneweth](Cheneweth)
+- [Nic Cheneweth](https://github.com/Cheneweth)
 - [Gregory Ruiz-Ade](https://github.com/gkra)
 
 ```
