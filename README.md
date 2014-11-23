@@ -93,7 +93,8 @@ Options:
 5. Create a new Pull Request
 
 ### License and Authors
-- Authors:: Nic Cheneweth (<nic.cheneweth@activenetwork.com>), (Gregory Ruiz-Ade <gregory.ruiz-ade@activenetwork.com>)
+- @Cheneweth
+- @gkra
 
 ```
 Copyright 2014 Active Network, LLC
