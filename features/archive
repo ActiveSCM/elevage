@@ -84,13 +84,7 @@
         resourcepool: 'App-Web Linux/Corporate - o4'
         appendenv: true
         appenddomain: true
-        datastores:
-          - NonProd_Cor_PlaSer_25_111
-          - NonProd_Cor_PlaSer_26_111
-          - NonProd_Cor_PlaSer_38_111
-          - NonProd_Cor_PlaSer_39_111
-          - NonProd_Cor_PlaSer_40_111
-          - NonProd_Cor_PlaSer_41_111
+        datastore: 'NonProd_Cor_PlaSer'
 
         domain: dev.activenetwork.com
         dnsips:
@@ -101,20 +95,7 @@
         <<: *vcenter
 
         datacenter: 'WCDC Prod'
-        datastores:
-          - Prod_Cor_PlaSer_03_237
-          - Prod_Cor_PlaSer_04_237
-          - Prod_Cor_PlaSer_06F9_473
-          - Prod_Cor_PlaSer_06F9_473
-          - Prod_Cor_PlaSer_080D_473
-          - Prod_Cor_PlaSer_0812_473
-          - Prod_Cor_PlaSer_08E0_473
-          - Prod_Cor_PlaSer_08EA_473
-          - Prod_Cor_PlaSer_08F4_473
-          - Prod_Cor_PlaSer_0B89_473
-          - Prod_Cor_PlaSer_0B93_473
-          - Prod_Cor_PlaSer_847_473
-          - Prod_Cor_PlaSer_851_473
+        datastore: 'Prod_Cor_PlaSer'
 
         domain: active.tan
         dnsips:
