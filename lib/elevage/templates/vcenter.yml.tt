@@ -31,6 +31,7 @@ vcenter:
   #        resourcepool: 'App-Web Linux/Corporate'
   #        appendenv: true
   #        appenddomain: true
+  #        appendtier: false
   #        datastore: 'NonProd_Cor_PlaSer'
   #
   #        domain: dev.corp.local
@@ -60,6 +61,7 @@ vcenter:
     resourcepool:
     appendenv: false
     appenddomain: false
+    appendtier: false
     datastore:
 
     domain:
