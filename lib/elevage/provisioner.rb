@@ -60,12 +60,18 @@ module Elevage
         # err_thread = Thread.new do
         Thread.new do
           while (line = stderr.gets)
-            sem.synchronize { logfile.puts line }
+            sem.synchronize do
+              logfile.puts line
+              logfile.sync
+            end
           end
         end
         out_thread = Thread.new do
           while (line = stdout.gets)
-            sem.synchronize { logfile.puts line }
+            sem.synchronize do
+              logfile.puts line
+              logfile.sync
+            end
           end
         end
         out_thread.join
