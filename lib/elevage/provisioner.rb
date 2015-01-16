@@ -180,7 +180,7 @@ module Elevage
       # appended. The only optional bit is including the chef environment in the name.
       vmname = String.new(@name)
       vmname << '.' << @environment.name if @vcenter['appendenv']
-      vmname << @vcenter['domain']
+      vmname << '.' << @vcenter['domain']
       knife_cmd << " #{vmname}"
     end
     # rubocop:enable MethodLength, LineLength
