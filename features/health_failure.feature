@@ -89,8 +89,7 @@ Feature: HEALTH check of erroneous platform definition file items
         resourcepool:
         appendenv: incorrect
         appenddomain:
-        datastores:
-          -
+        datastore:
 
         domain:
         dnsips:

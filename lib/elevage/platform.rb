@@ -60,7 +60,7 @@ module Elevage
         health += MSG[:invalid_destfolder] if v['destfolder'].nil?
         health += MSG[:invalid_appendenv] unless v['appendenv'] == true || v['appendenv'] == false
         health += MSG[:invalid_appenddomain] unless v['appenddomain'] == true || v['appenddomain'] == false
-        health += MSG[:empty_datastores] unless v['datastores'].all?
+        health += MSG[:empty_datastores] if v['datastore'].nil?
         health += MSG[:invalid_domain] if v['domain'].nil?
         v['dnsips'].each { |ip| health += MSG[:invalid_ip] unless Resolv::IPv4::Regex.match(ip) }
       end

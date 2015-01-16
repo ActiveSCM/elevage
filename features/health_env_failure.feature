@@ -84,11 +84,7 @@ Feature: HEALTH check of erroneous environment-only definition file items
         resourcepool: 'App-Web Linux/Corporate'
         appendenv: true
         appenddomain: true
-        datastores:
-          - NonProd_Cor_25
-          - NonProd_Cor_26
-          - NonProd_Cor_38
-          - NonProd_Cor_39
+        datastore: 'NonProd_Cor'
 
         domain: dev.corp.local
         dnsips:
@@ -99,9 +95,7 @@ Feature: HEALTH check of erroneous environment-only definition file items
         <<: *vcenter
 
         datacenter: 'WCDC Prod'
-        datastores:
-          - Prod_Cor_03
-          - Prod_Cor_04
+        datastore: 'Prod_Cor'
 
         domain: corp.local
         dnsips:

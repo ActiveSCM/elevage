@@ -13,7 +13,7 @@ vcenter:
   # resourcepool  vcenter resource pool for the provisioned vms
   # appendenv     if true the destfolder path will be appended with the environment name
   # appenddomain  if true the domain will be pre-pended with environment name
-  # datastores    array list of available datastores. Elevage will attempt to evenly distribute
+  # datastore     prefix of desired datastorecluster.  knife vsphere datastorecluster maxfree will determine
   # domain        domain for fqdn of host
   # dnsips        ips of dns servers
   #
@@ -31,11 +31,7 @@ vcenter:
   #        resourcepool: 'App-Web Linux/Corporate'
   #        appendenv: true
   #        appenddomain: true
-  #        datastores:
-  #          - NonProd_Cor_25
-  #          - NonProd_Cor_26
-  #          - NonProd_Cor_38
-  #          - NonProd_Cor_39
+  #        datastore: 'NonProd_Cor_PlaSer'
   #
   #        domain: dev.corp.local
   #        dnsips:
@@ -46,9 +42,7 @@ vcenter:
   #        <<: *vcenter
   #
   #        datacenter: 'WCDC Prod'
-  #        datastores:
-  #          - Prod_Cor_03
-  #          - Prod_Cor_04
+  #        datastore: 'Prod_Cor_PlaSer'
   #
   #        domain: corp.local
   #        dnsips:
@@ -66,8 +60,7 @@ vcenter:
     resourcepool:
     appendenv: false
     appenddomain: false
-    datastores:
-      -
+    datastore:
 
     domain:
     dnsips:
