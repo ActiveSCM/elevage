@@ -161,8 +161,9 @@ module Elevage
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
-      nodename << '.' << @environment.name if @vcenter['appendenv']
-      nodename << @vcenter['domain'] if @vcenter['appenddomain']
+      # TODO: Not sure this should have been put here.
+      # nodename << '.' << @environment.name if @vcenter['appendenv']
+      nodename << '.' << @vcenter['domain'] if @vcenter['appenddomain']
       knife_cmd << " --node-name '#{nodename}'"
 
       # Assign the run_list
