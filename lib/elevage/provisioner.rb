@@ -163,9 +163,7 @@ module Elevage
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
-      # TODO: Not sure this should have been put here.
-      # nodename << '.' << @environment.name if @vcenter['appendenv']
-      nodename << '.' << @vcenter['domain'] if @vcenter['appenddomain']
+      nodename << @vcenter['domain'] if @vcenter['appenddomain']
       knife_cmd << " --node-name '#{nodename}'"
 
       # Assign the run_list
@@ -174,15 +172,15 @@ module Elevage
       # Assign the Chef environment
       knife_cmd << " --environment '#{@environment.name}'"
 
-      # What version of chef-client are we bootstrapping (not sure this is necessary)
+      # What version of chef-client are we bootstrapping (not sure
+      # this is necessary)
       knife_cmd << " --bootstrap-version #{@options['bootstrap-version']}"
 
       # Finally, the name of the VM as seen by vSphere.
-      # Whereas nodename will optionally append the domain name, VM names should *always* have the domain name
-      # appended. The only optional bit is including the chef environment in the name.
+      # Whereas nodename will optionally append the domain name, VM names
+      # should *always* have the domain name appended.
       vmname = String.new(@name)
-      vmname << '.' << @environment.name if @vcenter['appendenv']
-      vmname << '.' << @vcenter['domain']
+      vmname << @vcenter['domain']
       knife_cmd << " #{vmname}"
     end
     # rubocop:enable MethodLength, LineLength
