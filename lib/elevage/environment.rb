@@ -106,15 +106,11 @@ module Elevage
 
         1.upto(component_data['addresses'].count) do |component_instance|
           next unless instance == component_instance || instance.nil?
-
           instance_name = node_name(component_name, component_instance)
-
           # Create the Provisioner
           provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
-
           # Add it to the queue
           runner.provisioners << provisioner
-
         end
       end
 
@@ -138,7 +134,7 @@ module Elevage
     #             platform definition files
     #
     # Returns Hash: updated env_yaml hash
-    # rubocop:disable MethodLength, LineLength
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
     def build_env(env, env_yaml, platform)
       # substitute vcenter resources from vcenter.yml for location defined in environment file
       env_yaml['vcenter'] = platform.vcenter[env_yaml['vcenter']]
@@ -173,7 +169,7 @@ module Elevage
       end
       env_yaml
     end
-    # rubocop:enable MethodLength, LineLength
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
     # Private: construct a node hostname from parameters
     #

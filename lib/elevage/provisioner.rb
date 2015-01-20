@@ -6,6 +6,7 @@ require_relative 'provisionerrunqueue'
 
 module Elevage
   # Provisioner class
+  # rubocop:disable ClassLength
   class Provisioner
     attr_accessor :name
     attr_accessor :component
@@ -185,4 +186,5 @@ module Elevage
     end
     # rubocop:enable MethodLength, LineLength
   end
+  # rubocop:enable ClassLength
 end
