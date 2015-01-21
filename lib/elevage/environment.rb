@@ -106,15 +106,11 @@ module Elevage
 
         1.upto(component_data['addresses'].count) do |component_instance|
           next unless instance == component_instance || instance.nil?
-
           instance_name = node_name(component_name, component_instance)
-
           # Create the Provisioner
           provisioner = Elevage::Provisioner.new(instance_name, component_data, component_instance, self, options)
-
           # Add it to the queue
           runner.provisioners << provisioner
-
         end
       end
 
@@ -138,7 +134,7 @@ module Elevage
     #             platform definition files
     #
     # Returns Hash: updated env_yaml hash
-    # rubocop:disable MethodLength, LineLength
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
     def build_env(env, env_yaml, platform)
       # substitute vcenter resources from vcenter.yml for location defined in environment file
       env_yaml['vcenter'] = platform.vcenter[env_yaml['vcenter']]
@@ -150,7 +146,12 @@ module Elevage
       # component info. The Build command will run error checking before building, but to support
       #  the debugging value of the list command only hash.merge! is performed at this point.
       platform.components.each do |component, _config|
-        env_yaml['components'][component].merge!(platform.components[component]) { |_key, v1, _v2| v1 } unless env_yaml['components'][component].nil?
+        begin
+          env_yaml['components'][component].merge!(platform.components[component]) { |_key, v1, _v2| v1 } unless env_yaml['components'][component].nil?
+        rescue => error
+          puts "ERROR: build_env: could not merge component \"#{component}\" for environment \"#{env}\"!"
+          raise error
+        end
       end
       # substitute network and components for specified values from platform definition files
       env_yaml['components'].each do |component, _config|
@@ -168,7 +169,7 @@ module Elevage
       end
       env_yaml
     end
-    # rubocop:enable MethodLength, LineLength
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
     # Private: construct a node hostname from parameters
     #

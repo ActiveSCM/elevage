@@ -6,6 +6,7 @@ require_relative 'provisionerrunqueue'
 
 module Elevage
   # Provisioner class
+  # rubocop:disable ClassLength
   class Provisioner
     attr_accessor :name
     attr_accessor :component
@@ -60,12 +61,18 @@ module Elevage
         # err_thread = Thread.new do
         Thread.new do
           while (line = stderr.gets)
-            sem.synchronize { logfile.puts line }
+            sem.synchronize do
+              logfile.puts line
+              logfile.sync
+            end
           end
         end
         out_thread = Thread.new do
           while (line = stdout.gets)
-            sem.synchronize { logfile.puts line }
+            sem.synchronize do
+              logfile.puts line
+              logfile.sync
+            end
           end
         end
         out_thread.join
@@ -122,7 +129,9 @@ module Elevage
 
       # vSphere destination information (where the clone will end up)
       knife_cmd << " --vsdc '#{@vcenter['datacenter']}'"
-      knife_cmd << " --dest-folder '#{@vcenter['destfolder']}'"
+      knife_cmd << " --dest-folder '#{@vcenter['destfolder']}"
+      knife_cmd << "/#{@component['tier']}" if @vcenter['appendtier']
+      knife_cmd << '\''
       knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
       knife_cmd << " --datastore '#{select_datastore}'"
 
@@ -155,7 +164,6 @@ module Elevage
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
-      nodename << '.' << @environment.name if @vcenter['appendenv']
       nodename << @vcenter['domain'] if @vcenter['appenddomain']
       knife_cmd << " --node-name '#{nodename}'"
 
@@ -165,17 +173,18 @@ module Elevage
       # Assign the Chef environment
       knife_cmd << " --environment '#{@environment.name}'"
 
-      # What version of chef-client are we bootstrapping (not sure this is necessary)
+      # What version of chef-client are we bootstrapping (not sure
+      # this is necessary)
       knife_cmd << " --bootstrap-version #{@options['bootstrap-version']}"
 
       # Finally, the name of the VM as seen by vSphere.
-      # Whereas nodename will optionally append the domain name, VM names should *always* have the domain name
-      # appended. The only optional bit is including the chef environment in the name.
+      # Whereas nodename will optionally append the domain name, VM names
+      # should *always* have the domain name appended.
       vmname = String.new(@name)
-      vmname << '.' << @environment.name if @vcenter['appendenv']
       vmname << @vcenter['domain']
       knife_cmd << " #{vmname}"
     end
     # rubocop:enable MethodLength, LineLength
   end
+  # rubocop:enable ClassLength
 end
