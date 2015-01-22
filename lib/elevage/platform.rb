@@ -5,6 +5,8 @@ require 'English'
 
 module Elevage
   # Platform class
+  #
+  # This represents the overall description of the platform
   class Platform
     attr_accessor :name, :description
     attr_accessor :environments
@@ -17,6 +19,9 @@ module Elevage
     attr_accessor :compute
 
     # rubocop:disable MethodLength
+
+    # Create a new platform object
+    # @return [Elevage::Platform]
     def initialize
       fail unless platform_files_exists?
       platform = YAML.load_file(YML_PLATFORM).fetch('platform')
@@ -34,6 +39,9 @@ module Elevage
     # rubocop:enable MethodLength
 
     # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity, AmbiguousOperator
+
+    # Determine whether the platform definition is considered correct
+    # return [Boolean]
     def healthy?
       health = ''
       # Array of string checked for empty values
@@ -85,8 +93,8 @@ module Elevage
 
     private
 
-    # Private: confirms existence of the standard platform definition files
-    # Returns true if all standard files present
+    # Confirm existence of the standard platform definition files
+    # @return [Boolean] True if all standard files present
     def platform_files_exists?
       fail(IOError, ERR[:no_platform_file]) unless File.file?(YML_PLATFORM)
       fail(IOError, ERR[:no_vcenter_file]) unless File.file?(YML_VCENTER)

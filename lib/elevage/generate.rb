@@ -11,13 +11,14 @@ module Elevage
     end
 
     # rubocop:disable MethodLength, CyclomaticComplexity, PerceivedComplexity
+
+    # Process the `generate` command to create a new environment file
     def create_environment
       fail IOError, ERR[:env_exists] if File.file?(ENV_FOLDER + env + '.yml')
       platform = Elevage::Platform.new
       platformfile = File.open(YML_PLATFORM, 'r')
-      #
-      # The things from here forward I would rather have in the template file
-      # but that is even uglier, trying to get formatting correct
+      # TODO: The things from here forward I would rather have in the template
+      # file but that is even uglier, trying to get formatting correct
       # will need to investigate some POWER erb skills to clean this up
       @env_pools = ''
       @env_components = ''

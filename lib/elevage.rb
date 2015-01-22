@@ -17,13 +17,17 @@ module Elevage
     map '-v' => :version
 
     desc 'version', DESC_VERSION
+    # Display the version
     def version
       puts VERSION
     end
 
     desc 'list ITEM', DESC_LIST
     method_option :nodes, aliases: '-n', desc: DESC_LIST_NODES
+
     # rubocop:disable LineLength
+
+    # Process the `list` command
     def list(item)
       # errors handled in class methods
       if LIST_CMDS.include?(item)
@@ -34,6 +38,7 @@ module Elevage
         puts options[:nodes] ? environment.list_nodes : environment
       end
     end
+
     # rubocop:enable LineLength
 
     # subcommand in Thor called as registered class
