@@ -1,7 +1,9 @@
 require_relative 'constants'
 
 module Elevage
-  # ProvisionerRunQueue class
+  # ProvisionerRunQueue
+  #
+  # Manage multiple queued and running `Elevage::Provisioner` objects/threads
   class ProvisionerRunQueue
     attr_reader :running_tasks
     attr_accessor :provisioners
@@ -9,7 +11,8 @@ module Elevage
     attr_accessor :busy_wait_timeout
     attr_accessor :build_status_interval
 
-    # Public: Initialize the object
+    # Create a new run queue
+    # @return [Elevage::ProvisionerRunQueue]
     def initialize
       @running_tasks = 0 # We start out with nothing running
       @max_concurrent = BUILD_CONCURRENT_DEFAULT
@@ -19,8 +22,9 @@ module Elevage
       @children = {}
     end
 
-    # Public: run() - Process the queue
     # rubocop:disable MethodLength
+
+    # Process the queue
     def run
       puts "#{Time.now} [#{$$}]: Provisioning started."
       @provisioners.each do |provisioner|
@@ -38,8 +42,10 @@ module Elevage
     end
     # rubocop:enable MethodLength
 
-    # Public: Display a string representation
     # rubocop:disable MethodLength
+
+    # Display a string representation
+    # @return [String]
     def to_s
       puts "Running Tasks: #{@running_tasks}"
       puts "Max Concurrency: #{@max_concurrent}"
@@ -58,8 +64,12 @@ module Elevage
     private
 
     # rubocop:disable LineLength, GlobalVars
-    # Private: provision_task is the method that should execute in the child
+
+    # Private
+    #
+    # provision_task is the method that should execute in the child
     # process, and contain all the logic for the child process.
+    # @param [Elevage::Provisioner] task a Provisioner from the queue
     def provision_task(task: nil)
       start_time = Time.now
       print "#{Time.now} [#{$$}]: #{task.name} Provisioning...\n"
@@ -70,12 +80,17 @@ module Elevage
     # rubocop:enable LineLength, GlobalVars
 
     # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, GlobalVars
-    # Private: Wait for child tasks to return
+
+    # Private
+    #
+    # Wait for child tasks to return
     # Since our trap for SIGCHLD will clean up the @running_tasks count and
     # the children hash, here we can just keep checking until @running_tasks
     # is 0.
     # If we've been waiting at least a minute, print out a notice of what
     # we're still waiting for.
+    # @param [String] state Disposition; whether we are still `:running` or
+    # are trying to `:collect` still-running tasks
     def wait_for_tasks(state: :running)
       i = interval = @build_status_interval / @busy_wait_timeout
 

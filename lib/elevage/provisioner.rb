@@ -5,8 +5,10 @@ require_relative 'platform'
 require_relative 'provisionerrunqueue'
 
 module Elevage
-  # Provisioner class
   # rubocop:disable ClassLength
+
+  # Provisioner is responsible for the actual execution of the commands to
+  # create the requested virtual machine.
   class Provisioner
     attr_accessor :name
     attr_accessor :component
@@ -14,7 +16,14 @@ module Elevage
     attr_accessor :environment
     attr_accessor :vcenter
 
-    # Set us up to build the specified instance of component
+    # Create the Provisioner object for the requested virtual machine
+    # @param [String] name Name of the node to create
+    # @param [String] component Name of the platform component node is part of
+    # @param [String] instance Number representing which instance of
+    # `component` this node is
+    # @param [String] environment Name of the environnment we're provisioning to
+    # @param [String] options Thor `options` hash
+    # @return [Elevage::Provisioner]
     def initialize(name, component, instance, environment, options)
       @name = name
       @component = component
@@ -24,6 +33,8 @@ module Elevage
       @vcenter = @environment.vcenter
     end
 
+    # Stringify the Provisioner
+    # @return [String]
     def to_s
       puts "Name: #{@name}"
       puts "Instance: #{@instance}"
@@ -33,8 +44,9 @@ module Elevage
       puts @environment.to_yaml
     end
 
-    # Public: Build the node
     # rubocop:disable MethodLength, LineLength, GlobalVars, CyclomaticComplexity
+
+    # Build the the virtual machine
     def build
       knife_cmd = generate_knife_cmd
 
@@ -91,9 +103,12 @@ module Elevage
 
     private
 
-    # Private: Determine which datastore to use for this specific
-    # provisioning.
     # rubocop:disable LineLength
+
+    # Private
+    #
+    # Determine which datastore to use for this specific provisioning.
+    # @return [String] Name of datastore
     def select_datastore
       knife_cmd = 'knife vsphere datastore maxfree --vsinsecure'
 
@@ -113,8 +128,12 @@ module Elevage
     end
     # rubocop:enable LineLength
 
-    # Private: Build the knife command that will do the provisioning.
     # rubocop:disable MethodLength, LineLength
+
+    # Private
+    #
+    # Build the knife command that will do the provisioning.
+    # @return [String] knife command line string
     def generate_knife_cmd
       knife_cmd = 'knife vsphere vm clone --vsinsecure --start'
 

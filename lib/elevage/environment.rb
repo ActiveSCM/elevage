@@ -5,8 +5,10 @@ require_relative 'constants'
 require_relative 'platform'
 require_relative 'provisioner'
 
-# rubocop:disable ClassLength
+# Refer to README.md for use instructions
 module Elevage
+  # rubocop:disable ClassLength
+
   # Environment class
   class Environment
     attr_accessor :name
@@ -15,6 +17,10 @@ module Elevage
     attr_accessor :nodenameconvention
 
     # rubocop:disable LineLength
+
+    # Construct a new environment object.
+    # @param [String] env Name of the environment to construct
+    # @return [Elevage::Environment]
     def initialize(env)
       # Confirm environment has been defined in the platform
       platform = Elevage::Platform.new
@@ -32,8 +38,9 @@ module Elevage
     end
     # rubocop:enable LineLength
 
-    # Public: Environment class method
+    # List the nodes for this environment.
     # Returns multiline string = IP, fqdn, runlist
+    # @return [String] Expanded node list
     def list_nodes
       nodes =  @vcenter['destfolder'].to_s + "\n"
       @components.each do |component, _config|
@@ -47,6 +54,9 @@ module Elevage
     end
 
     # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
+
+    # Is the environment healthy?
+    # @return [Boolean] Health status of the environment
     def healthy?
       platform = Elevage::Platform.new
       health = ''
@@ -78,7 +88,8 @@ module Elevage
     end
     # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
-    # Public: basic class puts string output
+    # Override to string-ify the environment
+    # @return [String]
     def to_s
       puts @name
       puts @vcenter.to_yaml
@@ -86,10 +97,16 @@ module Elevage
       puts @nodenameconvention.to_yaml
     end
 
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
+
     # Public: method to request provisioning of all or a portion
     # of the environment
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
-    def provision(type: all, tier: nil, component: nil, instance: nil, options: nil)
+    # @param [String] type What type of provisioning, `:all`, `:tier`, `:component`, or `:node`
+    # @param [String] tier Name of the environment tier, when `type` is `:tier`
+    # @param [String] component Name of component to provision, when `type` is `:component` or `:node`
+    # @param [String] instance Numerical instance of the `component`, when `type` is `:node` (i.e., 1, 2, 3)
+    # @param [String] options Thor-provided `options` hash
+    def provision(type: :all, tier: nil, component: nil, instance: nil, options: nil)
       # Create the ProvisionerRunQueue to batch up our tasks
       runner = ProvisionerRunQueue.new
 
@@ -123,18 +140,18 @@ module Elevage
 
     private
 
-    # Private: updates env hash with necessary info from Platform files.
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+
+    # Updates env hash with necessary info from Platform files.
     # This is a blend of env and Platform info needed to construct
     # Environment class object
     #
-    # Params
-    #   env: string passed from commend line, simple environment name
-    #   env_yaml: hash from requested environment.yml
-    #   platform: Platform class object built from standard
-    #             platform definition files
-    #
-    # Returns Hash: updated env_yaml hash
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+    # @param [String] env String passed from commend line, simple environment
+    # name
+    # @param [Hash] env_yaml Hash from requested environment.yml
+    # @param [Elevage::Platform] platform Platform class object built from
+    # standard platform definition files
+    # @return [Hash] Updated env_yaml hash
     def build_env(env, env_yaml, platform)
       # substitute vcenter resources from vcenter.yml for location defined in environment file
       env_yaml['vcenter'] = platform.vcenter[env_yaml['vcenter']]
@@ -171,14 +188,13 @@ module Elevage
     end
     # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
 
-    # Private: construct a node hostname from parameters
-    #
-    # Params
-    #   component: Hash, environment components
-    #   instance: integer, passed from loop iterator
-    #
-    # Returns hostname as String
     # rubocop:disable MethodLength
+
+    # Construct a node hostname from parameters
+    #
+    # @param [Hash] component Hash, environment components
+    # @param [integer] instance integer, passed from loop iterator
+    # @return [String] hostname
     def node_name(component, instance)
       name = ''
       @nodenameconvention.each do |i|
@@ -199,22 +215,24 @@ module Elevage
     end
     # rubocop:enable MethodLength
 
-    # Private: Constructs the node runlist from parameters
-    #
-    # Params
-    #   list: Array of strings from component runlist hash key value
-    #   componentrole:  String value from component, performs simple
-    #                   string substitution of for component string
-    #                   in component role string
-    #   component: String, component name
-    #
-    # Returns runlist as String
     # rubocop:disable LineLength
+
+    # Constructs the node runlist from parameters
+    #
+    # @param [Array] list Array of strings from component runlist hash key
+    # value
+    # @param [String] componentrole String value from component, performs
+    # simple string substitution of component string in component role string
+    # @param [String] component Name of the component
+    # @return [String] Chef runlist
     def run_list(list, componentrole, component)
       list.join(',') + (componentrole ? ',' + componentrole.gsub('#', component) : '')
     end
     # rubocop:enable LineLength
 
+    # Ensure the environment file exists
+    # @param [String] env_file Environment file name
+    # @return [Boolean] True if `env_file` exists
     def env_file_exists?(env_file)
       fail(IOError, ERR[:no_environment_file]) unless File.file?(env_file)
       true

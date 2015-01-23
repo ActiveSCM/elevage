@@ -10,6 +10,27 @@
 [coveralls]: https://coveralls.io/r/ActiveSCM/elevage
 [inch]: http://inch-ci.org/github/ActiveSCM/elevage
 
+`elevage` is a command-line tool that allows you to define an application
+platform in a set of plain-text (YAML) configuration files and use those
+definitions to provision the virtual machines on which the application will
+live. The virtual machine will also be converged with the Chef runlists as
+defined your configuration files.
+
+Currently, `elevage` relies upon Chef's `knife` command and the `knife-vsphere`
+plugin, and has been tested with various releases of Chef 11 and 12 as well
+as the ChefDK.
+
+#### External Dependencies
+
+You must have the `knife` command installed on your path, and the
+`knife-vsphere` plugin installed. Your options are to:
+
+- Install [Chef Client](https://www.chef.io/download-chef-client/) and then
+install `knife-vsphere` via Chef's embedded ruby's `gem`
+- Install [ChefDK](https://downloads.chef.io/chef-dk/) and then
+`chef gem install knife-vsphere`
+- Install Chef via rubygems with `gem install chef knife-vsphere`
+
 #### Installation
 
 elevage is distributed as a ruby gem

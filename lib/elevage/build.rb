@@ -1,7 +1,8 @@
 require 'thor/group'
 
 module Elevage
-  # Create new platform definition files and environments folder structure
+  # Create new platform definition files and environments folder structure,
+  # used by the command line `build` option
   class Build < Thor::Group
     include Thor::Actions
 
@@ -35,6 +36,8 @@ module Elevage
     end
 
     # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
+
+    # Process and execute the `build` command
     def build
       # Make the logfile directory if it doesn't exist
       Dir.mkdir(options[:logfiles]) unless Dir.exist?(options[:logfiles])

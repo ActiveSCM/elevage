@@ -10,6 +10,8 @@ module Elevage
     end
 
     # rubocop:disable LineLength
+
+    # Check the platform definition correctness
     def check_platform
       @platform = Elevage::Platform.new
       puts @platform.healthy? ? MSG_HEALTHY : fail(IOError, ERR[:fail_health_check])
@@ -17,6 +19,8 @@ module Elevage
     # rubocop:enable LineLength
 
     # rubocop:disable LineLength
+
+    # Check each environment definition for correctness
     def check_environments
       @platform.environments.each do |env|
         puts Elevage::Environment.new(env).healthy? ? (env + MSG_ENV_HEALTHY) : fail(IOError, ERR[:fail_health_check])
