@@ -19,3 +19,5 @@ tmp/
 .ruby-version
 coverage/.last_run.json
 coverage/.resultset.json
+.yardoc/
+doc/
