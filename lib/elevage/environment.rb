@@ -119,7 +119,7 @@ module Elevage
       end
 
       @components.each do |component_name, component_data|
-        next unless type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
+        next unless type.eql?(:all) || component_data['tier'].match(/\A#{tier.to_s}\z/i) || component_name.match(/\A#{component.to_s}\z/i)
 
         1.upto(component_data['addresses'].count) do |component_instance|
           next unless instance == component_instance || instance.nil?
