@@ -1,4 +1,4 @@
-# rubocop:disable LineLength, StringLiterals
+# rubocop:disable LineLength
 module Elevage
   # options description messages
   # DESC_followed by command and the description
@@ -110,4 +110,4 @@ module Elevage
     fail_health_check: 'elevage: health check revealed errors'
   }
 end
-# rubocop:enable LineLength, StringLiterals
+# rubocop:enable LineLength

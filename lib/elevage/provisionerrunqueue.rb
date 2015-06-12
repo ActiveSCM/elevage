@@ -63,7 +63,7 @@ module Elevage
 
     private
 
-    # rubocop:disable LineLength, GlobalVars
+    # rubocop:disable LineLength
 
     # Private
     #
@@ -77,9 +77,9 @@ module Elevage
       run_time = Time.now - start_time
       print "#{Time.now} [#{$$}]: #{task.name} #{status} in #{run_time.round(2)} seconds.\n"
     end
-    # rubocop:enable LineLength, GlobalVars
+    # rubocop:enable LineLength
 
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, GlobalVars
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
 
     # Private
     #
@@ -124,6 +124,6 @@ module Elevage
         sleep @busy_wait_timeout
       end
     end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, GlobalVars
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
   end
 end
