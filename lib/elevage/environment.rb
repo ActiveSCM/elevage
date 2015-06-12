@@ -181,8 +181,16 @@ module Elevage
       unless env_yaml['vcenter'].nil?
         # append env name to destination folder if appendenv == true
         env_yaml['vcenter']['destfolder'] += (env_yaml['vcenter']['appendenv'] ? '/' + env.to_s : '')
+
         # prepend app name to domain if appenddomain == true
-        env_yaml['vcenter']['appenddomain'] ? env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain'] : ''
+        # If 'appenddomain' is true, add the environment name as a subdomain.
+        if env_yaml['vcenter']['appenddomain']
+          env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain']
+        end
+
+        # Make sure the domain has a leading '.' or things don't look right.
+        env_yaml['vcenter']['domain'].sub!(/^/, '.') unless env_yaml['vcenter']['domain'].match(/^\./)
+
       end
       env_yaml
     end
