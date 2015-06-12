@@ -140,7 +140,7 @@ module Elevage
 
     private
 
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     # Updates env hash with necessary info from Platform files.
     # This is a blend of env and Platform info needed to construct
@@ -194,7 +194,7 @@ module Elevage
       end
       env_yaml
     end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     # rubocop:disable MethodLength
 
