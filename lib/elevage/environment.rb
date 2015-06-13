@@ -119,7 +119,7 @@ module Elevage
       end
 
       @components.each do |component_name, component_data|
-        next unless type.eql?(:all) || component_data['tier'].match(/#{tier}/i) && component_name.match(/#{component}/i)
+        next unless type.eql?(:all) || component_data['tier'].match(/\A#{tier.to_s}\z/i) || component_name.match(/\A#{component.to_s}\z/i)
 
         1.upto(component_data['addresses'].count) do |component_instance|
           next unless instance == component_instance || instance.nil?
@@ -140,7 +140,7 @@ module Elevage
 
     private
 
-    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:disable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     # Updates env hash with necessary info from Platform files.
     # This is a blend of env and Platform info needed to construct
@@ -181,12 +181,20 @@ module Elevage
       unless env_yaml['vcenter'].nil?
         # append env name to destination folder if appendenv == true
         env_yaml['vcenter']['destfolder'] += (env_yaml['vcenter']['appendenv'] ? '/' + env.to_s : '')
+
         # prepend app name to domain if appenddomain == true
-        env_yaml['vcenter']['appenddomain'] ? env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain'] : ''
+        # If 'appenddomain' is true, add the environment name as a subdomain.
+        if env_yaml['vcenter']['appenddomain']
+          env_yaml['vcenter']['domain'] = '.' + platform.name + '.' + env_yaml['vcenter']['domain']
+        end
+
+        # Make sure the domain has a leading '.' or things don't look right.
+        env_yaml['vcenter']['domain'].sub!(/^/, '.') unless env_yaml['vcenter']['domain'].match(/^\./)
+
       end
       env_yaml
     end
-    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity
+    # rubocop:enable MethodLength, LineLength, CyclomaticComplexity, PerceivedComplexity
 
     # rubocop:disable MethodLength
 

@@ -1,14 +1,14 @@
 # Elevage
 
-[![Build Status](https://travis-ci.org/ActiveSCM/elevage.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/ActiveSCM/elevage.png?travis)][gemnasium]
-[![Coverage Status](https://coveralls.io/repos/ActiveSCM/elevage/badge.png?branch=master)][coveralls]
-[![Inline docs](http://inch-ci.org/github/ActiveSCM/elevage.png?branch=master)][inch]
+[![Build Status](https://travis-ci.org/activenetwork-automation/elevage.svg?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/activenetwork-automation/elevage.png?travis)][gemnasium]
+[![Coverage Status](https://coveralls.io/repos/activenetwork-automation/elevage/badge.png?branch=master)][coveralls]
+[![Inline docs](http://inch-ci.org/github/activenetwork-automation/elevage.png?branch=master)][inch]
 
-[travis]: http://travis-ci.org/ActiveSCM/elevage
-[gemnasium]: https://gemnasium.com/ActiveSCM/elevage
-[coveralls]: https://coveralls.io/r/ActiveSCM/elevage
-[inch]: http://inch-ci.org/github/ActiveSCM/elevage
+[travis]: http://travis-ci.org/activenetwork-automation/elevage
+[gemnasium]: https://gemnasium.com/activenetwork-automation/elevage
+[coveralls]: https://coveralls.io/r/activenetwork-automation/elevage
+[inch]: http://inch-ci.org/github/activenetwork-automation/elevage
 
 `elevage` is a command-line tool that allows you to define an application
 platform in a set of plain-text (YAML) configuration files and use those
@@ -107,7 +107,7 @@ Options:
 
 ## Contributing
 
-1. Fork it ( https://github.com/ActiveSCM/elevage/fork )
+1. Fork it ( https://github.com/activenetwork-automation/elevage/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

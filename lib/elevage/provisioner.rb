@@ -44,7 +44,7 @@ module Elevage
       puts @environment.to_yaml
     end
 
-    # rubocop:disable MethodLength, LineLength, GlobalVars, CyclomaticComplexity
+    # rubocop:disable MethodLength, CyclomaticComplexity
 
     # Build the the virtual machine
     def build
@@ -99,7 +99,7 @@ module Elevage
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
     end
-    # rubocop:enable MethodLength, LineLength, GlobalVars, CyclomaticComplexity
+    # rubocop:enable MethodLength, CyclomaticComplexity
 
     private
 
