@@ -10,6 +10,7 @@ environment:
   # count           The number of components in the load balance pool
   # compute         Size of compute resource to assign, defined in the compute.yml file
   # network         vlan the component nodes are attached
+  # cspec           The name of any customization specification to apply
   #
   # Additionally, you must specify IP addresses for each node. The generate
   # command will create array placeholders based on the default Count
