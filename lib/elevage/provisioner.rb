@@ -181,6 +181,9 @@ module Elevage
       knife_cmd << " --ssh-user #{@options['ssh-user']}"
       knife_cmd << " --identity-file '#{@options['ssh-key']}'"
 
+      # customization spec if it exists
+      if @component['cspec'] then knife_cmd << " --cspec #{@component['cspec']}" end
+
       # What the node should be identified as in Chef
       nodename = String.new(@name)
       nodename << @vcenter['domain'] if @vcenter['appenddomain']
