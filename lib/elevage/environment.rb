@@ -42,7 +42,7 @@ module Elevage
     # Returns multiline string = IP, fqdn, runlist
     # @return [String] Expanded node list
     def list_nodes
-      nodes =  @vcenter['destfolder'].to_s + "\n"
+      nodes = @vcenter['destfolder'].to_s + "\n"
       @components.each do |component, _config|
         (1..@components[component]['count']).each do |i|
           nodes += @components[component]['addresses'][i - 1].ljust(18, ' ') +

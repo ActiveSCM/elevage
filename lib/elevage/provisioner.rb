@@ -124,7 +124,7 @@ module Elevage
       knife_cmd << " --regex #{@vcenter['datastore']}"
 
       # get result and clean up
-      @options['dry-run'] ? @vcenter['datastore'] : `#{knife_cmd}`.to_s.gsub!("\n", '')
+      @options['dry-run'] ? @vcenter['datastore'] : `#{knife_cmd}`.to_s.delete!("\n", '')
     end
     # rubocop:enable LineLength
 
@@ -180,6 +180,9 @@ module Elevage
       knife_cmd << " --fqdn #{@component['addresses'][@instance - 1]}"
       knife_cmd << " --ssh-user #{@options['ssh-user']}"
       knife_cmd << " --identity-file '#{@options['ssh-key']}'"
+
+      # customization spec if it exists
+      knife_cmd << " --cspec #{@component['cspec']}" if @component['cspec']
 
       # What the node should be identified as in Chef
       nodename = String.new(@name)
