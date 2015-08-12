@@ -201,9 +201,9 @@ module Elevage
 
       # Finally, the name of the VM as seen by vSphere.
       # Whereas nodename will optionally append the domain name, VM names
-      # should *always* have the domain name appended.
+      # should *always* have the domain name appended - UNLESS it's windows
       vmname = String.new(@name)
-      vmname << @vcenter['domain']
+      vmname << @vcenter['domain'] unless knife_cmd.downcase.include?('windows')
       knife_cmd << " #{vmname}"
     end
     # rubocop:enable MethodLength, LineLength
