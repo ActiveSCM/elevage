@@ -73,7 +73,7 @@ Generate a new environment file.  Comments within the template files describe ne
 $ elevage generate <environment name>
 ```
 
-Windows nodes require the `ostype` parameter under `pools` to equal `'windows'`.  This was required so that only the vm name instead is paseed in instead of of the FQDN.
+Windows nodes require the `ostype` parameter under `pools` to equal `'windows'`.  This was required so that only the vm name is paseed in instead of the FQDN.
 
 ```YAML
 pools:
