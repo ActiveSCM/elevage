@@ -33,6 +33,7 @@ Feature: LIST platform definition file items
           count: 2
           tier: Web
           image: 'centos-6.5-x86_64-20140714'
+          ostype: 'linux'
           compute: nonprodweb
           port: 80
           runlist:
@@ -269,11 +270,11 @@ Feature: LIST platform definition file items
 
     When I run `elevage list pools`
     Then the exit status should be 0
-    And the output should contain "appvmdefaults:\n  count: 2\n  tier: App\n  image: centos-6.5-x86_64-20140714\n  compute: nonprodapp\n  port: 80"
+    And the output should contain "appvmdefaults:\n  count: 2\n  tier: App\n  image: centos-6.5-x86_64-20140714\n  ostype: linux\n  compute: nonprodapp\n  port: 80"
 
     When I run `elevage list components`
     Then the exit status should be 0
-    And the output should contain "terracotta:\n  count: 2\n  tier: Web\n  image: centos32g-6.5-x86_64-20140714\n  compute: nonprodtc\n  port: 80"
+    And the output should contain "terracotta:\n  count: 2\n  tier: Web\n  image: centos32g-6.5-x86_64-20140714\n  ostype: linux\n  compute: nonprodtc\n  port: 80"
 
     When I run `elevage list vcenter`
     Then the exit status should be 0

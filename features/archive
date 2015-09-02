@@ -29,6 +29,7 @@
           count: 2
           tier: Web
           image: 'aw-nonprod-oel6_20130815'
+          ostype: 'linux'
           compute: nonprodweb
 
         appvmdefaults: &appvmdefaults
