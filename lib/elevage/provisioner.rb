@@ -151,7 +151,7 @@ module Elevage
       knife_cmd << " --dest-folder '#{@vcenter['destfolder']}"
       knife_cmd << "/#{@component['tier']}" if @vcenter['appendtier']
       knife_cmd << '\''
-      knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
+      knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'" if vcenter['resourcepool']
       knife_cmd << " --datastore '#{select_datastore}'"
 
       # VM Hardware
