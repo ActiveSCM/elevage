@@ -5,7 +5,7 @@ require_relative 'platform'
 require_relative 'provisionerrunqueue'
 
 module Elevage
-  # rubocop:disable ClassLength
+  # rubocop:disable ClassLength, CyclomaticComplexity
 
   # Provisioner is responsible for the actual execution of the commands to
   # create the requested virtual machine.
@@ -44,7 +44,7 @@ module Elevage
       puts @environment.to_yaml
     end
 
-    # rubocop:disable MethodLength, CyclomaticComplexity
+    # rubocop:disable MethodLength
 
     # Build the the virtual machine
     def build
@@ -99,7 +99,7 @@ module Elevage
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
     end
-    # rubocop:enable MethodLength, CyclomaticComplexity
+    # rubocop:enable MethodLength
 
     private
 
@@ -208,5 +208,5 @@ module Elevage
     end
     # rubocop:enable MethodLength, LineLength
   end
-  # rubocop:enable ClassLength
+  # rubocop:enable ClassLength, CyclomaticComplexity
 end
