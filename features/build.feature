@@ -34,6 +34,7 @@ Feature: Provisioning platform vm's
           count: 2
           tier: Web
           image: 'centos-6.5-x86_64-20140714'
+          ostype: 'linux'
           compute: nonprodweb
           port: 80
           runlist:

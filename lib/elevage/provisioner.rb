@@ -5,7 +5,7 @@ require_relative 'platform'
 require_relative 'provisionerrunqueue'
 
 module Elevage
-  # rubocop:disable ClassLength
+  # rubocop:disable ClassLength, CyclomaticComplexity
 
   # Provisioner is responsible for the actual execution of the commands to
   # create the requested virtual machine.
@@ -44,7 +44,7 @@ module Elevage
       puts @environment.to_yaml
     end
 
-    # rubocop:disable MethodLength, CyclomaticComplexity
+    # rubocop:disable MethodLength
 
     # Build the the virtual machine
     def build
@@ -99,7 +99,7 @@ module Elevage
       # exit status is a failure, and the details will be in the logfile
       status.exitstatus == 0 ? true : false
     end
-    # rubocop:enable MethodLength, CyclomaticComplexity
+    # rubocop:enable MethodLength
 
     private
 
@@ -151,7 +151,7 @@ module Elevage
       knife_cmd << " --dest-folder '#{@vcenter['destfolder']}"
       knife_cmd << "/#{@component['tier']}" if @vcenter['appendtier']
       knife_cmd << '\''
-      knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'"
+      knife_cmd << " --resource-pool '#{@vcenter['resourcepool']}'" if vcenter['resourcepool']
       knife_cmd << " --datastore '#{select_datastore}'"
 
       # VM Hardware
@@ -201,12 +201,12 @@ module Elevage
 
       # Finally, the name of the VM as seen by vSphere.
       # Whereas nodename will optionally append the domain name, VM names
-      # should *always* have the domain name appended.
+      # should *always* have the domain name appended - UNLESS it's windows
       vmname = String.new(@name)
-      vmname << @vcenter['domain']
+      vmname << @vcenter['domain'] if @component['ostype'] != 'windows'
       knife_cmd << " #{vmname}"
     end
     # rubocop:enable MethodLength, LineLength
   end
-  # rubocop:enable ClassLength
+  # rubocop:enable ClassLength, CyclomaticComplexity
 end

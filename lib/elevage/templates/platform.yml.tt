@@ -80,6 +80,7 @@ platform:
       count:
       tier:
       image:
+      ostype:
       compute:
       port:
       runlist:
